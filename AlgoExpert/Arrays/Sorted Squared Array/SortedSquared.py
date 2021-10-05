@@ -4,7 +4,7 @@
 # Space Complexity = o(n) => as we are creating new array
 def sortedSquaredArray(array):
 	# initialize a new array of same length as input array so as to store the square root in sorted order
-    res = [0] * len(array)
+    res = [0] * len(array) # because ill be traversing from back i cannot have empty array
 	# res = [0 for _ in array]
 	smallIdx = 0
 	largeIdx = len(array)-1
