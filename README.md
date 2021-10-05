@@ -1,7 +1,7 @@
 # Python 3 😎
 -----------------------------------------------------------------------------------------------------------------------
 <p align="center">
-  This repo contains solutions to algorithmic problems from various platform like LeetCode, AlgoExpert, HackerRank, CodeSignal etc.
+  This repo contains solutions to algorithmic problems from various platform like <b>LeetCode, AlgoExpert, HackerRank, CodeSignal</b> etc.
   </br>
 </p>
 My favourite programming language😻.
