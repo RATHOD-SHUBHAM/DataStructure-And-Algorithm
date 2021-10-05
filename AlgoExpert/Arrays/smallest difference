@@ -1,0 +1,34 @@
+def smallestDifference(arrayOne, arrayTwo):
+	
+    arrayOne.sort()
+	arrayTwo.sort()
+	
+	idxOne, idxTwo = 0 , 0
+	
+	smallest_sum = float('inf')
+	
+	num = []
+	
+	
+	while idxOne < len(arrayOne) and idxTwo < len(arrayTwo):
+		firstNum = arrayOne[idxOne]
+		secondNum = arrayTwo[idxTwo]
+		
+		cs = abs(firstNum - secondNum)
+		
+		if firstNum < secondNum:
+			idxOne += 1
+			
+		elif secondNum < firstNum:
+			idxTwo += 1
+			
+		elif cs == 0:
+			return [firstNum ,secondNum]
+		
+		if cs < smallest_sum:
+			smallest_sum = cs
+			num = [firstNum , secondNum]
+		
+	return num
+	
+	
