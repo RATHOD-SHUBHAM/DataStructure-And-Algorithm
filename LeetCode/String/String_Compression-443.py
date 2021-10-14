@@ -57,6 +57,7 @@ class Solution:
     def compress(self, chars: List[str]) -> int:
         
         # initialize 2 pointers
+        # i , j = 0 , 1
         i = 0
         j = 1
         
