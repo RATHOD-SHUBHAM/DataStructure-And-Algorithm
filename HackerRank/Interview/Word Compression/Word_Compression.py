@@ -38,3 +38,4 @@ if __name__ == '__main__':
     print("Compressed Word is: ",CompressWord("aba",2))
     print("Compressed Word is: ",CompressWord("aba",2))
     print("Compressed Word is: ",CompressWord("aaba",3))
+    print("Compressed Word is: ",CompressWord("aabbbaaaba",3))
