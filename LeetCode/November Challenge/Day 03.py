@@ -43,6 +43,28 @@ The depth of the tree will not exceed 10.
 
 '''
 
+'''
+
+Time Complexity = O(n) // where n is the number of elements in the tree.
+Space Complexity = O(1) // no additional memory is being used
+
+# https://www.youtube.com/watch?v=Jk16lZGFWxE
+
+Approach:
+
+Go to the root node.
+Add the root node to units place --> can be done by multiplying existing number to 10 and adding current value
+
+Check if it has right and left child.
+
+if it does continue the same above approach
+else return the sum
+
+'''
+
+
+
+
 # Definition for a binary tree node.
 # class TreeNode:
 #     def __init__(self, val=0, left=None, right=None):
@@ -51,23 +73,24 @@ The depth of the tree will not exceed 10.
 #         self.right = right
 class Solution:
     def sumNumbers(self, root: Optional[TreeNode]) -> int:
-        tot_sum, cur, depth = 0, 0, 0
-        while root:
-            if root.left:
-                pre, depth = root.left, 1
-                while pre.right and pre.right != root:
-                    pre, depth = pre.right, depth + 1
-                if not pre.right:
-                    pre.right = root
-                    cur = cur * 10 + root.val
-                    root = root.left
-                else:
-                    pre.right = None
-                    if not pre.left: tot_sum += cur
-                    cur //= 10**depth
-                    root = root.right
-            else:
-                cur = cur * 10 + root.val
-                if not root.right: tot_sum += cur
-                root = root.right
-        return tot_sum
+    
+        def helper(root, num):
+            
+            # base case checking
+            if not root:
+                return 0
+            
+            
+            # if there is any value then add it to num variable
+            num = num * 10 + root.val
+            
+            
+            # if there is no child then return num
+            if not root.left and not root.right:
+                return num
+            
+            return helper(root.left,num) + helper(root.right,num)
+        
+        return helper(root,0)
+        
+        
