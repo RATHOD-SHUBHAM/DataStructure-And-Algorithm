@@ -37,3 +37,66 @@ class Solution:
             twos = ~ones & (i ^ twos)
         
         return ones
+
+
+
+'''
+# Explanation:
+
+nums = [ 2, 2, 3, 2]
+         i
+
+ones = 0  --> binary = 00
+twos = 0  --> binary = 00
+# i = 0 --> nums[i] = 2 --> binary = 10
+
+step 1 -  XOR:
+ones ^ nums[i]=
+
+10
+00 
+--
+10  == 2
+--
+ 
+step 2 -- negate two and perfom and with result
+
+11  = ~(00)
+10 & 
+--
+10  ==  ones
+--
+
+
+# Similaryly for twos
+ones = 10 twos = 00
+step 1 -  XOR:
+twos ^ nums[i]=
+
+10
+00 
+--
+10  == 2
+--
+ 
+step 2 -- negate one and perfom and with result
+
+01  = ~(10)
+10 & 
+--
+00  ==  twos
+--
+
+
+at the end of first iteration for nums[i] = 2, ones = 2 and twos = 0
+
+-------------------------------------------------------------------------
+ when we continue iteration
+ 
+ if there is a unique digit --> it will be stored in ones.
+ if there are 2 duplicate --> it will be stored in twos.
+ if there are 3 duplicate --> it will not be saved any where both ones and twos will be zero
+
+
+
+'''
