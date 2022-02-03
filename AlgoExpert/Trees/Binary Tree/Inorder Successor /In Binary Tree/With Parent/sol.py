@@ -1,3 +1,6 @@
+## Solution works for all kind of Trees. ie even BST
+
+
 '''
 Inorder traversal = left --> root --> right
 
