@@ -8,13 +8,13 @@ sum of all nodes depth =								+
 
 def allKindsOfNodeDepths(root):
 	# this will give count of all node from particular node
-    nodeCount = {}
+    	nodeCount = {}
 	no_of_nodes(root, nodeCount)
-	
+
 	# count the depth of all node from particular node
 	nodeDepth = {}
 	depth_of_all_nodes(root,nodeDepth,nodeCount)
-	
+
 	# sum depth of all node
 	return sumOfAllNodesDepth(root, nodeDepth)
 	
