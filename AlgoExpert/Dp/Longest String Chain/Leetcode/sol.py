@@ -42,7 +42,7 @@ words[i] only consists of lowercase English letters.
 
 
 
-
+https://leetcode.com/problems/longest-string-chain/discuss/1790539/Python-3-Solution%3A-Clean-and-Concise
 '''
 
 

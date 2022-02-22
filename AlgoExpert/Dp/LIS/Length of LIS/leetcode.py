@@ -30,6 +30,7 @@ Constraints:
 -104 <= nums[i] <= 104
 
 
+https://leetcode.com/problems/longest-increasing-subsequence/discuss/1790464/length-of-lis-python-binarysearch
 '''
 
 # Binary Search
