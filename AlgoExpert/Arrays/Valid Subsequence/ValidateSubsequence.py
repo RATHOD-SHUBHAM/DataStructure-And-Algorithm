@@ -1,3 +1,6 @@
+# time and Space = O(n) | O(1)
+
+
 def isValidSubsequence(array, sequence):
 	arrID, seqID = 0 , 0
 	
