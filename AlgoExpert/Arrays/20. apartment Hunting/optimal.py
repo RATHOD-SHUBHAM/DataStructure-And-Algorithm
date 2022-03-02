@@ -20,8 +20,9 @@ def apartmentHunting(blocks, reqs):
 
 def getMinDistance(blocks, req):
 	minDist = [0 for _ in blocks]
-	closestDist = float("-inf")
-	
+	closestDist = float("inf")
+
+	# closest req that appeared before the block
 	for i in range(len(blocks)):
 		if blocks[i][req]:
 			closestDist = i
@@ -29,6 +30,8 @@ def getMinDistance(blocks, req):
 		minDist[i] = distance(i, closestDist)
 	
 	# move in reverse order
+	closestDist = float("inf")	
+	# move in reverse order: closest requirement that appaeared after the block
 	for i in reversed(range(len(blocks))):
 		if blocks[i][req]:
 			closestDist = i

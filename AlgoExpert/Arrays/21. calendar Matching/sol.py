@@ -36,9 +36,9 @@ def updateCalendar(calendar, dailyBounds):
 
 
 def hoursToMin(time):
-	hours, minutes = list(map(int, time.split(":")))
+	hours, minutes = time.split(":")
 	# print(hours, minutes)
-	return hours * 60 + minutes
+	return int(hours) * 60 + int(minutes)
 
 
 
