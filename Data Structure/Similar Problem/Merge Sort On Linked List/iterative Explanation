@@ -1,0 +1,79 @@
+**Game of Pointers: **
+ 
+ dummy = ListNode(0) = to return the head after we have sorted the array.
+ 
+ We break the LL into size of 1, then we combine those two nodes
+ Next we combine two , two nodes and so on.
+ 
+ We need a pointer to keep track of previous tail node:
+ dummy.next = head
+ 
+ since we are breaking the node. we will need reference to next node:
+ start = None
+ 
+As we move to next node. we need to keep track of previous node:
+dummy_start = None
+
+First time we break each node to individual node and sort them.
+size =  1
+
+then after sorting we want to combine the nodes in pair of 2, next time in pair of 4 and so on:
+size *=2
+
+eg:
+
+4 -> 2 -> 1 -> 3
+
+dummy head - > 4 -> 2 -> 1 -> 3
+
+start = left = 4
+if i cut left with size 1:
+ill get right = 2
+
+now if i cut right with size 1:
+illl get 1.
+
+Now compare and merge 4,2. keep dummy node to keep track of head
+dummy -> 2 -> 4.
+dummy_start = 4: because next when i break 1 and 3 . ill have to make my 4 point to 1
+
+
+**The Magic happen in merge function**
+eg1: suppose I pass 
+4 , 2  and a dummy node = curNode
+
+l1 = 4
+l2 = 2
+
+so l2 < l1
+then dummy -> 2,  and l2 will move next
+l2 will be None.
+and make curnode = 2
+
+now since there is only one element attach that to curtNode
+dummy -> 2 -> 4
+mode curNode to 4 and return . we will need 4 to make a pointer to next sorted LL
+
+eg2:  After 1 node sort, ill pass 2 nodes to merge
+
+dummy = curnode, 2->4 , 1->3
+
+l1 = 2 -> 4
+l2 = 1 -> 3
+
+l2 (1) < l1 (2):
+dummy -> 1
+move l2 to 3
+make curNode = 1
+
+l1(2) < l2(3):
+curNode -> 2: 1 -> 2
+move l1 = 4
+curNode = 2
+
+l2 (3) < l1(4):
+so Now 1->2->3
+move l2 = none
+
+since l2 became none, append what ever is left out in l1
+1 -> 2 -> 3 -> 4
