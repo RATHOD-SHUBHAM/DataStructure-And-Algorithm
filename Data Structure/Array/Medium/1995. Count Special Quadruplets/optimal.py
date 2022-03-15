@@ -1,23 +1,28 @@
 # Time = O(n^2) Space = O(n)
 class Solution:
     def countQuadruplets(self, nums: List[int]) -> int:
-        res = 0
+        dic = collections.defaultdict(int)
         
-        count = defaultdict(int)
+        length = len(nums)
         
-        count[nums[len(nums)-1] - nums[len(nums)-2]] = 1
-        print(count)
+        # add last two value in dic
+        dic[ nums[length-1] - nums[length-2] ] = 1
+        # print(dic)
         
-        for b in range(len(nums) - 3, 0, -1):
-            print("nums[b] : ",nums[b])
-            for a in range(b - 1, -1, -1):
-                # Check if  a + b in count. If it is there. Increase count by that number
-                res += count[nums[a] + nums[b]]
-            
-            for x in range(len(nums) - 1, b, -1):
-                print("nums[x] : ",nums[x])
-                count[nums[x] - nums[b]] += 1
-                print("count: ", count)
-            print("\n")
+        count = 0
         
-        return res
+        # Fix b and keep iterating a value
+        for b in range(length - 3, 0, -1): # dont onot include 0
+            # iterate for different value of a
+            for a in range(b-1, -1, -1) :
+                number = nums[a] + nums[b]
+                # if a similar match a + b = d - c is found then increase count
+                count += dic[number]
+                
+                
+            # Now add new value to cache where c value = to b
+            for d in range(length - 1, b , -1):
+                number = nums[d] - nums[b]
+                dic[number] += 1
+                
+        return count
