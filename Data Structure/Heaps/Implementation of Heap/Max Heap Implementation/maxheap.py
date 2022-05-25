@@ -70,13 +70,13 @@ class MinHeap:
 				
 			# check if child two is smaller than child one and parent
 			
-            if childTwoIdx != -1 and heap[childTwoIdx] < heap[childOneIdx]:
+            if childTwoIdx != -1 and heap[childTwoIdx] > heap[childOneIdx]:
                 childToSwap = childTwoIdx
             else:
                 childToSwap = childOneIdx
 				
                 
-            if heap[childToSwap] < heap[currentIdx]:
+            if heap[childToSwap] > heap[currentIdx]:
                 self.swap(currentIdx,childToSwap, heap)
                 currentIdx = childToSwap
                 childOneIdx = (currentIdx * 2) + 1
@@ -89,7 +89,7 @@ class MinHeap:
         parentIdx = (currentIdx - 1) // 2
 		# check if we are in the indexLimit and not the root element
 		# check if the current node is smaller than parent node
-        while parentIdx > 0 and heap[currentIdx] < heap[parentIdx]:
+        while parentIdx > 0 and heap[currentIdx] > heap[parentIdx]:
             self.swap(parentIdx, currentIdx,heap)
             currentIdx = parentIdx
             parentIdx = (currentIdx - 1) // 2 # once we reach the root or our elements are heapified then we break out of the loop 
