@@ -1,0 +1,21 @@
+# ---------------------------------------------------------------------------------
+
+1] 1710. Maximum Units on a Truck
+
+ip: A 2d Array. Called Boxtypes.
+Boxtype contains: 
+1. No of boxes.
+2. no of units.
+
+And and interger called truck size : which is maximum no of boxes that can be put into truck.
+
+OP: Maximum total no of units that can be put into truck.
+
+Sol:
+Sort the boxtype in ascending order based on no of units. 
+So now we will have max unit at front and we can keep loading the truck as long as the truck size is reached.size
+
+Since we sort the array we use  O(nlog(n)) time complexity.
+ans we dont use any extra space so space complexity is O(1).
+
+# ---------------------------------------------------------------------------------
