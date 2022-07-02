@@ -35,7 +35,7 @@ class Stack:
     def max(self):
         return max(self.items)
 
-def main():
+if __name__ == '__main__':
     stack = Stack()
     stack.push(1)
     stack.push(2)
