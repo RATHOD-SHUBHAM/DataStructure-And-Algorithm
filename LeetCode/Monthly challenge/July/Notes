@@ -58,3 +58,22 @@ Run Time: O(n)
 Space: O(1)
 
 # ---------------------------------------------------------------------------------
+
+6] 509. Fibonacci Number.
+
+ip: integer number
+op: Fibonacci 
+
+Sol:
+1] Recursive: 
+TC: O(2^n) , SC: O(n)
+2] Tabulation:
+TC: O(n), SC: O(n)
+3] Memoization:
+TC: O(n), SC: O(n)
+4] Bottom Up approach:
+TC: O(n), SC: O(1)
+5] Goldern Ratio:
+TC: O(log(n)) , SC:O(1)
+
+# ---------------------------------------------------------------------------------
