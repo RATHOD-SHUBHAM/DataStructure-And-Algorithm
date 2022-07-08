@@ -18,7 +18,7 @@ So now we will have max unit at front and we can keep loading the truck as long 
 Since we sort the array we use  O(nlog(n)) time complexity.
 ans we dont use any extra space so space complexity is O(1).
 
-# ------------------------------------------------------
+# --------------------------------------------------
 
 2] 1465. Maximum Area of a Piece of Cake After Horizontal and Vertical Cuts
 
@@ -44,7 +44,7 @@ and then area of cake will be : max height * max width.
 Run time = O(nlog(n) + mlog(m))
 Space = O(1)
 
-# ----------------------------------------------------
+# --------------------------------------------------
 
 3] 376. Wiggle Subsequence
 ip: An integer array.
@@ -57,7 +57,7 @@ Return the max count between them
 Run Time: O(n)
 Space: O(1)
 
-# ------------------------------------------------------
+# --------------------------------------------------
 
 6] 509. Fibonacci Number.
 
@@ -76,4 +76,4 @@ TC: O(n), SC: O(1)
 5] Goldern Ratio:
 TC: O(log(n)) , SC:O(1)
 
-# -----------------------------------------------------------
+# --------------------------------------------------
