@@ -46,7 +46,7 @@ Space = O(1)
 # --------------------------------------------------
 
 3] 376. Wiggle Subsequence
-ip: An integer array.
+ip: An integer array.\
 op: Longest Wiggle subsequence.
 
 Sol:
@@ -102,7 +102,7 @@ TC: O(log(n)) , SC:O(1)
 12] 473. Matchsticks to Square
 
 sol:
-what_to: given an array we got to find out if we can make one square using all the match stick.
+what_to: given an array we got to find out if we can make one square using all the match stick.\
 op_req: return true or false
 
 ip: integer array. where array[i] is the length of ith matchstick.
