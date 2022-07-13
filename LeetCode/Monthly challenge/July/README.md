@@ -58,6 +58,28 @@ Space: O(1)
 
 # --------------------------------------------------
 
+5] 128. Longest Consecutive Sequence.
+ip: unsorted array
+op: longest sequence
+
+sol:
+Brute force:
+For each number check if the next number is available. Along the way also keep track of the sequence count.
+TC: O(n^3)
+Sc: O(1)
+
+Sort:
+Sort the ip array, For each number check if the next number is available. Along the way also keep track of the sequence count.
+Tc: O(nlogn)
+Sc: O(1)
+
+Set:
+Create a set. For each number check if the next number is available. Along the way also keep track of the sequence count.
+Tc: O(n)
+Sc: O(n)
+
+# --------------------------------------------------
+
 6] 509. Fibonacci Number.
 
 ip: integer number
@@ -79,6 +101,7 @@ TC: O(log(n)) , SC:O(1)
 
 12] 473. Matchsticks to Square
 
+sol:
 what_to: given an array we got to find out if we can make one square using all the match stick.
 op_req: return true or false
 
