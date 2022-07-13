@@ -8,7 +8,7 @@ class Solution:
         if len(s3) != m + n : 
             return False
         
-        # making sure s2 is smaller than s1
+        # making sure s2 is smaller than s1: Just to make the processing easy
         if m < n:
             m , n = n , m
             s1 , s2 = s2 , s1
