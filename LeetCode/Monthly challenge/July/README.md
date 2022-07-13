@@ -76,3 +76,13 @@ TC: O(n), SC: O(1)
 TC: O(log(n)) , SC:O(1)
 
 # --------------------------------------------------
+
+12] 473. Matchsticks to Square
+
+what_to: given an array we got to find out if we can make one square using all the match stick.
+op_req: return true or false
+
+ip: integer array. where array[i] is the length of ith matchstick.
+
+Tc: O(4 ^ n)
+Sc: O(n) # recursice solution
