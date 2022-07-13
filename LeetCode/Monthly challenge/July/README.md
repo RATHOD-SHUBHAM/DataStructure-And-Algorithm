@@ -86,15 +86,15 @@ ip: integer number
 op: Fibonacci 
 
 Sol:
-1] Recursive: 
-TC: O(2^n) , SC: O(n)
-2] Tabulation:
-TC: O(n), SC: O(n)
-3] Memoization:
-TC: O(n), SC: O(n)
-4] Bottom Up approach:
-TC: O(n), SC: O(1)
-5] Goldern Ratio:
+1] Recursive: \
+TC: O(2^n) , SC: O(n)\
+2] Tabulation:\
+TC: O(n), SC: O(n)\
+3] Memoization:\
+TC: O(n), SC: O(n)\
+4] Bottom Up approach:\
+TC: O(n), SC: O(1)\
+5] Goldern Ratio:\
 TC: O(log(n)) , SC:O(1)
 
 # --------------------------------------------------
@@ -107,7 +107,7 @@ op_req: return true or false
 
 ip: integer array. where array[i] is the length of ith matchstick.
 
-Tc: O(4 ^ n)
+Tc: O(4 ^ n)\
 Sc: O(n) # recursice solution
 
 # --------------------------------------------------
