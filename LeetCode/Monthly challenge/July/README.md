@@ -11,18 +11,18 @@ And and interger called truck size : which is maximum no of boxes that can be pu
 OP: Maximum total no of units that can be put into truck.
 
 Sol:
-Sort the boxtype in ascending order based on no of units. 
+Sort the boxtype in ascending order based on no of units. \
 So now we will have max unit at front and we can keep loading the truck as long as the truck size is reached.size
 
-Since we sort the array we use  O(nlog(n)) time complexity.
+Since we sort the array we use  O(nlog(n)) time complexity.\
 ans we dont use any extra space so space complexity is O(1).
 
 # --------------------------------------------------
 
 2] 1465. Maximum Area of a Piece of Cake After Horizontal and Vertical Cuts
 
-ip: Cake size : h and w.
-horizontal cut: cut from top to current index.
+ip: Cake size : h and w.\
+horizontal cut: cut from top to current index.\
 vertical cut: cut from left to current index.
 
 IF the cut is at index 1. then from 0 - 1 is also a cut -- # the edge case
@@ -36,11 +36,11 @@ max area of piece of cake after the cake is cut into horizontal and vertical cut
 Sol:
 Find the portion of the cake which has the max height and max width.
 
-So find the individual max height and max width.
+So find the individual max height and max width.\
 and then area of cake will be : max height * max width.
 
 
-Run time = O(nlog(n) + mlog(m))
+Run time = O(nlog(n) + mlog(m))\
 Space = O(1)
 
 # --------------------------------------------------
@@ -50,7 +50,7 @@ ip: An integer array.\
 op: Longest Wiggle subsequence.
 
 Sol:
-Check for the peek and Valley across all the points in the given integer array and count the number of peek and valley. 
+Check for the peek and Valley across all the points in the given integer array and count the number of peek and valley. \
 Return the max count between them
 
 Run Time: O(n)
@@ -64,18 +64,18 @@ op: longest sequence
 
 sol:
 Brute force:
-For each number check if the next number is available. Along the way also keep track of the sequence count.
-TC: O(n^3)
+For each number check if the next number is available. Along the way also keep track of the sequence count.\
+TC: O(n^3)\
 Sc: O(1)
 
 Sort:
-Sort the ip array, For each number check if the next number is available. Along the way also keep track of the sequence count.
-Tc: O(nlogn)
+Sort the ip array, For each number check if the next number is available. Along the way also keep track of the sequence count.\
+Tc: O(nlogn)\
 Sc: O(1)
 
 Set:
-Create a set. For each number check if the next number is available. Along the way also keep track of the sequence count.
-Tc: O(n)
+Create a set. For each number check if the next number is available. Along the way also keep track of the sequence count.\
+Tc: O(n)\
 Sc: O(n)
 
 # --------------------------------------------------
