@@ -1,6 +1,5 @@
 # Heaps
 
-# ----------------------------------
 1. Min Heap Construction:
 ip = Array
 
@@ -21,6 +20,8 @@ Sc: O(1)
 # ----------------------------------
 
 2. Contineous Median.
-3. Sort K sorted Array.
-4. Laptop Rental.
-5. Merge Sorted Array.
+
+# ----------------------------------
+4. Sort K sorted Array.
+5. Laptop Rental.
+6. Merge Sorted Array.
