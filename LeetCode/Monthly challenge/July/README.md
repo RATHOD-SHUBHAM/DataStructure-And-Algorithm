@@ -1,3 +1,5 @@
+# July 2022 LeetCode Challenge.
+
 
 1] 1710. Maximum Units on a Truck
 
@@ -124,5 +126,35 @@ ip: integer array. where array[i] is the length of ith matchstick.
 
 Tc: O(4 ^ n)\
 Sc: O(n) # recursice solution
+
+# --------------------------------------------------
+
+13] 102. Binary Tree Level Order Traversal
+
+# --------------------------------------------------
+
+14] 105. Construct Binary Tree from Preorder and Inorder Traversal
+
+# --------------------------------------------------
+
+15] 695. Max Area of Island.
+
+
+ip: m x n binary matrix grid.\
+op: maximum area of an island in grid 
+ 
+ 
+ sol:
+ We have to find the maximum area of island.\
+ An island is a group of 1's (representing land) connected 4-directionally (horizontal or vertical.) 
+ 
+We go to each cell and check if it is a island:\
+If it is a iland: \
+Check if the adjust 4 neighbor are also neighbor.
+
+Keep track if the area while traversing the neighbors.
+
+Tc: O(m * n), where m and n are the size of matrix\
+Sc: O(1).
 
 # --------------------------------------------------
