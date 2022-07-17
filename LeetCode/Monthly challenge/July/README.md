@@ -154,7 +154,7 @@ Check if the adjust 4 neighbor are also neighbor.
 
 Keep track if the area while traversing the neighbors.
 
-Tc: O(m * n), where m and n are the size of matrix
+Tc: O(m * n), where m and n are the size of matrix\
 Sc: O(1).
 
 # --------------------------------------------------
