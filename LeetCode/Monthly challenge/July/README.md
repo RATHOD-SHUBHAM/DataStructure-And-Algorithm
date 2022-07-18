@@ -164,32 +164,34 @@ Sc: O(1).
 16] 576. Out of Boundary Paths.
 
 * ip: 
-A m * n grid. \
-Five integers m, n, maxMove, startRow, startColumn. \
+ A m * n grid. \
+ Five integers m, n, maxMove, startRow, startColumn. 
 
 * op: 
-Return the number of paths to move the ball out of the grid boundary.
+  Return the number of paths to move the ball out of the grid boundary.
 
 * Tabulation Method:
-Runs Faster. \
-Recursion + Memoization. 
+
+  Runs Faster. \
+  Recursion + Memoization. 
 
   ** sol:
-  From the startRow and startCol we go to all the 4 neighbour and check if we have reached the boundary.\
-  We also keep track of the moves while travelling. \
-  If we have reached the boundary, then we return 1 else we return zero.\
-  We then return the number of ways we can go outside the boundary.
+    From the startRow and startCol we go to all the 4 neighbour and check if we have reached the boundary.\
+    We also keep track of the moves while travelling. \
+    If we have reached the boundary, then we return 1 else we return zero.\
+    We then return the number of ways we can go outside the boundary.
 
   ** Tc and Sc: O(mnN).\
-  m, n refer to the number of rows and columns of the given grid respectively. \
-  N refers to the total number of allowed moves.
+    m, n refer to the number of rows and columns of the given grid respectively. \
+    N refers to the total number of allowed moves.
 
 * Dynamic Programming:
-Space Effecient.
+  
+  Space Effecient.
 
   ** Sol:
-  For each move, we will find out the next cell in which the ball will located. \
-  If it is crossing the boundary we add that to path count \
+    For each move, we will find out the next cell in which the ball will located. \
+    If it is crossing the boundary we add that to path count \
 
   ** Tc: O(mnN)
   ** Sc: O(mn)
