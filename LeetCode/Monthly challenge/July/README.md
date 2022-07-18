@@ -157,4 +157,11 @@ Keep track if the area while traversing the neighbors.
 Tc: O(m * n), where m and n are the size of matrix\
 Sc: O(1).
 
+Try this along: 200. Number of Islands
+
 # --------------------------------------------------
+
+16] 576. Out of Boundary Paths.
+
+
+Try this along:146. LRU Cache
