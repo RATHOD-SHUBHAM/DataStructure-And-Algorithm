@@ -47,9 +47,9 @@ Then we keep removing the minimum value from heap and keep adding the next eleme
 Tc: O(nlogk): where n is the no of element in array and log k because we will have atmost k + 1 element in heap.\
 Sc: O(k): because we will have atmost k + 1 element in heap and array is being sorted in place so O(1)
 
-
-- 88. Merge Sorted Array.\
-- 23. Merge k Sorted Lists
+Try on leetcode: \
+88. Merge Sorted Array.\
+23. Merge k Sorted Lists
 
 
 # ----------------------------------
