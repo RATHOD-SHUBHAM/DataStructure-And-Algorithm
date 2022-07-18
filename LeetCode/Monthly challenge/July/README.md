@@ -191,9 +191,9 @@ Sc: O(1).
 
   ** Sol:
     For each move, we will find out the next cell in which the ball will located. \
-    If it is crossing the boundary we add that to path count \
+    If it is crossing the boundary we add that to path count
 
-  ** Tc: O(mnN)
+  ** Tc: O(mnN)\
   ** Sc: O(mn)
 
 
