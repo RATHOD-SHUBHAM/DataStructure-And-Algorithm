@@ -29,7 +29,7 @@ Create 2 heap. One that maintain the min stack and one that maintain the max sta
 Tc: O(log(n))
 Sc: O(n)
 
-Same question on leetcode: 295. Find Median from Data Stream
+- Same question on leetcode: 295. Find Median from Data Stream
 
 # ----------------------------------
 3. Sort K sorted Array.
@@ -46,6 +46,10 @@ Then we keep removing the minimum value from heap and keep adding the next eleme
 
 Tc: O(nlogk): where n is the no of element in array and log k because we will have atmost k + 1 element in heap.\
 Sc: O(k): because we will have atmost k + 1 element in heap and array is being sorted in place so O(1)
+
+
+- 88. Merge Sorted Array.\
+- 23. Merge k Sorted Lists
 
 
 # ----------------------------------
