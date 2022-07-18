@@ -7,6 +7,7 @@ class Solution:
         
         @lru_cache(None)
         def no_of_path(maxMove, row, col):
+            # first check if we came out of the bounday and then check if that was our final move or not
             
             # if reached boundary
             if row < 0 or row == m or col < 0 or col == n:

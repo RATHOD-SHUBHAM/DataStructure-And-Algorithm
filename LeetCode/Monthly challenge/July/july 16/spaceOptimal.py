@@ -1,7 +1,10 @@
+# Tc: O(mnN)
+# Sc: O(mn)
+
 class Solution:
     def findPaths(self, m: int, n: int, maxMove: int, startRow: int, startColumn: int) -> int:
         MOD = (10 ** 9) + 7
-        count = 0
+        path_count = 0
         
         dp = [[0] * n for _ in range(m)]
         
@@ -13,7 +16,7 @@ class Solution:
         for _ in range(maxMove):
             
             # crete a temp each time i change my move
-            temp_dp = [[0] * n for _ in range(m)]
+            temp_dp = [[0] * n for _ in range(m)] # keep track of next postion of ball
             
             for row in range(m):
                 for col in range(n):
@@ -24,14 +27,14 @@ class Solution:
                             temp_dp[nr][nc] = (temp_dp[nr][nc] + dp[row][col]) % MOD
                         # if i move outside grid
                         else:
-                            count = (count + dp[row][col]) % MOD
+                            path_count = (path_count + dp[row][col]) % MOD
                         
                          
             # once i finished for start position
             # for next move copy the temp dp to main dp
             dp = temp_dp
             
-        return count
+        return path_count
                         
         
         
