@@ -32,6 +32,22 @@ Sc: O(n)
 Same question on leetcode: 295. Find Median from Data Stream
 
 # ----------------------------------
-4. Sort K sorted Array.
+3. Sort K sorted Array.
+
+ip: Non negative integer K and  k - sorted array of integer. \
+op: Sorted array. Which sort the array faster than O(nlogn) time.
+
+What is K-sorted?
+* A partially sorted array in which all the elements are atmost k position away from their sorted position.
+
+Sol:\
+We first create a min heap for first k elements.\
+Then we keep removing the minimum value from heap and keep adding the next element from array to the heap. \
+
+Tc: O(nlogk): where n is the no of element in array and log k because we will have atmost k + 1 element in heap.\
+Sc: O(k): because we will have atmost k + 1 element in heap and array is being sorted in place so O(1)
+
+
+# ----------------------------------
 5. Laptop Rental.
 6. Merge Sorted Array.
