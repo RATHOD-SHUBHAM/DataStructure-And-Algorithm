@@ -201,3 +201,28 @@ Sc: O(1).
 
 # --------------------------------------------------
 
+17] 629. K Inverse Pairs Array
+
+# --------------------------------------------------
+
+18] 1074. Number of Submatrices That Sum to Target
+
+# --------------------------------------------------
+
+19] 118. Pascal's Triangle \
+# Pascal's Triangle is a embodiment of DP! Use this as an example when explaining DP next time :^).
+
+*ip: A interger Number numRow.
+
+*op: first numRow of pascals triangle.
+
+*Sol:\
+Look at the patter. \
+Below Row is sum of above 2 number in a row. \ 
+So imagin what will happen if you add 0 to front and back. \ 
+Then calculated the sum.
+
+*Tc: O(numRow ^ 2) \
+*Sc: O(1) # Since the input and output generally do not count towards the space complexity.
+
+# --------------------------------------------------
