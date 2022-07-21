@@ -1,5 +1,5 @@
 # TC, SC: O(mnN)
-# Here, mm, nn refer to the number of rows and columns of the given grid respectively. NN refers to the total number of allowed moves.
+# Here, m, n refer to the number of rows and columns of the given grid respectively. NN refers to the total number of allowed moves.
 
 class Solution:
     def findPaths(self, m: int, n: int, maxMove: int, startRow: int, startColumn: int) -> int:
