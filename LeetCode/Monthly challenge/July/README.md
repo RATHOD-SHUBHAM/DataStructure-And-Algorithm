@@ -209,8 +209,8 @@ Sc: O(1).
 
 # --------------------------------------------------
 
-19] 118. Pascal's Triangle \
-# Pascal's Triangle is a embodiment of DP! Use this as an example when explaining DP next time :^).
+19] 118. Pascal's Triangle
+####### Pascal's Triangle is a embodiment of DP! Use this as an example when explaining DP next time :^).
 
 *ip: A interger Number numRow.
 
