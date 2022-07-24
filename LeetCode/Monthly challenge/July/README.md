@@ -219,8 +219,8 @@ Pascal's Triangle is a embodiment of DP! Use this as an example when explaining 
 
 *Sol:\
  Look at the patter.\
- Below Row is sum of above 2 number in a row. 
- So imagin what will happen if you add 0 to front and back.
+ Below Row is sum of above 2 number in a row.\ 
+ So imagin what will happen if you add 0 to front and back.\
  Then calculated the sum.
 
 *Tc: O(numRow ^ 2)\
@@ -232,7 +232,8 @@ Pascal's Triangle is a embodiment of DP! Use this as an example when explaining 
 
 ### Bucketing approach.
 
-ip: String S, array of string word.\ 
+ip: String S, array of string word.
+
 op: no of subsequence.
 
 Sol:\
