@@ -226,3 +226,36 @@ Then calculated the sum.
 *Sc: O(1) # Since the input and output generally do not count towards the space complexity.
 
 # --------------------------------------------------
+
+20] 792. Number of Matching Subsequences
+
+### Bucketing approach.
+
+ip: String S, array of string word. \ 
+op: no of subsequence.
+
+Sol: \
+We have to find how many word from array of word [] is matching / or can be formed from String S.
+
+We can use bucketing approach.\
+
+First : We form a dictionary of list using ( defaultdict and deque ). --> *bucketing* \
+dictionary key = will be starting letter of the word and value = will be list of words\
+```
+{
+ 'a' : ['a', 'abc' , 'aed'],
+ 'b' : [ 'bb', 'bad'],
+ 'e' : ['eod']
+}
+```
+
+Now we go through every letter in the String S:\
+check with the bukcet value.\
+if the length of the letter is 1. then we have found one patter. Increase the count of subseq.
+
+If length is not one. We take the remaining letter from the word and add it in aprropriate bucket so as to compare it with string S.
+
+# Tc: O(len(s) + len(word[i])\
+# Sc: O(1)
+
+# --------------------------------------------------
