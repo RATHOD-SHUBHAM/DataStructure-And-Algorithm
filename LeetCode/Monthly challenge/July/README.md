@@ -218,10 +218,10 @@ Pascal's Triangle is a embodiment of DP! Use this as an example when explaining 
 *op: first numRow of pascals triangle.
 
 *Sol:\
-Look at the patter.\
-Below Row is sum of above 2 number in a row.\ 
-So imagin what will happen if you add 0 to front and back.\ 
-Then calculated the sum.
+ Look at the patter.\
+ Below Row is sum of above 2 number in a row. 
+ So imagin what will happen if you add 0 to front and back.
+ Then calculated the sum.
 
 *Tc: O(numRow ^ 2)\
 *Sc: O(1) # Since the input and output generally do not count towards the space complexity.
@@ -238,7 +238,7 @@ op: no of subsequence.
 Sol:\
 We have to find how many word from array of word [] is matching / or can be formed from String S.
 
-We can use bucketing approach.\
+We can use bucketing approach.
 
 First : We form a dictionary of list using ( defaultdict and deque ). --> *bucketing*\
 dictionary key = will be starting letter of the word and value = will be list of words
