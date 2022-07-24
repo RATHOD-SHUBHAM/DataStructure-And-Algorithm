@@ -255,7 +255,7 @@ if the length of the letter is 1. then we have found one patter. Increase the co
 
 If length is not one. We take the remaining letter from the word and add it in aprropriate bucket so as to compare it with string S.
 
-# Tc: O(len(s) + len(word[i])\
-# Sc: O(1)
+*Tc: O(len(s) + len(word[i])\
+*Sc: O(1)
 
 # --------------------------------------------------
