@@ -1,0 +1,13 @@
+1D Array: 
+* len = len(array) - 1
+
+2D array:
+* m = len of row
+* n = len of column
+* len of 2D array = (m * n) - 1
+* pivot or mid idx = 
+        * row = idx // n # where n is len of column
+        * col = idx % n
+
+        so pivot_idx = left + (right - left) // 2
+        pivot_ele = matrix[pivot_idx // n][pivot_idx % n]
