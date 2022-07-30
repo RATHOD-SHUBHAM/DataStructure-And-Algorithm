@@ -1,0 +1,11 @@
+236. Lowest Common Ancestor of a Binary Tree.
+
+* The lowest common ancestor is defined between 2 nodes p and q as the lowest node in T that has both node p and q as descendants. ( where we allow a node to be descendant of itself)
+
+* lowest node t, that has p adn q as its child.
+* t itself can be one among p and q
+
+# solve using recursion
+# solv using iteration
+
+# both use the same Tc and Sc of O(n)
