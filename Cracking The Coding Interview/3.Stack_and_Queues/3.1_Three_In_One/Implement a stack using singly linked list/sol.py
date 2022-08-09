@@ -1,3 +1,7 @@
+# Tc: O(1)
+# Sc: O(n) # creating LL
+# Sc: O(1) # space complexity if we dont consider LL
+
 class LL:
     def __init__(self,val):
         self.val = val
