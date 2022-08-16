@@ -20,7 +20,7 @@ class SetOfStacks:
             print("raising exception")
 
         self.stacks = [[]] # set of several stack
-        print(len(self.stacks))
+        # print(len(self.stacks))
 
     def push(self, val):
         len_of_stack = len(self.stacks[-1])
@@ -33,16 +33,16 @@ class SetOfStacks:
         self.stacks[-1].append(val)
 
     def pop(self):
-        # if the last stack is empty
-        if len(self.stacks[-1]) == 0:
-            # if there is no stack in stacks
-            if len(self.stacks) == 1: #stacks has one stack, eg if pop is the first command
-                print("stack underflow")
-                exit(1)
-            else:
+        # check if the stacks has some stack in it
+        if len(self.stacks) == 0:
+            print("stack underflow")
+            exit(1)
+        else:
+            val = self.stacks[-1].pop()
+            # after poping check if the stack became empty
+            if len(self.stacks[-1]) == 0:
                 self.stacks.pop()
-
-        return self.stacks[-1].pop()
+            return val
 
     def display(self):
         print(self.stacks)
