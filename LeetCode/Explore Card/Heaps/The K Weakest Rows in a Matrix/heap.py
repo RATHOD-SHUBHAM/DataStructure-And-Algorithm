@@ -1,3 +1,4 @@
+# cobination of binary search and heap
 # time: O(m log nk)
 # space: O(k)
 

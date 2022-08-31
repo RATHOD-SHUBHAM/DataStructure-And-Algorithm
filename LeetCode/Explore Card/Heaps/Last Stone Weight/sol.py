@@ -20,22 +20,18 @@ class Solution:
             
             
             if stone_1 != stone_2:
-                if stone_1 > stone_2:
-                    stone_to_push = stone_1 - stone_2
+                if stone_1 < stone_2:
+                    stone = stone_1 - stone_2
+                    # print(stone)
+                    heapq.heappush(stones ,stone)
                 else:
-                    stone_to_push = stone_2 - stone_1
-                    
-                # print(stone_to_push)
-                
-                if stone_to_push != 0:
-                    stone_to_push *= -1
-                    heapq.heappush(stones , stone_to_push)
-                else:
-                    if len(stones) == 0:
-                        return 0
+                    stone = stone_2 - stone_1
+                    heapq.heappush(stones ,stone)     
             else:
-                if len(stones) == 0:
-                        return 0
+                if len(stones) == 1:
+                    return -stones[0]
+                elif len(stones) == 0:
+                    return 0
                 
         if len(stones) == 1:
             return stones[0] * -1
