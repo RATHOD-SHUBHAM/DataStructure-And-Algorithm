@@ -7,7 +7,7 @@ class Solution:
             return 0
         
         intervals.sort(key = lambda x : (x[0],x[1]))
-        # print(intervals)
+        print(intervals)
         
         # remove the largest interval to get the min number of intervals to be removed
         # hence keep track of the smallest intervals
@@ -21,6 +21,7 @@ class Solution:
             # overlapping
             if currentInterval[0] < smallInterval[1]:
                 removeIntervalCount += 1
+                # remove the largest interval
                 if currentInterval[1] < smallInterval[1]:
                     smallInterval = currentInterval
             # non overlapping    
