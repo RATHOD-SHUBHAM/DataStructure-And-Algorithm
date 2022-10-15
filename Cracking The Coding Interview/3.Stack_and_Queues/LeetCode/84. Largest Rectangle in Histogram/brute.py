@@ -6,18 +6,23 @@
 # brute force
 class Solution:
     def largestRectangleArea(self, heights: List[int]) -> int:
+        n = len(heights)
         maxArea = 0
         
         # for each block start finding max area
-        for i in range(len(heights)):
+        for i in range(n):
             # get the width
-            for j in range(i , len(heights)):
+            for j in range(i , n):
                 minHeight = inf
                 # get the min height up until now
                 for k in range(i , j+1):
                     minHeight = min(minHeight , heights[k])
-                    
-                maxArea = max(maxArea , minHeight * (j - i + 1))
                 
+                curHeight = minHeight
+                curWidth = j - i + 1
+                curArea = curHeight * curWidth
+                
+                maxArea = max(maxArea , curArea)
+        
         return maxArea
         
