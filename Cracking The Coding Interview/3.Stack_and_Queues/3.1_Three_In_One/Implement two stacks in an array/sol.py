@@ -16,7 +16,7 @@ class twoStack:
     def push1(self,num):
         # check if there is space between top1 and top2
         # -1 will check for 1 space. If it becomes equal then there is no space
-        if self.top1 < self.top2 - 1:
+        if self.top1 + 1< self.top2:
             self.top1 += 1
             self.arr[self.top1] = num
         else:
@@ -24,7 +24,7 @@ class twoStack:
             exit(1)
 
     def push2(self, num):
-        if self.top1 < self.top2 - 1:
+        if self.top1 + 1 < self.top2:
             self.top2 -= 1
             self.arr[self.top2] = num
         else:
@@ -46,7 +46,7 @@ class twoStack:
             self.top2 += 1
             return num
         else:
-            print("stack underflow")
+            print("stack overflow")
             exit(1)
 
 if __name__ == '__main__':

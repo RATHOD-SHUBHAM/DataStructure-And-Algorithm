@@ -3,43 +3,42 @@ class Node:
     def __init__(self, val):
         self.val = val
         self.next = None
-    
+
 class stack:
-    # create a head node
     def __init__(self):
         self.head = None
 
     def isEmpty(self):
         return True if self.head == None else False
 
-    # push
-    def push(self,val):
-        if self.head == None:
+    def push(self, val):
+        if self.isEmpty():
             self.head = Node(val)
         else:
             newNode = Node(val)
             newNode.next = self.head
             self.head = newNode
-
-    # pop
+    
     def pop(self):
         if self.isEmpty():
-            print("stack underflow")
+            return
         else:
             nodeTopop = self.head
             self.head = self.head.next
             nodeTopop.next = None
-            return nodeTopop.val # always return a value
+            return nodeTopop
 
     def peek(self):
         return self.head.val
-
+    
     def display(self):
-        curNode = self.head
-
-        while curNode:
-            print(curNode.val)
-            curNode = curNode.next
+        if self.isEmpty():
+            return
+        else:
+            curNode = self.head
+            while curNode:
+                print(curNode.val)
+                curNode = curNode.next
 
 
 if __name__ == '__main__':
