@@ -1,72 +1,67 @@
 class stack:
     def __init__(self, k ,n):
-        self.size = n # size of array
-        self.k = k # stack size
+        self.stackSize = k
+        self.arrSize = n
+        
+        self.curFree = 0
 
-        self.arr = [0] * self.size
-        self.top = [-1] * self.k
-        self.next = [i + 1 for i in range(self.size)]
-        self.next[self.size - 1] = -1
-
-        self.free = 0
+        self.arr = [0] * self.arrSize
+        self.top = [-1] * self.stackSize
+        self.next = [i+1 for i in range(self.arrSize)]
 
     def isFull(self):
-        if self.free == -1:
-            return True
-        else:
-            return False
+        return self.curFree == -1
 
-    def isEmpty(self, sn):
-        if self.top[sn] == -1:
-            return True
-        else:
-            return False
+    def isEmpty(self, stackNo):
+        return self.top[stackNo] == -1
 
     def push(self, val, sn):
-
         if self.isFull():
-            print("stack overflow")
+            print("stack overFlow")
             exit(1)
+        else:
+            # step 1: update the curFree pointer
+            index_to_insert = self.curFree
+            self.curFree = self.next[index_to_insert]
 
-        # step 1: Update the free pointer
-        idxToappend = self.free
-        self.free = self.next[idxToappend]
+            # step 2: insert the elemenet into array
+            self.arr[index_to_insert] = val
 
-        # step 2: insert value in array
-        self.arr[idxToappend] = val
+            # step 3: update the next array to point to previous element in stack
+            self.next[index_to_insert] = self.top[sn]
+            
+            # update the top of stack
+            self.top[sn] = index_to_insert
 
-        # update next to point to previous value
-        self.next[idxToappend] = self.top[sn]
-
-        # update the top of stack
-        self.top[sn] = idxToappend
 
     def pop(self,sn):
-
         if self.isEmpty(sn):
             print("stack underflow")
             exit(1)
+        else:
+            # step 1: get the top idx
+            top_idx = self.top[sn]
 
-        
-        # get top of stack
-        topOfstack = self.top[sn]
+            # step 2: update the top of stack
+            self.top[sn] = self.next[top_idx]
 
-        # update top of stack to previous element
-        self.top[sn] = self.next[topOfstack]
+            # step 3: update next arr
+            self.next[top_idx] = self.curFree
 
-        # update next to point to previous
-        self.next[topOfstack] = self.free
+            # step 4:  update curFree
+            self.curFree = top_idx
 
-        self.free = topOfstack
+            # step 5: return the popped array
+            return self.arr[top_idx]
 
-        return self.arr[topOfstack]
 
     def display(self, sn):
-        topOfstack = self.top[sn]
+        # step 1: get the top idx
+        top_idx = self.top[sn]
 
-        while (topOfstack != -1):
-            print(self.arr[topOfstack])
-            topOfstack = self.next[topOfstack]
+        while top_idx != -1:
+            print(self.arr[top_idx])
+            top_idx = self.next[top_idx]
 
 
 if __name__ == "__main__":

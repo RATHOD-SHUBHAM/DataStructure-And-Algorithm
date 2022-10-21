@@ -1,46 +1,40 @@
-from xmlrpc.server import SimpleXMLRPCDispatcher
-
-
 class stack:
     def __init__(self, size):
         self.n = size
-        self.arr = [0] * self.n
-
-        self.left = -1
-        self.right = self.n
+        self.arr = [None] * self.n
+        self.top1 = -1
+        self.top2 = self.n
 
     def pushOne(self,val):
-        # check if there is a free space only then insert
-        if self.left < self.right - 1:
-            self.left += 1
-            self.arr[self.left] = val
+        if self.top1 + 1 < self.top2:
+            self.top1 += 1
+            self.arr[self.top1] = val
         else:
             print("stack overflow")
             exit(1)
 
     def pushTwo(self, val):
-        if self.left < self.right - 1:
-            self.right -= 1
-            self.arr[self.right] = val
+        if self.top1 < self.top2 - 1:
+            self.top2 -= 1
+            self.arr[self.top2] = val
         else:
             print("stack overflow")
             exit(1)
 
     def popOne(self):
-        if self.left >= 0:
-            valTopop = self.arr[self.left]
-            self.left -= 1
-            return valTopop
+        if self.top1 >= 0:
+            val = self.arr[self.top1]
+            self.top1 -= 1
+            return val
         else:
-            print("stack underflow")
+            print("list underflow")
             exit(1)
 
     def popTwo(self):
-        if self.right < self.n:
-            valTopop = self.arr[self.right]
-            self.right += 1
-            return valTopop
-
+        if self.top2 < self.n:
+            val = self.arr[self.top2]
+            self.top2 += 1
+            return val
         else:
             print("stack underflow")
             exit(1)
