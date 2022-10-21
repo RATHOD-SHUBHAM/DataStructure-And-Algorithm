@@ -6,30 +6,30 @@ class MaxStack:
 
     def __init__(self):
         self.stack = []
-        self.maxStack = SortedList()
+        self.maxStack = SortedList(key = lambda x : x[1])
         self.cnt = 0
 
     def push(self, x: int) -> None:
         self.stack.append([self.cnt , x])
         # sort based on val
-        self.maxStack.add((x , self.cnt))
+        self.maxStack.add((self.cnt , x))
         self.cnt += 1
         # print(self.maxStack)
         
 
     def pop(self) -> int:
         idx , val = self.stack.pop()
-        self.maxStack.remove((val, idx))
+        self.maxStack.remove((idx, val))
         return val
 
     def top(self) -> int:
         return self.stack[-1][1]
 
     def peekMax(self) -> int:
-        return self.maxStack[-1][0]
+        return self.maxStack[-1][1]
 
     def popMax(self) -> int:
-        val , idx = self.maxStack.pop()
+        idx, val = self.maxStack.pop()
         self.stack.remove([idx, val])
         return val
 
