@@ -2,7 +2,7 @@
 Write a program to sort a stack such that smallest items are on the top. 
 You can use an additional temporary stack, but you many not copy the elements to any other data structure.
 The stack support following operation 
-(push, pop, ppek, isempty).
+(push, pop, ppek, isempty, sortStack).
 '''
 
 class SortStack:

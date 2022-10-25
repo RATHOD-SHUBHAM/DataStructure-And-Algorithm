@@ -10,6 +10,7 @@ dequeue* method returns [animal number, animal type],
 if there's no animal that can be adopted, return [-1, -1].
 
 '''
+
 from collections import deque
 from typing import List
 class AnimalShelter:
@@ -36,11 +37,16 @@ class AnimalShelter:
             return self.dequeueCat()
         
     def dequeueDog(self) -> List[int]:
-        return [-1, -1] if len(self.dog) == 0 else [self.dog.popleft() , 1]
+        if len(self.dog) == 0:
+            return [-1, -1]
+        else:
+            return [self.dog.popleft(), 1]
 
     def dequeueCat(self) -> List[int]:
-        print(self.cat)
-        return [-1,-1] if len(self.cat) == 0 else [self.cat.popleft() , 0] 
+        if len(self.cat) == 0:
+            return [-1, -1]
+        else:
+            return [self.cat.popleft(), 0] 
 
 
 
