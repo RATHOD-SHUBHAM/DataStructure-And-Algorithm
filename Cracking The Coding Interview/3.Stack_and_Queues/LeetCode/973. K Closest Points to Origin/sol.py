@@ -46,3 +46,8 @@ class Solution:
     
     def swap(self, i , j , array):
         array[i] , array[j] = array[j] , array[i]
+
+
+
+# [1,3] , [-2.2], [2,-2]
+# k = 2
