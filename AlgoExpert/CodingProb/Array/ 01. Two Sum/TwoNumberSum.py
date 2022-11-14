@@ -1,5 +1,4 @@
-# time complexity = o(n)
-# space complexity = o(n)
+# time complexity = o(n) | space complexity = o(n)
 
 def twoNumberSum(array, targetSum):
 
