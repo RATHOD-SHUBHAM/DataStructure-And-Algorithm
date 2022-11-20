@@ -14,10 +14,12 @@ def k_sum(nums, target , k):
     if not nums:
         return res
     
+    # this step is not compulsory. but will make the process fast
     avg_sum = target // k
     
     if avg_sum < nums[0] or avg_sum > nums[-1]:
         return res
+    # until here ----------------------------------------------------
     
     if k == 2:
         return two_sum(nums, target)
