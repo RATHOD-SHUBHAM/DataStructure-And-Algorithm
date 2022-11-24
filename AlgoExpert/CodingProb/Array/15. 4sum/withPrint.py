@@ -67,6 +67,18 @@ class Solution:
                 if diff in cache:
                     pair.append([diff, nums[i]])
                     print("append paior: ", pair)
+            '''
+            # all the if condition will work adn they mean the same
+            if diff in cache and ( len(pair) == 0 or nums[i] != pair[-1][1] ):
+                pair.append([diff, nums[i]])
+
+
+            or
+
+
+            if diff in cache and ( len(pair) == 0 or nums[i] != nums[i-1] ):
+                pair.append([diff, nums[i]])
+            '''
                     
             cache[nums[i]] = i
             print("cache: ",cache)
