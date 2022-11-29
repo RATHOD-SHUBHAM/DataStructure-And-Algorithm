@@ -19,6 +19,8 @@ def zigzagTraverse(array):
             # at the border I cant diagonally move down or move down
             if col == 0 or row == height:
                 goingDown = False # next number should move up
+
+                # only in the final row of col 0 we will move right else we will keep going down
                 if row == height: 
                     # move right
                     col += 1
@@ -37,9 +39,12 @@ def zigzagTraverse(array):
                 # next number should move down as i cant move up
                 goingDown = True
 
+                # only in the final col of row 0 we will move down else we will keep going left
                 if col == width:
+                    # move down
                     row += 1
                 else:
+                    # move left
                     col += 1
             else:
                 # move diagonally up
