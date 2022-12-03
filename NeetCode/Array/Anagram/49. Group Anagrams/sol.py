@@ -11,7 +11,7 @@ class Solution:
             
             # O(k)
             for c in s:
-                count[ord(c) - ord('a')] += 1 # for that particular character change the flag
+                count[ord(c) - ord('a')] += 1 # for that particular character increase the val
                 # print(count)
                 
             ans[tuple(count)].append(s)
