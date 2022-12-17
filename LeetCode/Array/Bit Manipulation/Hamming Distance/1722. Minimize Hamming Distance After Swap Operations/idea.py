@@ -1,5 +1,13 @@
 '''
 
+Note: The important point to note here is that if we have pairs like (a, b) 
+and (b, c), then we can swap characters at indices a and c. 
+Although we don't have the pair (a, c),
+we can still swap them by first swapping them with the character at index b.
+Thus, because we can swap the characters at these indices any number of times, 
+we can rearrange the characters a, b, and c into any order.
+
+
 # Combining the reachable index
 
 Because we can swap infinite times, so we can get any order.
