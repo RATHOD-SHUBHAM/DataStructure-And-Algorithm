@@ -1,3 +1,5 @@
+# writing in the same function without a seperate call.
+
 def powerset(array):
     subsets = []
 
