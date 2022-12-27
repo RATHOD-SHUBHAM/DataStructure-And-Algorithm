@@ -1,3 +1,4 @@
+# top down approach
 def staircaseTraversal(height, maxSteps):
     # base case
     if height < 0:

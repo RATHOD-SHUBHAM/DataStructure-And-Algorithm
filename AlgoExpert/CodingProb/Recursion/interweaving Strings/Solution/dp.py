@@ -11,30 +11,22 @@ def interweavingStrings(one, two, three):
     
     # Row = 0
     for j in range(1, len(two) + 1):
-        row = 0
-        col = j - 1 # -1 for index in string 2
+
+        k = 0 + j - 1 # -1 for index at string 
         
-        k = row + col
-        
-        # check if the current element match
-        if two[col] == three[k]:
-            # check the previous substring
-            if dp[0][j - 1] == True:
+        # check if the current element match and check the previous substring
+        if two[j-1] == three[k] and dp[0][j - 1] == True:
                 dp[0][j] = True
 
 # ----------------------------------------------------------------
                 
     # col = 0
     for i in range(1, len(one) + 1):
-        row = i - 1 # for index in string 1
-        col = 0
 
-        k = row + col
+        k = i + 0 - 1 
 
-        # compare the current values
-        if one[row] == three[k]:
-            # check if the previous substring are true
-            if dp[i-1][0] == True:
+        # compare the current values and check if the previous substring are true
+        if one[i - 1] == three[k] and dp[i-1][0] == True:
                 dp[i][0] = True
 
 # ----------------------------------------------------------------
@@ -47,16 +39,12 @@ def interweavingStrings(one, two, three):
 
             k = i + j - 1 # -1 to get index from string three
             
-            # check if string 1 match with string 3
-            if one[i-1] == three[k]:
-                # check the substring match
-                if dp[i-1][j] == True:
+            # check if string 1 match with string 3 check the substring match
+            if one[i-1] == three[k] and  dp[i-1][j] == True:
                     chose_1 = True
                     
-            # check if string 2 match with string 3
-            if two[j-1] == three[k]:
-                # check if the susbtring match
-                if dp[i][j-1] == True:
+            # check if string 2 match with string 3 check if the susbtring match
+            if two[j-1] == three[k] and dp[i][j-1] == True:
                     chose_2 = True
 
 
