@@ -1,4 +1,5 @@
 # tabulation
+# Tc and Sc: O(mn)
 class Solution:
     def minDistance(self, word1: str, word2: str) -> int:
         len_w1 = len(word1)
