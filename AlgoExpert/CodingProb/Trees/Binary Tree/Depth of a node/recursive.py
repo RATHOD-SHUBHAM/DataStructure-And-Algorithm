@@ -26,6 +26,7 @@ f(left) = None				f(Right) = None
 
 '''
 
+# Tc andSc: O(n) | O(h)
 def nodeDepths(root):
     depth = 0
     return dfs(root, depth)
