@@ -38,6 +38,7 @@ def lineThroughPoints(points):
 			slopes[slopeKey] += 1
 			print("slopes: ",slopes)
 		
+		# get the maximum value from current slopes and compare with exising max_value
 		max_points_on_the_line = max(max_points_on_the_line , max(slopes.values(), default = 0))
 		print("max_points_on_the_line : ",max_points_on_the_line)
 		

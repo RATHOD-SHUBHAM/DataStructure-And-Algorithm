@@ -22,8 +22,8 @@ class Solution:
             return self.backtrack(i - 1 , j - 1, word1, word2)
             
         return 1 + min(
-            self.backtrack(i , j - 1, word1, word2),
-            self.backtrack(i - 1 , j , word1, word2),
-            self.backtrack(i - 1 , j - 1, word1, word2)
+            self.backtrack(i , j - 1, word1, word2), # insert
+            self.backtrack(i - 1 , j , word1, word2), # delete
+            self.backtrack(i - 1 , j - 1, word1, word2) # replace
         )
             
