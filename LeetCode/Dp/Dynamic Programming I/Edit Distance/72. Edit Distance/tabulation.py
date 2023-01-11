@@ -1,4 +1,4 @@
-# tabulation
+# tabulation: https://www.youtube.com/watch?v=XYi2-LPrwm4&t=789s&ab_channel=NeetCode
 # Tc and Sc: O(mn)
 class Solution:
     def minDistance(self, word1: str, word2: str) -> int:
