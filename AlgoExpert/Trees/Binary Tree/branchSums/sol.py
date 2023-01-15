@@ -9,21 +9,27 @@ class BinaryTree:
 
 
 def branchSums(root):
-	result = [] # create a list to store sum
-    calculateSum(root,0,result) # recursively call the element from each node
-	
-	return result
+    if not root:
+        return
+        
+    curSum = 0
+    branchSum = []
+    traverseTree(root, curSum, branchSum)
+    return branchSum
 
-def calculateSum(node,currentSum,result):
-	if node is None: # if it is a unbalanced binary tree
-		return
-	
-	
-	currentSum += node.value
-	
-	if node.left is None and node.right is None:
-		result.append(currentSum)
-		return
-	
-	calculateSum(node.left,currentSum,result)
-	calculateSum(node.right,currentSum,result)
+def traverseTree(root, curSum, branchSum):
+    # get the sum including the current node
+    newSum = curSum + root.value
+
+    # check if this is the leaf node
+    if not root.left and not root.right:
+        branchSum.append(newSum)
+        return 
+
+    if root.left:
+        traverseTree(root.left, newSum, branchSum)
+
+    if root.right:
+        traverseTree(root.right, newSum, branchSum)
+
+    return
