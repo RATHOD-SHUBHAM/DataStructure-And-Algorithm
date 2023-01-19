@@ -12,10 +12,10 @@ class BST:
         self.right = None
 
     def insert(self, value):
-        # Write your code here.
-        # Do not edit the return statement of this method.
+		# Write your code here.
+		# Do not edit the return statement of this method.
 		curNode = self
-		
+
 		while True:
 			if value < curNode.value:
 				if not curNode.left:
@@ -31,7 +31,7 @@ class BST:
 				else:
 					curNode = curNode.right
 					
-        return self
+		return self
 
     def contains(self, value):
         # Write your code here.
@@ -72,33 +72,36 @@ class BST:
 					
 				# case 2: when there is only one child
 				# case a: when it has no parent
-				elif parentNode is None:
-					# order is important
-					if curNode.left:
-						curNode.value = curNode.left.value
-						curNode.right = curNode.left.right
-						curNode.left = curNode.left.left
-						
-					elif curNode.right:
-						curNode.value = curNode.right.value
-						curNode.left = curNode.right.left
-						curNode.right = curNode.right.right
-					else: #if this is a single node
-						pass
-				# case 2: when there is only one child
-				# case b: when it a node in between
-				elif parentNode.left == curNode:
-					parentNode.left = curNode.left if curNode.left else curNode.right
-				elif parentNode.right == curNode:
-					parentNode.right = curNode.left if curNode.left else curNode.right
-				break
-	
-        return self
-	
-	def getMin(self):
-		curNode = self
-		
-		while curNode.left:
-			if curNode.left:
-				curNode = curNode.left
-		return curNode.value
+				else: # found the node to be deleted
+                # check if the node has 2 node
+                if curNode.left and curNode.right:
+                    curNode.value = self.getMin(curNode.right)
+                    curNode.right.remove(curNode.value, curNode)
+                else: # there is only one node
+                    if not parentNode:
+                        if curNode.left:
+                            curNode.value = curNode.left.value
+                            curNode.right = curNode.left.right
+                            curNode.left = curNode.left.left
+                        elif curNode.right:
+                            curNode.value = curNode.right.value
+                            curNode.left = curNode.right.left
+                            curNode.right = curNode.right.right
+                        else:
+                            pass
+                    else: # there is parent node
+                        if parentNode.left == curNode:
+                            parentNode.left = curNode.left if curNode.left else curNode.right
+                        elif parentNode.right == curNode:
+                            parentNode.right = curNode.right if curNode.right else curNode.left
+
+                break 
+
+
+    def getMin(self, root):
+        node = root
+
+        while node.left:
+            node = node.left
+
+        return node.value
