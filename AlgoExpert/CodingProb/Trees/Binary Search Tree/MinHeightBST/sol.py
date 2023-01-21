@@ -1,21 +1,24 @@
-# Time and Space = O(n)
-
 def minHeightBst(array):
-    return constructBST(array,0,len(array)-1)
+    n = len(array)
+    
+    start = 0
+    end = n - 1
 
-def constructBST(array,left,right):
-	if left > right:
-		return
-	
-	mid = left + (right - left)//2
-	
-	tree = BST(array[mid]) # create a node
-	
-	tree.left = constructBST(array,left,mid - 1)
-	tree.right = constructBST(array,mid + 1,right)
-	
-	return tree
+    return constructBST(array, start, end)
 
+def constructBST(array, start, end):
+    if start > end:
+        return
+
+    mid = start + (end - start) // 2
+    mid_node = array[mid]
+
+    root = BST(mid_node)
+
+    root.left = constructBST(array, start, mid - 1)
+    root.right = constructBST(array, mid + 1, end)
+
+    return root
 
 class BST:
     def __init__(self, value):

@@ -1,3 +1,4 @@
+# brute force
 # Time and Space = O(n)
 # This is an input class. Do not edit.
 class BST:

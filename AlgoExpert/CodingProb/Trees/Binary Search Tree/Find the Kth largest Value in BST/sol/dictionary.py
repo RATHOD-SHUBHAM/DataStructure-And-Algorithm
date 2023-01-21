@@ -1,4 +1,4 @@
-# Time and space = O(n)
+# Time and space = O(h + k) and O(h)
 # This is an input class. Do not edit.
 class BST:
     def __init__(self, value, left=None, right=None):
@@ -26,5 +26,3 @@ def reversedInorder(tree,k,dic):
 		dic["no_of_nodes_visited"] = dic["no_of_nodes_visited"]+1
 		dic["last_visited"] = tree.value
 		reversedInorder(tree.left, k ,dic)
-		
-	

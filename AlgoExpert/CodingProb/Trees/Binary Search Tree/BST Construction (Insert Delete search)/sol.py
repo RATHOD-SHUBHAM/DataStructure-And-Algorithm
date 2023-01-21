@@ -80,7 +80,9 @@ class BST:
                 else: # there is only one node
                     if not parentNode:
                         if curNode.left:
+							# here we change only the value
                             curNode.value = curNode.left.value
+							# here we change the node
                             curNode.right = curNode.left.right
                             curNode.left = curNode.left.left
                         elif curNode.right:

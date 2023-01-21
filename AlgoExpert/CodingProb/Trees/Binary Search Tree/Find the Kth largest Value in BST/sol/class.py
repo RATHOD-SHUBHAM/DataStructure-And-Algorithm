@@ -1,4 +1,4 @@
-# Time and space = O(n)
+# Time and space = O(h + k) and O(h)
 # This is an input class. Do not edit.
 class BST:
     def __init__(self, value, left=None, right=None):
