@@ -21,14 +21,14 @@ def validateThreeNodes(nodeOne, nodeTwo, nodeThree):
     
 	return False
 
-def isDescendant(child,parent):
-	while parent and parent.value != child.value:
-		if child.value < parent.value:
-			parent = parent.left
-		else:
-			parent = parent.right
-			
-	if not parent or parent.value != child.value:
-		return False
-	else:
-		return True
+def isDescendant(child, parent):
+    while parent and child.value != parent.value:
+        if child.value < parent.value:
+            parent = parent.left
+        else:
+            parent = parent.right
+
+    if not parent:
+        return False
+    else:
+        return True

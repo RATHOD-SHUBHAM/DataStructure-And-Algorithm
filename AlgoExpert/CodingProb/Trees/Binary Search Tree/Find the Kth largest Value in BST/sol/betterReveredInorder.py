@@ -1,5 +1,4 @@
-# time and space = O(n)
-
+# Tc : O(h + k) | Sc: O(h)
 # This is an input class. Do not edit.
 class BST:
     def __init__(self, value, left=None, right=None):
@@ -10,11 +9,11 @@ class BST:
 # REVERSED INORDER
 def findKthLargestValueInBst(tree, k):
     # Write your code here.
-    reversed_inorder = reversedInOrder(tree)
+    reversed_inorder = reversedInOrder(tree, k)
     print("reversed_inorder : ",reversed_inorder)
-    return reversed_inorder[ k - 1]
+    return reversed_inorder[- 1]
 
-def reversedInOrder(root):
+def reversedInOrder(root , k):
     op = []
     stack = []
 
@@ -26,8 +25,12 @@ def reversedInOrder(root):
             node = node.right
 
         curNode = stack.pop()
-        op.append(curNode.value)
-        node = curNode.left
+
+        # just check for K value
+        if len(op) < k:
+            op.append(curNode.value)
+            node = curNode.left
+        else:
+            break
 
     return op
-	

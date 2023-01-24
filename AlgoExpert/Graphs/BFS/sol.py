@@ -16,13 +16,15 @@ class Node:
 	
 	# only add code here
     def breadthFirstSearch(self, array):
-        q = [self]
-		
-		while q:
-			curNode = q.pop(0) # pop left
-			array.append(curNode.name)
-			
-			for child in curNode.children:
-				q.append(child)
-				
-		return array
+        root = self
+
+        queue = [root]
+
+        while queue:
+            node = queue.pop(0)
+            array.append(node.name)
+
+            for child in node.children:
+                queue.append(child)
+
+        return array
