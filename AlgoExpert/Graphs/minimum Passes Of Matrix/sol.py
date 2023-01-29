@@ -1,70 +1,101 @@
-# Time  = O(n) or O(wh)
-# space = O(n) or (wh)
-
-#eg: at first pass -- all the neighbours of positive element should turn positive
+# Tc and Sc: O(mn)
 def minimumPassesOfMatrix(matrix):
-	passes = countPasses(matrix)
-	# in the finall pass ill have no more elements to convert but ill still have value in queue which will increase the pass number by 1
-	return passes -1 if negativeMatrix(matrix) else -1
+    no_of_passes = countPasses(matrix)
+    # givens the min_no_passes to convert the negative numbers beside the positive numbers
+    print("no_of_passes : ", no_of_passes)
+    
+    anyNegative = checkNegative(matrix)
 
-# check if any cell cant be changed to positive
-def negativeMatrix(matrix):
-	for row in range(len(matrix)):
-		for col in range(len(matrix[row])):
-			if matrix[row][col] < 0:
-				return False
-	return True
+    # check if there are neative number still remaining
+    if anyNegative:
+        return -1
+    else:
+        # -1 : because we count the initial positive number as well, so exclude that
+        return no_of_passes - 1
+
 
 def countPasses(matrix):
-	# count the no of poitive cell in each pass and add it to queue
-	queue = positiveMatrix(matrix)
-	
-	passes = 0
-	
-	while len(queue) > 0:
-		print("q - ",queue)
-		curQueueLen = len(queue) # act as a counter
-		
-		while curQueueLen > 0:
-			row , col = queue.pop(0)
-			
-			neighbours = getNeighbour(row,col,matrix)
-			
-			# check if there is a negative value - convert it to positive and add to queue
-			for neighbor in neighbours:
-				curRow, curCol = neighbor
-				
-				if matrix[curRow][curCol] < 0:
-					matrix[curRow][curCol] *= -1
-					queue.append(neighbor)
-				
-			curQueueLen -= 1
-		
-		passes += 1
-		print("passes: ",passes)
-		
-	return passes
+    # get all the positive numbers
+    queue = getPositive(matrix)
+    # print("queue: ", queue)
 
-def positiveMatrix(matrix):
-	positiveCell = []
-	
-	for i in range(len(matrix)):
-		for j in range(len(matrix[0])):
-			if matrix[i][j] > 0:
-				positiveCell.append([i,j])
-				
-	return positiveCell
+    passes = 0
+    
+    # while there are element in queue
+    while queue:
+        # initial len will help us loop only for specific count ie initial count
+        queue_len = len(queue)
+        print("queue: ", queue)
 
-def getNeighbour(row,col,matrix):
-	neighbours = []
-	
-	if row > 0:
-		neighbours.append([row-1,col])
-	if row < len(matrix) - 1:
-		neighbours.append([row + 1,col])
-	if col < len(matrix[row]) - 1:
-		neighbours.append([row,col+1])
-	if col > 0:
-		neighbours.append([row,col-1])
-	
-	return neighbours
+        while queue_len > 0:
+            row , col = queue.pop(0) # pop the positive number
+                
+            # explore the neighbor
+            adj_nei = getAdjacentNeighbor(row, col, matrix)
+
+            for nei in adj_nei:
+                nei_row, nei_col = nei
+
+                # if the neighbor is negative convert to positive
+                if matrix[nei_row][nei_col] < 0:
+                    matrix[nei_row][nei_col] *= -1
+                    queue.append([nei_row, nei_col])
+                    
+                # if neigbor is zero then we cant change anything
+                # if the neigbor is positive then they have been previously explored
+                elif matrix[nei_row][nei_col] >= 0:
+                    continue
+
+            # since the node is explored - reduce the count
+            queue_len -= 1
+
+        # once the queue len becomes 0, ie will be one pass , where all the negative number are converted to positive
+        passes += 1
+
+    return passes
+
+
+
+def getPositive(matrix):
+    positive_number_idx = []
+
+    row_len = len(matrix)
+    col_len = len(matrix[0])
+
+    for row in range(row_len):
+        for col in range(col_len):
+            if matrix[row][col] > 0:
+                positive_number_idx.append([row, col])
+
+    return positive_number_idx
+
+
+def getAdjacentNeighbor(row, col, matrix):
+    adjNeighbor = []
+
+    # up
+    if row > 0:
+        adjNeighbor.append([row - 1 , col])
+    # down
+    if row < len(matrix) - 1:
+        adjNeighbor.append([row + 1 , col])
+
+    # left
+    if col > 0:
+        adjNeighbor.append([row , col - 1])
+    # right
+    if col < len(matrix[0]) - 1:
+        adjNeighbor.append([row , col + 1])
+
+    return adjNeighbor
+
+def checkNegative(matrix):
+    row_len = len(matrix)
+    col_len = len(matrix[0])
+
+    for row in range(row_len):
+        for col in range(col_len):
+            if matrix[row][col] < 0:
+                return True
+
+    return False
