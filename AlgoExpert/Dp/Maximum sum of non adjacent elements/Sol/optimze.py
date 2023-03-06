@@ -17,7 +17,10 @@ def maxSubsetSumNoAdjacent(array):
 
     for i in range(2, n):
         # max value till adjacent node , or max value + curr val of non adj node
-        curVal = max(adj_val , non_adj_val + array[i])
+        take = non_adj_val + array[i]
+        dontTake = adj_val
+        curVal = max(take , dontTake)
+        
         # for the next idx - curVal will be adj_val
         non_adj_val = adj_val
         adj_val = curVal

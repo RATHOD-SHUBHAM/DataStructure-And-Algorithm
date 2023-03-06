@@ -1,27 +1,24 @@
-# https://leetcode.com/problems/house-robber/discuss/1753812/Maximum-Sum-of-Non-Adjacent-Elements-or-O(1)
+# Tc: O(n^2) | Sc: O(n^2)
+class Solution:
+    def rob(self, nums: List[int]) -> int:
+        n = len(nums)
+        return self.recursion(n - 1, nums)
+        
+        
+    def recursion(self, idx, nums):
+        # base case
+        if idx < 0:
+            return 0
+        
+        if idx == 0:
+            return nums[0]
+        
+        pick = nums[idx] + self.recursion(idx - 2, nums)
+        dontPick = 0 + self.recursion(idx - 1, nums)
+        
+        return max(pick, dontPick)
 
-# Tc and Sc : O(n)
-# Brute Force
-def maxSubsetSumNoAdjacent(array):
-    # base case
-    if len(array) == 0:
-        return 0
 
-    if len(array) == 1:
-        return array[0]
 
-    # code
-    n = len(array)
-
-    # store all the max value up until current idx i
-    dp = [None] * n
-    dp[0] = array[0]
-    dp[1] = max(array[0], array[1])
-
-    for i in range(2, n):
-        # max value till adjacent node , or max value + curr val of non adj node
-        dp[i] = max(dp[i-1] , dp[i-2] + array[i])
-
-    return dp[-1]
-	
-	
+# https://leetcode.com/discuss/interview-question/702177/apple-phone-maximum-sum-of-non-adjacent-elements
+# https://leetcode.com/problems/house-robber/
