@@ -61,7 +61,7 @@ def maxSumIncreasingSubsequence(array):
 
     pointerToSubsequence = [None] * n 
 
-
+    # here we just dont need longest increasing subsequence, we need max sum longest increasing subsequence
     for curIdx in range(1 , n):
         for prevIdx in range(curIdx):
             if array[prevIdx] < array[curIdx] and  array[curIdx] + dp[prevIdx] > dp[curIdx]:
