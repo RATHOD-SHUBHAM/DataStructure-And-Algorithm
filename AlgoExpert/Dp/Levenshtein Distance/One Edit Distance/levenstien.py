@@ -1,6 +1,7 @@
 # Tc :O(n) 
 # Sc :O(n) : string are immutable in python, hence they take extra space
 class Solution:
+    # Check if s can be converted to t
     def isOneEditDistance(self, s: str, t: str) -> bool:
         len_s = len(s)
         len_t = len(t)

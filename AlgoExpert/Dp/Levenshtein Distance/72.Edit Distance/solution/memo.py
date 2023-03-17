@@ -14,10 +14,10 @@ class Solution:
     
     def getMinimumDistance(self, idx1, word1, idx2, word2, memo):
         # base case
-        if idx1 == 0:
+        if idx1 < 0:
             return idx2 + 1 # + 1 because the index is 0indexed value
         
-        if idx2 == 0:
+        if idx2 < 0:
             return idx1 + 1
         
         if memo[idx1][idx2] != None:
