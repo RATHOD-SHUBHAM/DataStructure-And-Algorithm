@@ -2,30 +2,31 @@
 def maxSumIncreasingSubsequence(array):
     n = len(array)
 
-    dp = [num for num in array]
-
-    pointerToSubsequence = [None] * n 
-
+    dp = [1 for _ in range(n)]
+    hash_list = [None for _ in range(n)]
 
     for curIdx in range(1 , n):
         for prevIdx in range(curIdx):
-            if array[prevIdx] < array[curIdx] and  array[curIdx] + dp[prevIdx] > dp[curIdx]:
-                dp[curIdx] = array[curIdx] + dp[prevIdx]
-                pointerToSubsequence[curIdx] = prevIdx
+            dontTake = 0 + dp[curIdx]
+            dp[curIdx] = dontTake
 
-    print("dp: ", dp)
-    maxIndex = dp.index(max(dp))
-    return buildSubsequence(array, pointerToSubsequence, maxIndex)
+            if array[curIdx] > array[prevIdx]:
+                take = 1 + dp[prevIdx]
+                dp[curIdx] = max(dp[curIdx] , take)
+                hash_list[curIdx] = prevIdx
 
-# build using the hash pointer
-def buildSubsequence(array, pointerToSubsequence, curIndex):
-    subseq = []
+    maxIdx = dp.index(max(dp))
+    return buildSequence(array, dp, maxIdx, hash_list)
+
+def buildSequence(array, dp, curIdx, hash_list):
+    subsequence = []
     total = 0
 
-    while curIndex is not None:
-        total += array[curIndex]
-        subseq.append(array[curIndex])
-        curIndex = pointerToSubsequence[curIndex]
+    while curIdx is not None:
+        total += array[curIdx]
+        subsequence.append(array[curIdx])
 
-    return (total, subseq[::-1])
+        curIdx = hash_list[curIdx]
+
+    return [total, subsequence[::-1]]
         
