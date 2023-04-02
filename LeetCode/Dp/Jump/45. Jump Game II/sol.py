@@ -11,7 +11,7 @@ class Solution:
             #farthest distance
             farthestJump = max(farthestJump , curPos + nums[curPos])
             
-            
+            # check if the current jump is over
             if curPos == goalPos:
                 jumps += 1
                 goalPos = farthestJump
