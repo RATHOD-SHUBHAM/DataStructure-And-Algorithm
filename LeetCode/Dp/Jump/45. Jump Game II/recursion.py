@@ -19,3 +19,4 @@ class Solution:
             min_dist = min(min_dist, dist)
         
         return min_dist
+     
