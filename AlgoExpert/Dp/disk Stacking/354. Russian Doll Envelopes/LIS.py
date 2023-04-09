@@ -1,47 +1,44 @@
-'''
-First sort width in increasing order : so here we know which envelope will fit in upcoming envelope
-
-Catch is we want only strictly increasing
-
-so, second sort the height in decreasing order. so that larger number will come in front and it wont fit in upcoming envelope
-
-Eg. 23 , 25, 26 -> they have same width. now sorting the height based on decreasing height
-
-26 , 25 ,23 . see now we know 26 wont fit in 25 and 23.
-
-https://leetcode.com/problems/russian-doll-envelopes/discuss/1775970/Longest-Increasing-SubsequenceLIS-or-Python-or-2-Solution
-'''
+# sort + LIS
 class Solution:
     def maxEnvelopes(self, envelopes: List[List[int]]) -> int:
-        envelopes.sort(key = lambda x : (x[0], -x[1])) # first sort the first index. if there is a conflict. sort the second index
-        print(envelopes)
+        n = len(envelopes)
         
-        lis = []
+        # sort the envelope if there is a conflict sort height in decreasing order
+        envelopes.sort(key = lambda x:(x[0], -x[1]))
+        # print(envelopes)
         
-        for env in envelopes:
-            _,h = env
-            left = self.binarySearch(lis,h)
+        
+        # perform LIS on height - since width is already sorted
+        envelope = [x[1] for x in envelopes]
+        # print(envelope)
+        
+        def LIS(left, right, target):
+            nonlocal res
             
-            if len(lis) == left:
-                lis.append(h)
-            else:
-                lis[left] = h
-        
-        return len(lis)
-    
-    def binarySearch(self,lis,h):
-        left = 0
-        right = len(lis) - 1
-        
-        while left <= right:
+            # base case
+            if left == right:
+                return left
+            
             mid = left + (right - left) // 2
             
-            if lis[mid] == h:
+            if res[mid] == target:
                 return mid
-            elif lis[mid] < h:
-                left = mid + 1
+            elif res[mid] < target:
+                return LIS(mid + 1, right , target)
             else:
-                right = mid - 1
-        return left
+                return LIS(left , mid , target)
         
-                
+        # store the LIS
+        res = []
+        
+        for env in envelope:
+            if not res or res[-1] < env:
+                res.append(env)
+                continue
+            
+            idx = LIS(0 , len(res) - 1, env)
+            
+            res[idx] = env
+            
+        # print(res)
+        return len(res)

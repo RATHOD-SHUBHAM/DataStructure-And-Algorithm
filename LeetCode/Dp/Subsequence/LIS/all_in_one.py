@@ -136,7 +136,7 @@ class Solution:
                 return l
 
             # Find the mid pointer
-            m = (r - l) // 2 + l
+            m = l + (r - l) // 2
             # print("mid: ", m)
 
             # If the number at the mid pointer is equal to the target, we have found a number that is equal to the target

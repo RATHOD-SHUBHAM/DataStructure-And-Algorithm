@@ -1,5 +1,4 @@
-# Brute Force
-
+# Tc: O(n^2) | O(n)
 class Solution:
     def maxEnvelopes(self, envelopes: List[List[int]]) -> int:
         n = len(envelopes)
@@ -21,4 +20,3 @@ class Solution:
                         stack[i] = 1 + stack[j]
                         
         return max(stack)
-                
