@@ -2,7 +2,6 @@
 
 
 354. Russian Doll Envelopes
-Hard
 
 
 You are given a 2D array of integers envelopes where envelopes[i] = [wi, hi] represents the width and the height of an envelope.
