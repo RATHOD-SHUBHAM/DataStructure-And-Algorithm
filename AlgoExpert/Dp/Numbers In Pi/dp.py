@@ -13,8 +13,9 @@ def numbersInPi(pi, numbers):
             # grab the values in numbers
             prefix = pi[i : j+1]
 
+            # check if this value is present
             if prefix in number:
-                # add a space and check
+                # get the number of space from the next value
                 get_space = 1 + dp[j + 1]
     
                 dp[i] = min(dp[i] , get_space)
