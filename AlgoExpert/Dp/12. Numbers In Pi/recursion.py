@@ -1,3 +1,5 @@
+# pallindrominc partition 
+
 import math
 def numbersInPi(pi, numbers):
     start_idx = 0
