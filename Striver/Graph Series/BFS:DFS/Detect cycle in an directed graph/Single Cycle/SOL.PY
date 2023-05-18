@@ -12,7 +12,7 @@ def hasSingleCycle(array):
     while no_of_nodes_visited < total_no_of_nodes:
         # base case
         # if before visiting all node we return to startNode. then return False
-        if no_of_nodes_visited > 0 and no_of_nodes_visited < total_no_of_nodes and curNode == startNode:
+        if 0 < no_of_nodes_visited < total_no_of_nodes and curNode == startNode:
             return False
 
         if visited[curNode] == True:
