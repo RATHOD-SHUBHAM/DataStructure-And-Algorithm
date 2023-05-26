@@ -44,6 +44,7 @@ class Solution:
 
 
 if __name__ == '__main__':
-    ip = [[], [], [3], [1], [0,1], [0,2]]
+    # ip = [[], [], [3], [1], [0,1], [0,2]]
+    ip = [[], [3], [3], [], [0,1], [0,2]]
     obj = Solution()
     print(obj.topoSort(ip))
