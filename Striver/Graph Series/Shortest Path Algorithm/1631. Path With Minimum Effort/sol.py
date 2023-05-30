@@ -1,3 +1,6 @@
+# Tc: O(VlogE) -> O((m*n)log(m*n))
+# Sc: O(M * n)
+
 import heapq
 import math
 
