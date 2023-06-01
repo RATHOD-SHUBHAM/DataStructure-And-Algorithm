@@ -49,6 +49,4 @@ Constraints:
 0 ≤ S < V
 
 
-
-
 '''
