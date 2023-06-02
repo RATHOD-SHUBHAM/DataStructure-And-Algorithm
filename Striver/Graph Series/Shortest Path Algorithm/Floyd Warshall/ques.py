@@ -19,7 +19,7 @@ Input: matrix = {{0,1,43},{1,0,6},{-1,-1,0}}
 Output: {{0,1,7},{1,0,6},{-1,-1,0}}
 
 Explanation: We can reach 2 from 0 as 0->1->2
-and the cost will be 1+6=7 which is less than 
+and the cost will be 1+6=7 which is less than  
 43.
 Your Task:
 You don't need to read, return or print anything. Your task is to complete the function shortest_distance() which takes the matrix as input parameter and modifies the distances for every pair in-place.
