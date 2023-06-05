@@ -1,4 +1,5 @@
 # with the minSpanning tree edges
+# Tc: E log E | Sc: O(E) 
 
 import heapq
 from collections import defaultdict
