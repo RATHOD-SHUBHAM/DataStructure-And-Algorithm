@@ -5,6 +5,8 @@
 # this 4 node is nothing but the nodes that can be removed
 # No_of_stones_that_can_be_removed = Total_stones + Connected Component
 
+
+# pattern is 2D Grid
 import math
 class Disjoint:
     def __init__(self, n):
