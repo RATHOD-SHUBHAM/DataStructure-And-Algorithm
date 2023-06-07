@@ -50,7 +50,7 @@ class Solution:
                 
                 edges.append((wt, u, v))
                 
-        # Sorting the weights
+        # Step1 : Sorting the weights
         edges.sort(key = lambda x : x[0])
         
         # print(edges)
