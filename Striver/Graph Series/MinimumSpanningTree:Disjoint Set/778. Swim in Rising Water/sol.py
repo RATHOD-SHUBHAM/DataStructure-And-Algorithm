@@ -50,7 +50,7 @@ class Solution:
         for i in range(n):
             for j in range(n):
                 depth.append((i,j))
-        depth.sort()
+#         depth.sort()
         # print(depth)
 
         positions = sorted(depth, key = lambda x : grid[x[0]][x[1]] ) # grid[i][j] -> i = x[0], j = x[1]
