@@ -47,7 +47,8 @@ class Solution:
                 cur_effort = abs(parent_effort - child_effort)
                 
                 # get the max effort for the route
-                max_effort = max(distance[row][col] , cur_effort)
+                max_effort = max(effort , cur_effort)
+                # max_effort = max(distance[row][col] , cur_effort) # we can also get previous effort from here
                 
                 # condition check
                 if max_effort < distance[child_row][child_col]:
