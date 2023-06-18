@@ -54,3 +54,7 @@ class Solution:
                 if max_effort < distance[child_row][child_col]:
                     distance[child_row][child_col] = max_effort
                     heapq.heappush(minHeap , (max_effort , (child_row , child_col) ) )             
+
+        # when the minHeap will pop the last cell, (m-1, n-1)cell, then it will have the shortest path
+        # so instead of returning in the end, we can return once we hit the (m-1, n-1) cell
+        # return distance[m-1][n-1]
