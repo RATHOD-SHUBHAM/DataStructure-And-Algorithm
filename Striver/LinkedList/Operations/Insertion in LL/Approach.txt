@@ -1,0 +1,40 @@
+Given a Linked List, we can insert a new node in the given Linked List at the following positions: 
+
+    1. At the front of the linked list.
+    2. After a given node. 
+    3. At the end of the linked list.
+
+# --------------------------------------------------------------------------------------------------------------------
+
+# Task 1: Instert a Node at the Front/Beginning of Linked List
+
+    1. Create a new_node and attach it to the Head of the LL.
+    2. Remove the Head from the previous node.
+    3. Make the new_node as the new Head of the LL.
+
+Tc: Sc : O(1)
+
+# --------------------------------------------------------------------------------------------------------------------
+
+# Task 2: Insert a Node after a given Node in LL
+
+    1. Check if the given node exists.
+    2. If the given node exists:
+        i. Create a new_node.
+        ii. Make the new_node's next pointer to point to pren_node's next node.
+        iii Change the next pointer of the prev_node to point to new_node.
+
+Tc: Sc : O(1)
+
+# --------------------------------------------------------------------------------------------------------------------
+
+# Task 3: Insert a Node at the end of LL:
+
+    1. Create a new_node.
+    2. If the Linked List is empty, then make the new_node as head.
+    3. Go to the last node of the Linked List:
+        1. Make the last node's next pointer point to new_node.
+        
+Tc: O(n) , Sc : O(1)
+
+# --------------------------------------------------------------------------------------------------------------------
