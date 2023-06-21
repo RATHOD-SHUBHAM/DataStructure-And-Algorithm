@@ -68,6 +68,7 @@ class Solution:
                 # increase the child count
                 child += 1
 
+        # Parent articulation check -------------------
         if parent == -1 and child > 1:
             articulation_point[node] = 1
                 
