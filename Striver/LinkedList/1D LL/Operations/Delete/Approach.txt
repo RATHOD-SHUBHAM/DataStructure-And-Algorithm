@@ -24,4 +24,29 @@ You can delete the link list by following 3 methods:
     3. Make the second last node's next point to None.
     4. Delete the last node
 
+# --------------------------------------------------------------------------------------------------
+
+# 3. Delete Node with a Given Key
+
+    1. check if the curNode has the data
+        i. if the curNode is a Head Node, then move HeadNode to the front.
+        # Else: Removal of link
+        ii. Make the prevNode's next pointer point to current node's next pointer. 
+    
+    2. If curNode doesnot have data:
+        i. Keep track of previous Node and keep moving forward till you find the node with the given key.
+
+# --------------------------------------------------------------------------------------------------
+
+# 4. Delete a Linked List node at a given position
+
+    1. Check if the position is 0. ie head node to be deletede.
+        # Move the head to next node
+    
+    2. Iterate to the position:
+        i. Make the prev's next pointer point to curNode's next pointer.
+        ii. Delete the current Node
+
+        iii. If the Node is not found. return
+            # when the iteration passes the position.
 
