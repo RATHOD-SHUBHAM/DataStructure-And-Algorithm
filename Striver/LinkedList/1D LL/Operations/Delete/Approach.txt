@@ -1,0 +1,27 @@
+You can delete the link list by following 3 methods:
+
+    1. Delete from beginning
+    2. Delete from the end
+    3. Delete from middle:
+        i. Delete a given key
+        ii. Delete a key at given position
+
+# --------------------------------------------------------------------------------------------------
+
+# 1. Delete from beginning
+
+    1. Check if the linked list is not empty
+    2. Create a pointer to head.
+    3. Move the head to next node.
+    4. delete the ptr node.
+
+# --------------------------------------------------------------------------------------------------
+
+# 2. Delete from the end.
+
+    1. Check if the linked list is not empty.
+    2. Traverse to the  second last node.
+    3. Make the second last node's next point to None.
+    4. Delete the last node
+
+
