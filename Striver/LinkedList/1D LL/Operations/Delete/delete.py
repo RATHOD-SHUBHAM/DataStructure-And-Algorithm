@@ -51,8 +51,9 @@ class LinkedList:
                     self.head = self.head.next
                     curNode = self.head
                 else:
-                    prev.next = curNode.next
-                    curNode = curNode.next
+                    prevNode.next = curNode.next
+                    curNode.next = None
+                    curNode = prevNode.next
             
             else:
                 prev = curNode
@@ -79,12 +80,14 @@ class LinkedList:
             self.head = self.head.next
             return
         
+        # check of the position is valid
         while curNode != None and curPos < position:
             prevNode = curNode
             curNode = curNode.next
             curPos += 1
 
         # if the postion is larger than linkedlist
+        # curNode == None
         if curPos < position:
             print("Node not available")
             
