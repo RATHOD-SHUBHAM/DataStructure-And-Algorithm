@@ -35,6 +35,7 @@ class LinkedList:
         # delete the last
         del(lst_node)
     
+    # delete all the node with given key
     def del_Key(self, key):
         if self.head == None:
             return
@@ -62,6 +63,7 @@ class LinkedList:
         return self.head
     
 
+    # delete node at a certain position.
     def del_position(self, position):
         if self.head == None:
             return
