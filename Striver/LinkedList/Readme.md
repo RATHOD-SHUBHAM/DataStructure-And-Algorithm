@@ -8,4 +8,7 @@
 
 2] Double LinkedList
 
+![Screenshot 2023-06-26 at 9 37 39 PM](https://github.com/RATHOD-SHUBHAM/DataStructure-And-Algorithm/assets/58945964/006f0103-fabd-4382-8419-eaf3415da5ff)
+
+--
 
