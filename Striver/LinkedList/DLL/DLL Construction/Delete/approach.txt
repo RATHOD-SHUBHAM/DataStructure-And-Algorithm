@@ -1,0 +1,42 @@
+# https://www.prepbytes.com/blog/linked-list/delete-a-node-in-doubly-linked-list/#:~:text=To%20delete%20a%20node%20in%20a%20doubly%20linked%20list%2C%20update,memory%20allocated%20to%20that%20node.
+
+Approach for Deletion in Doubly Linked List.
+
+There are 4 approaches for deletion in doubly linked list:
+
+# ------------------------------------------------------------------------------------------------------
+
+1] If the node to be deleted is the head node.
+
+    i. Create a pointer to head node.
+    ii. Move the head node to front.
+    iii. Remoce the connections of pointer node
+
+# ------------------------------------------------------------------------------------------------------
+
+2] If the node to be deleted is somewhere in the middle of the linked list.
+
+    i. If there is a previous node. -> attach previous to next node.
+    ii. If there is next node -> attach next node to previous node.
+    iii. remove the connection of node.
+
+# ------------------------------------------------------------------------------------------------------
+
+3]  If the node to be deleted is the tail of the linked list.
+
+    i. Iterate to last node.
+    ii. make the previous node poin to last nodes next or None.
+    iii. remove connection and delete the node.
+
+
+# ------------------------------------------------------------------------------------------------------
+
+4] Remove node with given values
+
+    i. Iterate over the LL and check if the curNode has value.
+        a. if the node is head -> move the node
+        b. If the node is not head -> remove the pointers
+
+# ------------------------------------------------------------------------------------------------------
+
+
