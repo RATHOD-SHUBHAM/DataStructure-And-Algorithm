@@ -21,6 +21,7 @@ class DLL:
             del(ptr)
             return
     
+    # remove node in between
     def removeNode(self, node):
         
         if self.head == None or node == None:
@@ -35,6 +36,7 @@ class DLL:
         node.prev = None
         node.next = None
 
+    # delete tail
     def removeTail(self, node):
 
         if self.head == None or node == None:
@@ -51,6 +53,7 @@ class DLL:
         lastNode.next = None
         del(lastNode)
 
+    # remove nodes with given value
     def removeNodewithVal(self, val):
 
         if self.head == None:
@@ -71,6 +74,7 @@ class DLL:
                     ptr = ptr.next
 
                     dup.prev.next = dup.next
+                    dup.next.prev = dup.prev
                     dup.prev = None
                     dup.next = None
                     del(dep)
@@ -78,7 +82,30 @@ class DLL:
             else:
                 ptr = ptr.next
 
-
+    def removeNodeatPosition(self, position):
+        ptr = head
         
-
-        
+        if position == 1:
+            ptr = head.next
+            ptr.prev = None
+            del(head)
+            return ptr
+        else:
+            # 1 based index
+            
+            pos = 1
+            while pos != position:
+                ptr = ptr.next
+                pos += 1
+            
+            # now ptr is at a position that needs to be deleted
+            if ptr.next:
+                ptr.next.prev = ptr.prev
+            if ptr.prev:
+                ptr.prev.next = ptr.next
+            
+            ptr.prev = None
+            ptr.next = None
+            del(ptr)
+            
+            return head
