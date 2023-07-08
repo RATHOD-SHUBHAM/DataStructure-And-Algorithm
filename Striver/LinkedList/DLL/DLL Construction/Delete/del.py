@@ -82,14 +82,15 @@ class DLL:
             else:
                 ptr = ptr.next
 
+    # Delete at position
     def removeNodeatPosition(self, position):
         ptr = head
         
         if position == 1:
-            ptr = head.next
-            ptr.prev = None
-            del(head)
-            return ptr
+            head = head.next
+            head.prev = None
+            del(ptr)
+
         else:
             # 1 based index
             
@@ -108,4 +109,4 @@ class DLL:
             ptr.next = None
             del(ptr)
             
-            return head
+        return head
