@@ -1,0 +1,33 @@
+Sort linked list of 0s 1s 2s
+
+Problem Statement
+
+Detailed explanation ( Input/output format, Notes, Images )
+
+Given a linked list of 0s, 1s and 2s, The task is to sort and print it.
+
+Sample Input 1:
+7
+1 0 2 1 0 2 1
+Sample Output 1:
+0 0 1 1 1 2 2
+Explanation Of Sample Input 1:
+Input: 1 -> 0 -> 2 -> 1 -> 0 -> 2 -> 1
+Output: 0 -> 0 -> 1 -> 1 -> 1 -> 2 -> 2
+
+
+Explanation: In this example, the original linked list contains two 0s, three 1s, and two 2s. The sorted linked list has all the 0s at the beginning, followed by all the 1s, and finally, all the 2s at the end.
+Sample Input 2:
+8
+2 1 0 2 1 0 0 2
+Sample Output 2:
+0 0 0 1 1 2 2 2
+
+
+Constraints :
+1 <= N <= 10^3
+0 <= data <= 2 
+
+Where 'N' is the length of the linked list.
+
+Time Limit: 1 sec
