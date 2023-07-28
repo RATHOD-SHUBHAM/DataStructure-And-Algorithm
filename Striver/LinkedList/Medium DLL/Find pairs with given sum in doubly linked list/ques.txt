@@ -1,0 +1,49 @@
+Find pairs with given sum in doubly linked list
+
+Problem Statement
+
+
+
+Detailed explanation ( Input/output format, Notes, Images )
+Sample input 1:
+5
+1 2 3 4 9
+5
+
+
+Sample output 1
+2
+1 4
+2 3
+
+
+Explanation for sample input 1 :
+There are 2 pairs in the linked list having sum equal to 'k' (= 5).
+
+
+Sample input 2:
+5
+1 10 11 12 27
+7
+
+
+Sample output 2:
+0
+
+
+Explanation for sample output 2
+There is no pair in the linked list with sum equal to 'k' (= 7).
+
+
+Expected Time Complexity :
+The expected time complexity is O('n').
+
+
+Constraints:
+2 <= 'n' <= 10 ^ 4
+1 <= 'data' in any node <= 10 ^ 4
+1 <= 'k' <= 10 ^ 4
+
+'data' in every node is distinct.
+
+Time limit: 1 second
