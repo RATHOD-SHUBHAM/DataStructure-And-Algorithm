@@ -1,0 +1,45 @@
+Add one to a number represented as Linked List
+
+
+Problem Statement
+
+
+
+Detailed explanation ( Input/output format, Notes, Images )
+Sample Input 1:
+3
+1 5 2
+
+
+Sample Output 1:
+1 5 3
+
+
+Explanation For Sample Input 1:
+Initially the number is 152. After incrementing it by 1, the number becomes 153.
+
+
+Sample Input 2:
+2
+9 9
+
+
+Sample Output 2:
+1 0 0
+
+
+Explanation For Sample Input 2:
+Initially the number is 9. After incrementing it by 1, the number becomes 100. Please note that there were 2 nodes in the initial linked list, but there are three nodes in the sum linked list.
+
+
+Expected Time Complexity :
+The expected time complexity is O('n').
+
+
+Constraints:
+1 <= 'n' <=  10^5
+0 <= Node in linked list <= 9
+
+There are no leading zeroes in the number.
+
+Time Limit: 1 sec
