@@ -1,0 +1,45 @@
+Delete all occurrences of a given key in a doubly linked list
+
+
+Problem Statement
+
+
+
+
+Detailed explanation ( Input/output format, Notes, Images )
+Sample Input 1:
+7
+10 4 10 3 5 20 10
+10
+
+
+Sample Output 1:
+4 3 5 20
+
+
+Explanation Of Sample Input 1:
+All the nodes having ‘data’ = 10 are removed from the linked list.
+
+
+Sample Input 2:
+7
+10 4 10 3 5 20 10
+30
+
+
+Sample Output 2:
+10 4 10 3 5 20 10
+
+
+Explanation Of Sample Input 2:
+The linked list does not have any node with ‘data’ = 30. So the linked list is unchanged.
+
+
+Expected Time Complexity:
+The expected time complexity is O(‘n’).
+
+
+Constraints:
+0 <= ‘n’ <= 100000
+1 <= ‘data’ in any node <= 10^9
+1 <= ‘k’ <= 10^9
