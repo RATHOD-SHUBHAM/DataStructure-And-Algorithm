@@ -1,0 +1,65 @@
+Flatten A Linked List
+
+Problem Statement
+
+
+
+
+
+
+Detailed explanation ( Input/output format, Notes, Images )
+Sample Input 1 :
+4
+3
+1 2 3
+3
+8 10 15
+2
+18 22
+1
+29
+
+
+Sample Output 1 :
+1 2 3 8 10 15 18 22 29
+
+
+Explanation For Sample Input 1:
+The given linked list is 
+
+Therefore after flattening the list will become-
+1 -> 2 -> 3 -> 8 -> 10 -> 15 -> 18 -> 22 -> 29 ->null
+
+
+Sample Input 2 :
+5
+2
+4 6
+2
+5 71
+3
+7 8 9
+3 
+11 12 19
+3
+14 15 17
+
+
+Sample Output 2 :
+4 5 6 7 8 9 11 12 14 15 17 19 71
+
+
+Expected Time Complexity:
+Try solving this in O(n*n*k), where ‘n’ denotes the number of head nodes and ‘k’ is the average number of child nodes in all 'n' sub-lists.     
+
+
+Expected Space Complexity:
+Try solving this without using any extra space.   
+
+
+Constraints:
+1 <= n <= 100
+1 <= k <= 20
+1 <= Node.data <= 10^9
+
+Time Limit: 1 sec
