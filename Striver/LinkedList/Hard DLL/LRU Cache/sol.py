@@ -17,6 +17,7 @@ class LRUCache:
             else:
                 self.len += 1
 
+            # Add to the DLL and Hash Map
             self.hash[key] = ListNode(key, value)
         else:
             # replace the value
@@ -68,28 +69,38 @@ class DoubleLinkedList:
         self.tail = None
 
     def setHead(self, node):
+        # 1. Check if node is already head node
         if self.head == node:
             return
+        
+        # 2. If there are 0 nodes in DLL
         elif self.head == None:
             self.head = node
             self.tail = node
+        
+        # 3. If there is 1 node in DLL
         elif self.head == self.tail:
             self.tail.prev = node
             self.head = node
             self.head.next = self.tail
+        
+        # 4. If there is multiple nodes in DLL
         else:
             if self.tail == node:
                 self.removeTail()
-
-            self.removeNodeBinding(node)
+            else:
+                self.removeNodeBinding(node)
 
             self.head.prev = node
             node.next = self.head
             self.head = node
 
     def removeTail(self):
+        # 1. If there is 0 nodes
         if not self.tail:
             return 
+
+        # 2. If there is 1 node.
         if self.head == self.tail:
             self.head = None
             self.tail = None
