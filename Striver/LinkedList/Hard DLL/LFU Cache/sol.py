@@ -28,7 +28,7 @@ class DoubleLinkedList:
     
     def removeTail(self):
         # get the node previous to the tail node -
-        tail = self.tail.prev
+        tail = self.tail.prev # return a node
         self.removeNode(tail)
         return tail
     
