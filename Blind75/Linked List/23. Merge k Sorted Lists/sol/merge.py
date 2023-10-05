@@ -50,6 +50,8 @@ class Solution:
                     
                 prev = p2
                 p2 = p2.next
+
+                # Avoide Edge case: Make prev point to l1
                 prev.next = p1
                 
         if p1 is None:
