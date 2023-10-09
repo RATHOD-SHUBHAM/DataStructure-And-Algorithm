@@ -4,26 +4,23 @@ class Solution:
     def lengthOfLongestSubstring(self, s: str) -> int:
         n = len(s)
 
-        if n == 0:
-            return 0
-
         left = right = 0
-        dic = {}
-        longest_sub = 0
+
+        longest_substring = 0
+
+        unique_char = {}
 
         while right < n:
-            if s[right] not in dic or dic[s[right]] < left:
-                dic[s[right]] = right
 
-                cur_len = right - left + 1
+            if s[right] in unique_char and left <= unique_char[s[right]]:
+                left = unique_char[s[right]] + 1
 
-                longest_sub = max(longest_sub , cur_len)
+            window_size = right - left + 1
 
-                right += 1
-                             
-            else:
-                left = dic[s[right]] + 1
-                dic[s[right]] = right
-                right += 1
+            longest_substring = max(longest_substring , window_size)
 
-        return longest_sub
+            unique_char[s[right]] = right
+
+            right += 1
+        
+        return longest_substring
