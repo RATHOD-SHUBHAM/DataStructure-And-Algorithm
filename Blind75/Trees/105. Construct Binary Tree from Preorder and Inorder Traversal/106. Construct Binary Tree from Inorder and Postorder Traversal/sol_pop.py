@@ -6,15 +6,10 @@
 #         self.right = right
 
 class Solution:
-    def __init__(self):
-        self.postorder_idx = math.inf
-
     def buildTree(self, inorder: List[int], postorder: List[int]) -> Optional[TreeNode]:
         
         left = 0
         right = len(postorder) - 1
-
-        self.postorder_idx = len(postorder) - 1
 
         inorder_dict = {num:idx for idx , num in enumerate(inorder)}
 
@@ -25,9 +20,8 @@ class Solution:
             return 
         
         # build the root node
-        root_val = postorder[self.postorder_idx]
+        root_val = postorder.pop()
         root = TreeNode(root_val)
-        self.postorder_idx -= 1
     
         # get the left and right subtree
         inorder_idx = inorder_dict[root_val]
@@ -36,3 +30,9 @@ class Solution:
         root.left = self.construct(left, inorder_idx - 1, postorder, inorder_dict)
 
         return root
+
+
+
+
+
+        
