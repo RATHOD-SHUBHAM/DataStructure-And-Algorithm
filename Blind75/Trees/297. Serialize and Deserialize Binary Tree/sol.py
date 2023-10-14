@@ -48,16 +48,15 @@ class Codec:
     
     def constructTree(self, data_list): 
         
-        root_val = data_list.pop(0)
-
-        if root_val == 'None':
+        if data_list[0] == 'None':
+            data_list.pop(0)
             return
-
-
+        
+        root_val = data_list.pop(0)
         root = TreeNode(root_val)
 
-        root.left = self.constructTree(data_list)
-        root.right = self.constructTree(data_list)
+        root.left = self.construct(data_list)
+        root.right = self.construct(data_list)
 
         return root
 
