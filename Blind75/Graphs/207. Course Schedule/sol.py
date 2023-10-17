@@ -1,5 +1,15 @@
 # Tc | Sc : O(V+E)
-# node from bi to ai
+
+'''
+    Question says:
+    you must take course bi first if you want to take course ai.
+
+    So bi will come before ai
+    u = bi
+    v = ai
+
+    so there is a node from bi to ai
+'''
 
 from collections import defaultdict
 class Solution:
