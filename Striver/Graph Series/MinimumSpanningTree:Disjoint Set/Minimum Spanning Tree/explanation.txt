@@ -1,0 +1,18 @@
+Spanning Tree:
+    A spanning tree is a tree in which we have 
+        * N nodes(i.e. All the nodes present in the original graph) and, 
+        * N-1 edges and, 
+        all nodes are reachable from each other.
+
+
+Note: 
+    Point to remember is that a graph may have more than one spanning trees.
+
+
+Minimum Spanning Tree:
+    Among all possible spanning trees of a graph, 
+    the minimum spanning tree is the one for which the sum of all the edge weights is the minimum.
+
+Algorithm:
+    1. Prim’s algorithm.  
+    2. Kruskal’s algorithm.
