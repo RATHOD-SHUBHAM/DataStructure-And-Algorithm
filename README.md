@@ -9,6 +9,14 @@
 
 ---
 -   🔥 The solutions are all written in **Python**.
+
+### How to use?😄
+
+    To run the programs, 
+    * First clone the repository
+    * Then cd into xxx folder,
+    * Now use `python3 filename.py` command to execute the code.🤝
+
 ---
 
 ## 🚀 Algorithms
