@@ -1,3 +1,8 @@
+'''
+    Main Idea is to check if water can flow to current cell from adjacent cell
+    and not
+    if water can flow from cuurent cell to adjacent cell
+'''
 class Solution:
     def pacificAtlantic(self, heights: List[List[int]]) -> List[List[int]]:
         m = len(heights)
@@ -35,6 +40,7 @@ class Solution:
         if (
             row < 0 or row >= m or
             col < 0 or col >= n or
+            # check if from current height we can flow to previous height
             heights[row][col] < prevHeight or
             (row, col) in visited
         ):

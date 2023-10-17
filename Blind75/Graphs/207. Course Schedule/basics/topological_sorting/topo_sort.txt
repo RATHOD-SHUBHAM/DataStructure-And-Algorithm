@@ -1,0 +1,13 @@
+Notes:
+
+- Works only on DAG => Directed Acyclic Graph.
+
+- In topological sorting, 
+    * Linear ordering of vertices such that if there is a edge between `u` and `v`, then `u` appears before `v`.
+    
+    * node `u` will always appear before node `v` if there is a directed edge from node u towards node v
+    `(u -> v)`.
+
+- A graph may have multiple topological sortings.
+
+- Should not have a `Cycle`

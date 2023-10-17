@@ -1,0 +1,6 @@
+Note:
+
+* Both are used to detect if there is a cycle in the graph.
+
+1. Toplogocal Sorting is:  DFS Technique.
+2. Kahns Algorithm is: BFS Technique.

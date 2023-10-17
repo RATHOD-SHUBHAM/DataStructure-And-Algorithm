@@ -1,0 +1,12 @@
+# Steps:
+
+1. Get the indegree of all the nodes.
+2. Grab the nodes whose indegree is 0.
+3. Start reducing the indegree of nei node.
+
+# Check for cycle:
+
+if count == 0:
+    Then there is no cycle
+else:
+    There is cycle.
