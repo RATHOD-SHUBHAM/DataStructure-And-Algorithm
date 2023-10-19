@@ -2,8 +2,6 @@
 
 # Tc: E log E | Sc: O(E) 
 import heapq
-from collections import defaultdict
-
 class Solution:
     
     #Function to find sum of weights of edges of the Minimum Spanning Tree.

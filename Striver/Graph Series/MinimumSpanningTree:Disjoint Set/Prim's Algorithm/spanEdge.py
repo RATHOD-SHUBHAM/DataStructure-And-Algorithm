@@ -2,7 +2,6 @@
 # Tc: E log E | Sc: O(E) 
 
 import heapq
-from collections import defaultdict
 
 class Solution:
     

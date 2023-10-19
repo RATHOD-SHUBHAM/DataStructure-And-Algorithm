@@ -26,9 +26,9 @@ class Disjoint:
         
         # step 3: attach smaller rank to larger one
         if rank_pu < rank_pv:
-            self.parent[pv] = pu
-        elif rank_pv < rank_pu:
             self.parent[pu] = pv
+        elif rank_pv < rank_pu:
+            self.parent[pv] = pu
         else:
             # attach anyone to another and increase the rank
             self.parent[pv] = pu

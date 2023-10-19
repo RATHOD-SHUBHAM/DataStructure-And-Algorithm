@@ -1,0 +1,18 @@
+
+
+
+# Disjoint Set:
+    Helps us identify if nodes belong to same graph/component or not.
+
+    Main idea is to find parents.
+
+
+# Disjoint Set has 2 Functionality:
+    1. Find Parent.
+    2. Perform Union:
+        * Union can be performed in 2 ways.
+            a. Union by `Rank`.
+            b. Union by 'Size`.
+
+# Time Complexity:
+    Disjoint runs in O(4ɑ) == O(1)
