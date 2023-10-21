@@ -100,5 +100,7 @@ class Solution:
         
         # print(no_of_province)
         
-        # Step 4
-        return total_no_of_stones - no_of_province
+        # Step 4: No of stones removed
+        no_of_stone_removed = total_no_of_stones - no_of_province
+
+        return no_of_stone_removed
