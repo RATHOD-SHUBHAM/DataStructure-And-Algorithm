@@ -1,9 +1,20 @@
-# if suppose there are 6 nodes
-# we compress them and check how many of them can be merged/removed
-# after compressing lets assume that we have 2 nodes left that cant be merged
-# this mean out of 6 nodes we cannot merge 2 nodes. that means 4 nodes can be merged.
-# this 4 node is nothing but the nodes that can be removed
-# No_of_stones_that_can_be_removed = Total_stones + Connected Component
+'''
+
+Steps:
+    1. Get the dimension of 2D matrix
+    2. Perform Coordinate Shift and Megre the nodes.
+    3. Find the no of province of the cells that has stones
+    4. Get the no of stones removed.
+
+# How to get no of stones removed
+    * if suppose there are 6 nodes
+    * we compress them and check how many of them can be merged/removed
+    * after compressing lets assume that we have 2 nodes left that cant be merged
+    * this mean out of 6 nodes we cannot merge 2 nodes. that means 4 nodes can be merged.
+    * this 4 node is nothing but the nodes that can be removed
+    
+    - No_of_stones_that_can_be_removed = Total_stones + Connected Component
+'''
 
 
 # pattern is 2D Grid
@@ -48,7 +59,7 @@ class Solution:
         
         total_no_of_stones = len(stones)
         
-        # get the size of grid -------------------
+        # Step 1: get the size of grid -------------------
         m = -math.inf
         n = -math.inf
         
@@ -58,7 +69,7 @@ class Solution:
         
         # print(m , n)
         
-        # Coordinate Shift -------------------------
+        # Step 2: Coordinate Shift -------------------------
         V = (m + 1) + (n + 1) # total no of nodes -  2D grid
         
         disjoint_obj = Disjoint(V)
@@ -81,7 +92,7 @@ class Solution:
         # print(stone_set)
         
         
-        # Find no of unique province -------------------
+        # Step 3: Find no of unique province -------------------
         no_of_province = 0
         for i in range(V):
             if i in stone_set and disjoint_obj.findParent(i) == i:
@@ -89,4 +100,5 @@ class Solution:
         
         # print(no_of_province)
         
+        # Step 4
         return total_no_of_stones - no_of_province

@@ -2,7 +2,7 @@
 
 class Disjoint:
     def __init__(self, n):
-        self.rank = [1] * (n + 1)
+        self.rank = [0] * (n + 1)
         self.parent = [i for i in range(n)]
         
     def findParent(self, x):
@@ -41,7 +41,7 @@ class Solution:
     def spanningTree(self, V, adj):
         # step 1: Sort the weights
         # since this is adj list , we create a edges list of [weight , source , child]
-        edges = [] * V
+        edges = []
         
         for i in range(V):
             for edge in adj[i]:
