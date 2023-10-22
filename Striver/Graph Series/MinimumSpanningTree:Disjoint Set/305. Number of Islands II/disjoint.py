@@ -1,5 +1,16 @@
-# Classic Dynamic graph problem
-# Also known as online query
+'''
+    Classic Dynamic graph problem, Also known as online query.
+
+    Dynamic Graph:
+        Graph can change at any time.
+
+    How in this question:
+        We may perform an add land operation which turns the water at position into a land.
+        This mean, add land operation can be performed anytime. 
+        When this is performed a new land is added to graph.
+'''
+
+
 class Disjoint:
     def __init__(self, n):
         self.rank = [1] * (n + 1)
@@ -68,6 +79,7 @@ class Solution:
                 nei_u = u + adj_row
                 nei_v = v + adj_col
                 
+                # visited will keep track of adjacent land at that point in time.
                 if nei_u < 0 or nei_v < 0 or nei_u >= m or nei_v >= n or visited[nei_u][nei_v] == False:
                     continue
                 
