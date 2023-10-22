@@ -48,6 +48,7 @@ class Disjoint:
 
 class Solution:
     def numIslands2(self, m: int, n: int, positions: List[List[int]]) -> List[int]:
+        # Total no of nodes = m * n
         V = (m * n) # no of nodes
         disjoin_obj = Disjoint(V)
         
