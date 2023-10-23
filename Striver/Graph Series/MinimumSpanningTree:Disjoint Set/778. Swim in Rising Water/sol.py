@@ -1,3 +1,5 @@
+# Dynamic Graph :  Kruskals Algorithm
+
 class Disjoint:
     def __init__(self, n):
         self.size = [1] * (n + 1)
@@ -44,8 +46,21 @@ class Solution:
         
         start_cell = grid[0][0]
         end_cell = grid[n-1][n-1]
+        '''
+            or 
+            start_cell = 0 * n + 0
+            end_cell = (n-1) * n + (n-1)
+        '''
         print(end_cell)
+
+         # Kruskals algorithm
+        '''
+            * We consider each cell in the grid as a node in a graph, and the value in the cell represents its weight.
+
+            * We then sort the cells based on their weights, in the ascending order.
+        '''
         
+        # Grab the cells in a grid
         depth = []
         for i in range(n):
             for j in range(n):
@@ -53,6 +68,10 @@ class Solution:
         # depth.sort()
         # print(depth)
 
+        '''
+            Sort the cells based on its value
+            Sorting will take care that each cell are visited in increasing time t 
+        '''
         positions = sorted(depth, key = lambda x : grid[x[0]][x[1]] ) # grid[i][j] -> i = x[0], j = x[1]
         print(positions)
         
