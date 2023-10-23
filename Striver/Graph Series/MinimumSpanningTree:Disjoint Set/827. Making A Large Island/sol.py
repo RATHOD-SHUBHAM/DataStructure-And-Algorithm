@@ -43,11 +43,12 @@ class Solution:
         # total no of cells
         V = (n * n)
         disjoint_obj = Disjoint(V)
-        
-        # step 1: Find the no of island and their size
-        
+
         directions = [(-1,0), (1,0), (0,-1), (0,1)]
-        # go accross and create a union of island
+
+        island_size = -math.inf
+        
+        # Step 1: Group the islands together.
         for u in range(n):
             for v in range(n):
                 
@@ -68,15 +69,14 @@ class Solution:
                     node_cell = u * n + v
                     nei_cell = nei_u * n + nei_v
                     
-                    # get ultimate parent of the node
+                    # if they dont have common parent - merge the cells to form a common island
                     pu = disjoint_obj.findParent(node_cell)
                     pv = disjoint_obj.findParent(nei_cell)
                     
                     if pu != pv:
                         disjoint_obj.union_find(node_cell , nei_cell)
 
-        # step 2: Update the cell one by one and check
-        island_size = 0
+        # Step 2: convert non island cell to island and get the size
         
         for i in range(n):
             for j in range(n):
@@ -84,42 +84,42 @@ class Solution:
                 if grid[i][j] == 1:
                     continue
                 
-                # step 2.1: identify the island beside it
-                island_around = set()
-                for nei in directions:
-                    adj_row , adj_col = nei
-                    
-                    nei_row = adj_row + i
-                    nei_col = adj_col + j
-                    
-                    # check for edges
-                    if nei_row < 0 or nei_col < 0 or nei_row >= n or nei_col >= n or grid[nei_row][nei_col] == 0:
+                # grab the adjacent island for the current cell
+                neighbouring_island = set()
+
+                for direction in directions:
+                    adj_row, adj_col = direction
+
+                    nei_row = u + adj_row
+                    nei_col = v + adj_col
+
+                    if nei_row < 0 or nei_row >= n or nei_col < 0 or nei_col >= n or grid[nei_row][nei_col] == 0:
                         continue
-                        
-                    # get the ultimate parent of the island
-                    island_cell = nei_row * n + nei_col
                     
-                    parent_island = disjoint_obj.findParent(island_cell)
-                    
-                    island_around.add(parent_island)
-                    
-                
-                # print(island_around)
+                    # grab the cell numbers
+                    nei_node = nei_row * n + nei_col
+
+                    parent_island = disjoint_obj.findParent(nei_node)
+
+                    neighbouring_island.add(parent_island)
+                # print(neighbouring_island)
                 
                 
-                # step 2.2 : attach itself to adjacent island and check the size
-                cur_island_size = 1 # current size of island
-                for parent_island in island_around:
-                    size_of_parent_island = disjoint_obj.size[parent_island]
-                    cur_island_size += size_of_parent_island
-                    
-                island_size = max(island_size , cur_island_size)
+                # step 3: Get the size of all the neighbouring_island of current cell
+                current_island_size = 1
+                for parent_island in neighbouring_island:
+                    parent_island_size = disjoint_obj.size[parent_island]
+                    current_island_size += parent_island_size
+
+                island_size = max(island_size, current_island_size)
+
         
         # print(island_size)
         
-        # if every cell is one - return the size of any nodes ultimate parent
-        pu = disjoint_obj.findParent(0)
-        size_pu = disjoint_obj.size[pu]
-        island_size = max(island_size , size_pu)
+        # if every node is a island
+        ultimate_parent = disjoint_obj.findParent(0) # get ultimate parent of any node
+        size_ultimate_parent = disjoint_obj.size[ultimate_parent]
         
+        island_size = max(island_size, size_ultimate_parent)
+
         return island_size
