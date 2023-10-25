@@ -1,0 +1,29 @@
+# Node Relaxation Means
+
+if Distance taken to reach u + distance to reach from u to v is less than distance to reach V.
+then we update distace to reach node v as Distance taken to reach u + distance to reach from u to v.
+
+ie. 
+if dist[u] + wt < dist[v]:
+    dist[v] = dist[u] + wt
+
+For eg in dijkstra: 
+we get the dist[u] from the heap.
+ie we store the distance along with the node in heap
+
+then we calculate new_weight by adding the nei_wt to nodes weight
+
+then we compare if new_weight < adj_new weight ie node[v]
+
+eg:
+wt, node = heapq.heappop(minHeap)
+
+for nei in neighbors:
+    adj_wt, adj_nei = nei
+
+    # new_wt = dist[u] + wt
+    new_wt = wt + adj_wt
+
+    # dist[u] + wt < dist[v]
+    if new_wt < dist[adj_nei]:
+        dist[adj_nei] = new_wt
