@@ -50,3 +50,4 @@ class Solution:
                 distance[i] = -1
         
         return distance
+
