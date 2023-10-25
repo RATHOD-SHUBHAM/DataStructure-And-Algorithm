@@ -10,13 +10,15 @@ class Solution:
     '''
     def bellman_ford(self, V, edges, S):
         # If some node isn't possible to visit, then its distance should be 100000000(1e8). 
-        dist = [10 ** 8] * V
+        dist = [10 ** 8] * V # question says 10 ^ 8 . we can habe math.inf if nothing is specified
         dist[S] = 0
         
-        for i in range(V-1):
+        # Relax node for n - 1 times
+        for _ in range(V-1):
             for node in edges:
                 u , v , cost = node
                 
+                # Node relaxation
                 if dist[u] != (10**8) and dist[u] + cost < dist[v]:
                     dist[v] = dist[u] + cost
                     

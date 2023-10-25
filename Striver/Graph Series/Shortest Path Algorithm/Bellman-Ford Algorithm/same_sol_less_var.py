@@ -4,10 +4,12 @@ def bellman_ford(self, V, edges, S):
         dist = [10 ** 8] * V
         dist[S] = 0
         
+        # Relax node for n- 1 times
         for _ in range(V-1):
             for node in edges:
                 u , v , cost = node
                 
+                # Node relaxation
                 if dist[u] + cost < dist[v]:
                     dist[v] = dist[u] + cost
                     
