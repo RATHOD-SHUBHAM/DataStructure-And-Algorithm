@@ -6,6 +6,7 @@ def bellman_ford(self, V, edges, S):
         
         # Relax node for n- 1 times
         for _ in range(V-1):
+            # Relax the node sequentially
             for node in edges:
                 u , v , cost = node
                 

@@ -3,21 +3,24 @@
 import math
 
 class Solution:
-	def shortest_distance(self, matrix):
-        
+    def shortest_distance(self, matrix):
+
         n = len(matrix)
 
         # since i will cal min distance. Lets change the -1 to inf
         # also lets fill the diagonals with 0
         for i in range(n):
             for j in range(n):
+                # same cell -  distance will be 0
                 if i == j:
                     matrix[i][j] = 0
+                # if any cell is not rechanble mark it as infinity
                 if matrix[i][j] == -1:
                     matrix[i][j] = math.inf
 
 
         # multi source shortest path
+        # From a cell explore its neighboring cells
         for k in range(n):
             for i in range(n):
                 for j in range(n):
@@ -26,7 +29,7 @@ class Solution:
 
         # check for negative cycle
         for i in range(n):
-            if martrix[i][i] < 0:
+            if matrix[i][i] < 0:
                 return -1
 
         # if any cell if unrechable we need to return -1
