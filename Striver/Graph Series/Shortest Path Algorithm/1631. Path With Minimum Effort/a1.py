@@ -20,7 +20,7 @@ class Solution:
                 '''
                     minimum route effort = min(route effort) = min(maximum absolute difference)
                 '''
-                return max_difference
+                return 
 
 
             # mark the cell in current route - mark the cells by making them as 0
