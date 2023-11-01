@@ -11,11 +11,6 @@ class Solution:
 
         visited = [[False] * n for _ in range(m)]
 
-        '''
-        Logic:
-            Heap will store the paths max effort to reach the cell
-            And will pop out  minimum effort first
-        '''
         minHeap = []
         heapq.heapify(minHeap)
 

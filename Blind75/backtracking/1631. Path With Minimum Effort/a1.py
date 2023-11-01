@@ -88,11 +88,6 @@ class Solution:
 
         visited = [[False] * n for _ in range(m)]
 
-        '''
-        Logic:
-            Heap will store the paths max effort to reach the cell
-            And will pop out  minimum effort first
-        '''
         minHeap = []
         heapq.heapify(minHeap)
 
@@ -137,11 +132,6 @@ class Solution:
 # ------------------------------------------------------------------------
 
 # Kruskal Algorithm
-'''
-    Since we access the edges in increasing order of difference, 
-    and the current edge connected the source and destination cell, 
-    we are sure that the current difference is the maximum absolute difference in our path with minimum efforts.
-'''
 
 class Disjoint:
     def __init__(self, n):
