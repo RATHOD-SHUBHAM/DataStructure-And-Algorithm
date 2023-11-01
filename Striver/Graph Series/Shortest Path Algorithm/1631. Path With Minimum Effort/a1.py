@@ -55,21 +55,20 @@ class Solution:
                 '''
 
                 if max_cur_difference < self.minimum_effort:
-                    previous_effort = backTrack_dfs(nei_row, nei_col, max_cur_difference)
+                    backTrack_dfs(nei_row, nei_col, max_cur_difference)
                     
-                    min_effort = min(min_effort, previous_effort)
                 
             # Backtrack
             # unmark the current cell
             heights[row][col] = current_height
-            return min_effort
              
         
         
         # Function Call ------------------------------------------------------
 
         # row, col, maximum absolute difference
-        return backTrack_dfs(0,0,0) 
+        backTrack_dfs(0,0,0) 
+        return self.minimum_effort
     
 
 # ------------------------------------------------------------------------
