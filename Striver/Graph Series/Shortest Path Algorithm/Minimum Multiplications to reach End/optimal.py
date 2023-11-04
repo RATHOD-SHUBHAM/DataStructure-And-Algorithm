@@ -1,6 +1,5 @@
 from typing import List
-import heapq
-import math
+import heapq, math
  
 class Solution:
     
@@ -9,11 +8,12 @@ class Solution:
         
         minHeap = []
         heapq.heapify(minHeap)
-        heapq.heappush(minHeap, (0, start))
         
-        step = [math.inf] * (10 ** 5)
-        step[start] = 0
+        heapq.heappush(minHeap, (0,start))
         
+        minDist = [math.inf] * (10**5)
+        minDist[start] = 0
+
         
         while minHeap:
             level , node = heapq.heappop(minHeap)
@@ -21,11 +21,17 @@ class Solution:
             if node == end:
                 return level
             
-            for i in arr:
-                cur_sum = (node * i) % mod
-                if step[cur_sum] > level + 1:
-                    step[cur_sum] = level + 1
-                    heapq.heappush(minHeap,(level + 1, cur_sum))
-        
-        # print(queue)
+            '''
+                nei node is obtained by multiplying the node with number in the array and then mod operation with 100000
+            '''
+            for nei in arr:
+                nei_node = (node * nei) % mod
+                
+                nei_dist = level + 1
+                
+                # if new smaller dist to reach the node is obtained
+                if nei_dist < minDist[nei_node]:
+                    minDist[nei_node] = nei_dist
+                    heapq.heappush(minHeap, (nei_dist, nei_node))
+                
         return -1
