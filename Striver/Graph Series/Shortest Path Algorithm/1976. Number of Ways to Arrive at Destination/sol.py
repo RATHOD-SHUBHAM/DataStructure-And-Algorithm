@@ -1,54 +1,58 @@
-from collections import defaultdict
-import math
-import heapq
+# No of shortest path to the destination
 
 class Solution:
     def countPaths(self, n: int, roads: List[List[int]]) -> int:
-        src = 0
-        dst = n - 1
         
-        mod = (10**9 + 7)
+        # Graph Creation ------------------------------------------------
+        graph = collections.defaultdict(list)
+        distance = collections.defaultdict()
+
+        for road in roads:
+            u , v , t = road
+
+            # Graph is bidirectional
+            graph[u].append(v)
+            graph[v].append(u)
+
+            distance[(u,v)] = t
+            distance[(v,u)] = t
         
-        # build graph
-        graph = defaultdict(list)
-        time = defaultdict()
-        for i in roads:
-            src, dst , cost = i
-            graph[src].append(dst)
-            graph[dst].append(src)
-            time[(src, dst)] = cost
-            time[(dst, src)] = cost
         
-        # print(graph)
-        # print(time)
-        
-        # Dijstras
-        distance = [math.inf] * n
-        distance[0] = 0
-        
+        # Shortest Path ------------------------------------------------
         minHeap = []
         heapq.heapify(minHeap)
-        heapq.heappush(minHeap, (0,0))
+
+        heapq.heappush(minHeap, (0,0)) # dist , node
+
+        minDist = [math.inf] * n
+        minDist[0] = 0
         
-        node_count = [0] * n
-        node_count[0] = 1
-        
+        # Keep track of no of ways we can reach at a node
+        no_of_ways = [0] * n
+        no_of_ways[0] = 1 # there is only one way to reach start node
+
         while minHeap:
-            dist , node = heapq.heappop(minHeap)
-            
+            dist, node = heapq.heappop(minHeap)
+
             for nei in graph[node]:
-                cost = time[(node, nei)]
+                nei_dist = distance[(node, nei)]
+
+                new_dist = dist + nei_dist
+
+
+                # a node can be reached at a smaller distance than the previous one
+                if new_dist < minDist[nei]:
+                    heapq.heappush(minHeap, (new_dist , nei))
+                    minDist[nei] = new_dist
+
+                    # no of ways to reach a neighbor depends on no of ways to reach a node
+                    no_of_ways[nei] = no_of_ways[node]
                 
-                updated_dist = cost + dist
-                
-                if updated_dist < distance[nei]:
-                    distance[nei] = updated_dist
-                    heapq.heappush(minHeap, (updated_dist , nei))
-                    node_count[nei] = node_count[node]
-                
-                elif updated_dist == distance[nei]:
-                    node_count[nei] = (node_count[nei] + node_count[node])
-                    
-        # print(node_count)
+                elif new_dist == minDist[nei]:
+                    # new path is getting added to reach a node
+                    no_of_ways[nei] += no_of_ways[node]
+
         
-        return 1 if node_count[-1] == 0 else node_count[-1] % mod
+        mod = (10 ** 9) + 7
+
+        return (no_of_ways[n-1] % mod)
