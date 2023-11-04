@@ -27,8 +27,6 @@ class Solution:
             current_height = heights[row][col]
             heights[row][col] = 0 # marking
 
-            min_effort = math.inf
-
             for direction in directions:
                 adj_row , adj_col = direction
 
@@ -210,6 +208,7 @@ class Solution:
                     edgeList.append([diff, nei_cell_no, cell_no])
 
         
+        # maximum absolute difference in increasing order
         edgeList.sort(key = lambda x : x[0])
         print(edgeList)
 
@@ -219,6 +218,8 @@ class Solution:
 
             if disjoint_obj.findParent(0) == disjoint_obj.findParent(row * n + col):
                 return diff
+            # if disjoint_obj.findParent(0) == disjoint_obj.findParent((m-1) * n + (n-1)):
+            #     return diff
         
         return -1
     

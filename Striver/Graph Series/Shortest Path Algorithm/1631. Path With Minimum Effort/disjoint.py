@@ -82,6 +82,7 @@ class Solution:
                     edgeList.append([diff, nei_cell_no, cell_no])
 
         
+        # maximum absolute difference in increasing order
         edgeList.sort(key = lambda x : x[0])
         print(edgeList)
 
