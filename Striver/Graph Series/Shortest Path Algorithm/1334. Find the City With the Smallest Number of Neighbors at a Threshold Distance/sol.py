@@ -16,7 +16,7 @@ class Solution:
         
         # print(graph)
         
-        # FLOYD WARSHALL  ----------------
+        # FLOYD WARSHAL: multi source shortest path ----------------
         for k in range(n):
             for i in range(n):
                 for j in range(n):
@@ -25,19 +25,23 @@ class Solution:
         
         # print(graph)
         
-        # get threshold --------------------
+        # # Get the number of cities that are reachable whose distance is at most distanceThreshold --------------------
         distance = [0] * n
+
         for i in range(n):
+            count = 0
             for j in range(n):
                 if i == j:
                     continue
                 
                 if graph[i][j] <= distanceThreshold:
-                    distance[i] += 1
+                    count += 1 
+            
+            distance[i] = count
         
         # print(distance)
         
-        # get min value --------------------
+        # Return the city with the smallest number of cities that are reachable --------------------
         minVal = min(distance)
         minIdx = distance.index(minVal)
         
