@@ -1,55 +1,46 @@
-# https://leetcode.com/problems/course-schedule-ii/discuss/3541614/Kahn's-Algorithm-BFS-%2B-InDegree-*Python-Code*
-
-# topo sort = Kahns algo
-# BFS + Indegree
-
-
 # Tc and Sc: O(V+E)
+
 from collections import defaultdict
 class Solution:
     def findOrder(self, numCourses: int, prerequisites: List[List[int]]) -> List[int]:
-        no_of_course = numCourses - 1
+        n = numCourses
+
+        # Step 1: Build graph
+        graph = defaultdict(list)
+        for edge in prerequisites:
+            ai, bi = edge
+            graph[bi].append(ai)
         
-        dic = defaultdict(list)
-        for i in prerequisites:
-            pre_req , course = i
-            dic[pre_req].append(course)
+        # Step 2:  Get the indegree of nodes
+        indegree = [0] * n
+        for edge in prerequisites:
+            ai, _ = edge
+            indegree[ai] += 1
         
-        # print(dic)
-        
-        indegree = [0] * numCourses
-        
-        for i in prerequisites:
-            pre_req , course = i
-            indegree[course] += 1
-            
-        # print(indegree)
-        
+        # Step 3: Add the nodes with indegree = 0 to queue.
         queue = []
-        for i in range(numCourses):
+        for i in range(n):
             if indegree[i] == 0:
                 queue.append(i)
-                
-
+        
+        # Step 4: Topological sorting
         topo_sort = []
         count = 0
-        
+
         while queue:
             node = queue.pop(0)
-            
-            # reduce the indegree of neighbors
-            for nei in dic[node]:
+
+            # Grab neighbors and reduce their indegree.
+            for nei in graph[node]:
                 indegree[nei] -= 1
-                
+
                 if indegree[nei] == 0:
                     queue.append(nei)
-                    
-            count += 1
+
             topo_sort.append(node)
-            
-        # print(topo_sort)
+            count += 1
         
-        if count == numCourses:
-            return topo_sort[::-1]
-        else:
+        if count != n:
             return []
+        else:
+            return topo_sort
