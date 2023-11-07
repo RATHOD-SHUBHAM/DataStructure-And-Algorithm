@@ -14,9 +14,6 @@ class Solution:
             visited[i] = True
             
             for j in range(n):
-
-                if i == j:
-                    continue
                 
                 if isConnected[i][j] == 1:
                     dfs(j)
@@ -29,19 +26,11 @@ class Solution:
         count = 0
         
         for i in range(n):
-            
+
             if visited[i] == True:
                 continue
 
-            for j in range(n):
-
-                if i == j:
-                    continue
-                
-                visited[i] = True
-                
-                if isConnected[i][j] == 1:
-                    dfs(j)
+            dfs(i)
 
             count += 1
 
