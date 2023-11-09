@@ -1,0 +1,18 @@
+# Graph == BFS
+
+Whenever you have a matrix where you can move between adjacent cells, you should immediately think about graphs. A matrix is a very common format for a graph to take.
+
+
+# Intuition
+
+The first thing you should think about when it comes to shortest path problems on graphs is BFS. If you're not familiar with BFS, we suggest you read the relevant LeetCode Explore Card.
+
+First of all, any cell with value 0 does not need to be changed. For a given cell with value 1, we need to find the nearest 0. We could perform a BFS starting from the cell and terminate once we find any 0, as this 0 would be the closest one. By repeating this for every cell with value 1, we would solve the problem.
+
+The issue with this is that the constraints state that the matrix could have up to 10,000 cells. Think about a matrix where the entire matrix is 1 except for one of the corners. We would need to perform O(size)O(\text{size})O(size) BFS, with each BFS costing up to O(size)O(\text{size})O(size). In the worst-case scenario, the number of operations we would need is on the order of 100,000,000, which would fail the time limit. We need to think of a more efficient way to perform the BFS.
+
+What if we started the BFS from 0 instead of 1? Let's say that we started a BFS from a 1 and found that the nearest 0 was x steps away. Now, let's start a BFS from that 0 until we reach the original 1. We will again find that the BFS takes x steps. Basically, it doesn't matter if we start from the 0 or 1, both will result in the same distance.
+
+If we start BFS from 1, we can only find the shortest distance for that 1. If we start BFS from 0, we could find the shortest distance for many 1 at a time. So which 0 should we start from? The answer is all of them!
+
+Let's think about how BFS works. From a source node, we first visit all nodes at a distance of 1. Next, we visit all nodes at a distance of 2, then 3, and so on. We can say a node at a distance of x from the source belongs to "level x". So the source is at level 0, the neighbors of the source are at level 1, the neighbors of those nodes are at level 2, and so on.
