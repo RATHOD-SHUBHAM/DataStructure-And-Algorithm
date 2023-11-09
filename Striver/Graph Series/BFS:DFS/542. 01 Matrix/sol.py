@@ -1,43 +1,49 @@
 # Tc :O(m * n) | Sc: O(m * n) 
+
 class Solution:
     def updateMatrix(self, mat: List[List[int]]) -> List[List[int]]:
         m = len(mat)
         n = len(mat[0])
-        
-        visited = [[False for _ in range(n)] for _ in range(m)]
-        
-        distance = [[0 for _ in range(n)] for _ in range(m)]
-        
+
+        directions = [[-1,0], [1,0], [0,-1], [0,1]]
+
+
+        minDist = [[math.inf] * n for _ in range(m)]
+        visited = [[False] * n for _ in range(m)]
         queue = []
-        
-        # get the cell with 0 value and mark them as visited
+
+        '''
+            1. Cell with value zero - will have dist zero
+            2. Mark the cell with dist 0 as visited
+            3. Add them to the  queue
+        '''
         for i in range(m):
             for j in range(n):
-                
                 if mat[i][j] == 0:
-                    queue.append([i, j, 0]) #inital distace is 0
+                    minDist[i][j] = 0
                     visited[i][j] = True
-                    
-        
-        # get the distance of other cell from initial cell and so on
-        directions = [[-1,0], [1,0], [0,-1], [0,1]]
-        
-        while queue:
-            r , c , dist = queue.pop(0)
-            
-            for adj_r, adj_c in directions:
-                nr = r + adj_r
-                nc = c + adj_c
-                
-                if 0 <= nr < m and 0 <= nc < n and visited[nr][nc] == False:
-                    if mat[nr][nc] == 1:
-                        visited[nr][nc] = True
-                        new_dist = dist + 1
-                        distance[nr][nc] = new_dist
-                        
-                        queue.append([nr, nc, new_dist])
-        
+                    queue.append((0, i, j)) # dist , cell
 
-        return distance
+        # BFS
+        while queue:
+            dist , row, col = queue.pop(0)
+
+            for adj_row, adj_col in directions:
+                nei_row = adj_row + row
+                nei_col = adj_col + col
+
+                if nei_row < 0 or nei_row >= m or nei_col < 0 or nei_col >= n or visited[nei_row][nei_col] == True:
+                    continue
+                
+                # this is a cell with value 1 which hasnt been visited
+                new_dist = dist + 1
+                visited[nei_row][nei_col] = True
+
+                minDist[nei_row][nei_col] = new_dist
+
+                queue.append((new_dist, nei_row, nei_col))
+                
+        
+        return minDist
                     
                     
