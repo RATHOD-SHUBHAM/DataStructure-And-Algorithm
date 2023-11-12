@@ -8,9 +8,6 @@ class Solution:
         left = 0
         right = n - 1
 
-        return self.binarySearch(left, right, nums, n, target)
-        
-    def binarySearch(self, left, right, nums, n, target):
         while left <= right:
             # find Inflation point
             mid = left + (right - left) // 2
@@ -25,7 +22,7 @@ class Solution:
                 else:
                     left = mid + 1
             
-            else:
+            elif nums[mid] < nums[right]:
                 # explore right section
                 if target > nums[mid] and target <= nums[right]:
                     left = mid + 1
@@ -33,3 +30,5 @@ class Solution:
                     right = mid - 1
         
         return -1
+
+        
