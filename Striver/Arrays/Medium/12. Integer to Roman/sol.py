@@ -19,6 +19,9 @@ class Solution:
         # Roman number are from largest to smallest
         for symbol, value in reversed(rules):
 
+            if num <= 0:
+                break
+
             count = num // value # count of symbol
 
             if count == 0:
