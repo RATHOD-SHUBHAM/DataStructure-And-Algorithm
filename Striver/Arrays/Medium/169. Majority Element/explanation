@@ -1,0 +1,10 @@
+# Mode
+
+If the question says - find the number that has occured majority amount of time, then just using hash function is enough.
+
+
+# Voting Algorithm
+
+If the question says - The majority element is the element that appears more than ⌊n / 2⌋ times.
+
+then use Boyer - Moores Algorithm.
