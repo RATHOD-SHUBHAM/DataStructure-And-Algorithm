@@ -5,19 +5,27 @@
 
 class Solution:
     def longestConsecutive(self, nums: List[int]) -> int:
+        n = len(nums)
+
+        if n < 1:
+            return 0
+
         set_nums = set(nums)
+
         max_sequence = 0
+        cur_sequence = 1
 
-        for n in set_nums:
-            # check if this is the starting number
-            if n-1 not in set_nums:
-                current_streak = 1
-                current_num = n
+        for i in range(n):
+            cur_num = nums[i]
 
-                while current_num + 1 in set_nums:
-                    current_streak += 1
-                    current_num += 1
+            if cur_num - 1 not in set_nums:
+                start_num = cur_num
+                cur_sequence = 1
 
-                max_sequence = max(max_sequence, current_streak)
+                while start_num + 1 in set_nums:
+                    start_num = start_num + 1
+                    cur_sequence += 1
+            
+            max_sequence = max(max_sequence, cur_sequence)
 
-        return  max_sequence  
+        return max_sequence 
