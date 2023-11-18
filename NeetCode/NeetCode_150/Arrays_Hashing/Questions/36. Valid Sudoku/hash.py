@@ -19,13 +19,13 @@ class Solution:
                     or
                     board[i][j] in col[j]
                     or
-                    board[i][j] in sub_board[(i // 3),(j // 3)]
+                    board[i][j] in sub_board[((i // 3),(j // 3))]
                 ):
                     return False
 
                 # Add to dictionary
                 row[i].add(board[i][j])
                 col[j].add(board[i][j])
-                sub_board[(i // 3),(j // 3)].add(board[i][j])
+                sub_board[((i // 3),(j // 3))].add(board[i][j])
         
         return True
