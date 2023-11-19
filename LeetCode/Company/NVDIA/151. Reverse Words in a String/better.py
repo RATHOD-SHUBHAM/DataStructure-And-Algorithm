@@ -1,3 +1,4 @@
+# Tc and Sc: O(n)
 class Solution:
     def reverseWords(self, s: str) -> str:
         strs = s.split(" ")
