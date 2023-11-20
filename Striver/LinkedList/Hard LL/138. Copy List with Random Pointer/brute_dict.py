@@ -15,30 +15,38 @@ class Solution:
     def copyRandomList(self, head: 'Optional[Node]') -> 'Optional[Node]':
         if not head:
             return head
-        
-        dic = {} # keep a deep copy
-        
+
+        dic = {}
+
         curNode = head
-        
-        # step 1: Mapping
+
+        # Clone node and add to dictionary
         while curNode:
-            newNode_val = curNode.val
-            dic[curNode] = Node(newNode_val)
-            
+            newNode = Node(curNode.val)
+
+            dic[curNode] = newNode
+
             curNode = curNode.next
         
-        # assigning pointers
+        # Assigning pointers
         curNode = head
-        
+
         while curNode:
-            nextNode = curNode.next
-            randomNode = curNode.random
-            
+            # clone of current node
             newNode = dic[curNode]
-            
-            newNode.next = dic[nextNode] if nextNode else None
-            newNode.random = dic[randomNode]  if randomNode else None
-            
+
+            # Get the cloned node
+            nextNode = curNode.next
+            nextNewNode = dic[nextNode] if nextNode in dic else None
+
+            randomNode = curNode.random
+            randomNewNode = dic[randomNode] if randomNode in dic else None
+
+            # assign pointers
+            newNode.next = nextNewNode
+            newNode.random = randomNewNode
+
+            # move the pointer
             curNode = curNode.next
         
         return dic[head]

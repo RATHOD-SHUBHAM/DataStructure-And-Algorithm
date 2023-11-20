@@ -22,41 +22,51 @@ class Solution:
         if not head:
             return head
         
-        # Step 1:
+        # Step 1: Clone the current node
         curNode = head
-        
+
         while curNode:
             newNode = Node(curNode.val)
-            
-            newNode.next = curNode.next
+
+            # change pointers - add the cloned node in btn curnode and next node
+            nxtNode = curNode.next
+
             curNode.next = newNode
-            
-            curNode = newNode.next
-            
-        # Step 2:
-        curNode = head
+            newNode.next = nxtNode
+
+            # move current node
+            curNode = nxtNode
         
+        # Step 2: Assign random nodes
+        curNode = head
+
         while curNode:
+
+            # assign pointers
+            randomNode = curNode.random
             newNode = curNode.next
 
-            newNode.random = curNode.random.next if curNode.random else None
-            
-            curNode = newNode.next
-        
-        # Step 3:
-        dummy = Node(-1)
+            newNode.random = randomNode.next if randomNode else None
 
+            # move pointer
+            curNode = curNode.next.next
+
+        # Step 3: Assign next node
         curNode = head
-        newNode = curNode.next
         
-        dummy.next = newNode
-        
-        
+        # pointer to head of cloned node
+        dummy = Node(-1)
+        dummy.next = curNode.next
+
         while curNode:
-            curNode.next = newNode.next if newNode.next else None
-            newNode.next = newNode.next.next if newNode.next else None
-            
+            newNode = curNode.next
+            nxtNode = curNode.next.next if curNode.next.next else None
+
+            # assigning pointers
+            newNode.next = nxtNode.next if nxtNode else None
+            curNode.next = nxtNode
+
+            # move pointer
             curNode = curNode.next
-            newNode = newNode.next
         
         return dummy.next
