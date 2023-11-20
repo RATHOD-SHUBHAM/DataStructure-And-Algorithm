@@ -16,12 +16,10 @@ class Solution:
             if slow == fast:
                 break
 
+        
         fast = 0
-        while True:
+        while slow != fast:
             slow = nums[slow]
             fast = nums[fast]
-
-            if slow == fast:
-                break
         
         return slow
