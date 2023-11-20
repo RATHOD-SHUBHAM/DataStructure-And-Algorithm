@@ -20,6 +20,10 @@ class Solution:
                 left = mid + 1
             else:
                 # Reduce pace
+                # time_taken <= h
+                '''
+                    If Koko can finish all the piles within h hours, set right equal to middle signifying that all speeds greater than middle are workable but less desirable by Koko.
+                '''
                 right = mid
         
         return left # Right
