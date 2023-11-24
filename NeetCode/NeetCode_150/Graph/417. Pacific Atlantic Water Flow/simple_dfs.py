@@ -8,6 +8,7 @@ class Solution:
         m = len(heights)
         n = len(heights[0])
 
+        # Visited
         pacific = set()
         atlantic = set()
 
