@@ -1,4 +1,3 @@
-'''
 Intuition
     - we don't care if we need to increase or decrease the value to the power of 2 to achieve the goal
     - Just focus on how to make n become 0 and count the number of times.
@@ -30,25 +29,3 @@ For example:
         - n update to min( |2-1|, |1-1| ) = min(1, 0) = 0
 
 when n == 0, exit and return 3 - since it took 3 steps to get to 0.
-'''
-
-class Solution:
-    def minOperations(self, n: int) -> int:
-        count = 0 # no of steps
-
-        while n > 0:
-            # get the power of 2
-            power = 1
-            while 2 ** power < n:
-                power += 1 
-            
-            # print(2 ** power) # this will give a power grater than n
-
-            n = min( ((2 ** power) - n), ( n - (2 ** (power - 1))) )
-            # print(n)
-
-            count += 1
-        
-        return count
-            
-        
