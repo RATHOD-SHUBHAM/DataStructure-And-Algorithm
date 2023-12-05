@@ -109,5 +109,11 @@ In this section, I use <a href="https://www.leetcode.com">leetcode</a> to solve 
 
 ---
 
+# 🐲 Visuals
+
+## Understanding of sorting algorithms
+
+![Slide1](https://github.com/RATHOD-SHUBHAM/DataStructure-And-Algorithm/assets/58945964/4433a4cf-34b7-45e7-ba1f-c6434ac2912d)
+
 
 
