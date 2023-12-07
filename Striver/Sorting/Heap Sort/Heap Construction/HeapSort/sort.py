@@ -22,7 +22,7 @@ class maxHeap:
             if childTwoIdx > endIdx:
                 childTwoIdx = -1
 
-            # Get the smallest child
+            # Get the largest child
             if childTwoIdx != -1 and array[childTwoIdx] > array[childOneIdx]:
                 childToSwap = childTwoIdx
             else:
