@@ -8,16 +8,16 @@ The first item in the array is now sorted, while the rest of the array is unsort
 '''
 
 # Tc: O(n^2) | Sc: O(n)
-
 def selectionSort(array):
     n = len(array)
 
     # traverse and place the min val in right place
     for i in range(n):
         
+        # Select the min value
         min_val = array[i]
 
-        for j in range(i, n):
+        for j in range(i + 1, n):
 
             cur_val = array[j]
             

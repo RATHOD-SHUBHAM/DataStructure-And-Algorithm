@@ -47,9 +47,10 @@ def selectionSort(array):
     # traverse and place the min val in right place
     for i in range(n):
         
+        # Select the min value
         min_val = array[i]
 
-        for j in range(i, n):
+        for j in range(i + 1, n):
 
             cur_val = array[j]
             
