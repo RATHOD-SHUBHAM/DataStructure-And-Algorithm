@@ -1,6 +1,6 @@
 def radixSort(array):
     # base case
-	if len(array) == 0:
+	if len(array) <= 1:
 		return array
 	
 	maxNum = max(array)
