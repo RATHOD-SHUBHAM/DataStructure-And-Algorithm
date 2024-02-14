@@ -16,7 +16,7 @@ class Solution:
         def dfs(i):
             # base case
             if i >= len(nums):
-                self.result.append(st.copy())
+                self.result.append(st.copy()) # self.result.append(st.[::]) this does same stuff
                 return
             
             # Append the number
