@@ -1,3 +1,5 @@
+# Solution 1
+
 class Solution:
     def __init__(self):
         self.result = []
@@ -33,5 +35,40 @@ class Solution:
         # Function call
         st = []
         dfs(st, n)
+        
+        return self.result
+    
+# Solution 2 ----------------------------------------
+    
+class Solution:
+    def __init__(self):
+        self.result = []
+        
+    def generateBinaryStrings(self, n):
+        # Code here
+        if n == 1:
+            return ["0" , "1"]
+        
+        def backTrack():
+            if len(st) == n:
+                val = "".join(st)
+                self.result.append(val)
+                return
+        
+            # Append 0
+            st.append("0")
+            backTrack()
+            
+            # Append 1
+            st.pop()
+            if not st or st[-1] == "0":
+                st.append("1")
+                backTrack()
+                st.pop()
+            
+            return
+        
+        st = []
+        backTrack()
         
         return self.result

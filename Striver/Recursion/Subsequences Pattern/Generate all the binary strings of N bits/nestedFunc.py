@@ -1,3 +1,4 @@
+# Solution 1
 class Solution:
     def __init__(self) -> None:
         self.result = []
