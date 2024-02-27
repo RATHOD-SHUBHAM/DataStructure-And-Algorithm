@@ -38,6 +38,7 @@ class Solution:
         return self.result
 
 # ------------------------------------------------------------------------
+# Local Function
 
 class Solution:
     def __init__(self):
