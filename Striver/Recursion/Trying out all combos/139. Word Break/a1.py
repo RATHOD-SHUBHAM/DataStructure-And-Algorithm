@@ -41,7 +41,6 @@ from collections import deque
 
 class Solution:
     def wordBreak(self, s: str, wordDict: List[str]) -> bool:
-
         wordSet = set(wordDict)
         queue = deque([0]) # append start index
         
@@ -55,13 +54,14 @@ class Solution:
                 return True
             
             for end in range(start, len(s) + 1):
-                # If the end point is already present - dont add again - just continue
-                if end in seen:
-                    continue
                 
                 cur_substring = s[start : end]
 
                 if cur_substring not in wordSet:
+                    continue
+                
+                # If the end point is already present - dont add again - just continue
+                if end in seen:
                     continue
                 
                 # if the cur_substring is present in wordSet
