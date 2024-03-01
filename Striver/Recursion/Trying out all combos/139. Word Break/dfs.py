@@ -35,33 +35,31 @@ class Solution:
 
 class Solution:
     def wordBreak(self, s: str, wordDict: List[str]) -> bool:
+        memo = {}
         wordSet = set(wordDict)
 
-        memo = {} # keep track of all the substring - valid and invalid
-
-        valid = self.memoization(memo, wordSet, s)
+        valid = self.isValid(s, wordSet, memo)
         memo[s] = valid
 
         return memo[s]
     
-    def memoization(self, memo, wordSet, s):
-        # if the substring is present in cache
+    def isValid(self, s, wordSet, memo):
         if s in memo:
             return memo[s]
         
         if s in wordSet:
             memo[s] = True
-            return True
+            return memo[s]
         
-        for end in range(len(s) + 1):
+        for end in range(len(s)):
             cur_substring = s[ : end]
 
-            # check if the current substring and the remaining substring are valid
-            if cur_substring in wordSet and self.memoization(memo, wordSet, s[end : ]):
-                memo[cur_substring] = True
-                return True
-            
+            if cur_substring in wordSet:
+                valid = self.isValid(s[end : ], wordSet, memo)
+
+                if valid:
+                    memo[s] = valid
+                    return memo[s]
         
         memo[s] = False
-        
-        return False
+        return memo[s]
