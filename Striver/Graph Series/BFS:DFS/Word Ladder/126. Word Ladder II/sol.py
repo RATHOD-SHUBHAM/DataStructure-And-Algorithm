@@ -1,52 +1,48 @@
-
 class Solution:
     def findLadders(self, beginWord: str, endWord: str, wordList: List[str]) -> List[List[str]]:
-        if endWord not in wordList:
-            return []
+        wordList.append(beginWord)
+
+        graph = collections.defaultdict(list)
         
-        visited = set()
-        path = []
-        
-        # create a graph
-        dic = collections.defaultdict(list)
         for word in wordList:
             for i in range(len(word)):
-                pattern = word[:i] + "*" + word[i+1 : ]
-                dic[pattern].append(word)
+                pattern = word[ : i] + '*' + word[i+1 : ]
 
+                graph[pattern].append(word)
         
-        # BFS
-        queue = [(beginWord, [beginWord])] # word, path
+        queue = []
+        queue.append([beginWord, [beginWord]]) # node and its sequence
+
+        visited = set()
         visited.add(beginWord)
 
+        output = []
+
         while queue:
-            # traverse till all the node at that level are exhausted
-            q_len = len(queue)
+            
+            # This makes sure that the word is accessible by other words from same level
+            neighbors_of_current_word = set() # keep track of neighbors visited by words of current level
 
-            # nodes visietd in current level
-            current_level_visited_node = set()
-
-            for _ in range(q_len):
-                word, sequence = queue.pop(0)
+            for _ in range(len(queue)):
+                
+                word , sequence = queue.pop(0)
 
                 if word == endWord:
-                    path.append(sequence)
+                    output.append(sequence)
                     continue
 
                 for i in range(len(word)):
-                    pattern = word[:i] + "*" + word[i+1 : ]
+                    pattern = word[ : i] + '*' + word[i+1 : ]
 
-                    for nei in dic[pattern]:
+                    for nei in graph[pattern]:
                         if nei in visited:
                             continue
-                        
+                    
                         new_sequence = sequence[:] + [nei]
-                        queue.append((nei, new_sequence))
-
-                        current_level_visited_node.add(nei)
-
-            # we can add a word to visited, after every word from pervious level has finished exploring
-            visited.update(current_level_visited_node)
-
+                        queue.append([nei, new_sequence])
+                        neighbors_of_current_word.add(nei)
+            
+            # add the node to visited after all the words from current level have finished exploring the word
+            visited.update(neighbors_of_current_word)
         
-        return path
+        return output
