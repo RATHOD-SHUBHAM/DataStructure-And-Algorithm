@@ -1,0 +1,7 @@
+Shortest Path in Weighted undirected graph
+
+You are given a weighted undirected graph having n vertices numbered from 1 to n and m edges describing there are edges between a to b with some weight, find the shortest path between the vertex 1 and the vertex n and if path does not exist then return a list consisting of only -1.
+
+Note - 
+1. If there exists a path, then return a list whose first element is the weight of the path.
+2. If no path exists then return a list containing a single element -1.
