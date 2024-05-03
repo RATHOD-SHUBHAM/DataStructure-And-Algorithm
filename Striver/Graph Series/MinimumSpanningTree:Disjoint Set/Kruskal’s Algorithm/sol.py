@@ -51,7 +51,7 @@ class Solution:
                 edges.append((wt, u, v))
                 
         # Step1 : Sorting the weights
-        edges.sort(key = lambda x : x[0])
+        edges.sort(key = lambda x : x[0]) # this will help connecting the smaller weight first.
         
         # print(edges)
         
