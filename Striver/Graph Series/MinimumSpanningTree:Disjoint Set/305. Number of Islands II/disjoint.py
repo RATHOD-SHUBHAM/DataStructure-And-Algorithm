@@ -66,7 +66,7 @@ class Solution:
             # there might be repeated cell
             if visited[u][v] == True:
                 # at present how many island are present - store that
-                answer.append(no_of_island)
+                answer.append(no_of_island) # if there are repeated cells
                 continue
                 
             no_of_island += 1 # he himself is a island initially
