@@ -111,7 +111,7 @@ class Solution:
                     parent_island_size = disjoint_obj.size[parent_island]
                     current_island_size += parent_island_size
 
-                island_size = max(island_size, current_island_size)
+                island_size = max(island_size, current_island_size) # get the max of all island
 
         
         # print(island_size)
