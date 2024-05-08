@@ -71,6 +71,9 @@ class Solution:
         '''
             Sort the cells based on its value
             Sorting will take care that each cell are visited in increasing time t 
+            
+            
+            depth = [(0, 0), (0, 1), (1, 0), (1, 1)] -> x will loop through depth - so initally x = (0,0) -> x[0] = 0, x[1] = 0
         '''
         positions = sorted(depth, key = lambda x : grid[x[0]][x[1]] ) # grid[i][j] -> i = x[0], j = x[1]
         print(positions)
