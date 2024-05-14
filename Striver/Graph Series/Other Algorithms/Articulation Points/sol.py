@@ -1,3 +1,14 @@
+'''
+- We have to reach a node before a particular node - not at the same time or after the node. Because, we might remove the current node then remaining node becomes stranded.
+
+- We will not consider starting node to be articulation point, becasue even if we remove the starting node, the other component will be like a single unit or province.
+    If the starting node has one child, then it doesnt make sense to remove the parent - the remaining node will still be one component.
+    If the starting node has more than one child then, we will consider it to be a articulation point.
+
+- If neighbor is visited - we dont look at the lowest time, insted we look at the time of creation.
+because we assume the node might be removed, and if the node is removed then we cannot reach the other node that we could via the current node.
+Hence we dont look at the lowest time, we consider the node time.
+'''
 import math
 class Solution:
     
