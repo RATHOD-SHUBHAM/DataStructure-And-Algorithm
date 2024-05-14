@@ -4,7 +4,7 @@ Strongly Connected Components are only possible in Directed Graph.
 Three Steps:
  1. Sort node based on their finish time.
  2. Reverse a graph.
- 3. Perform DFS and check for individual components.
+ 3. Perform DFS and capture no of nodes that can be visited from here.
 '''
 
 from collections import defaultdict
