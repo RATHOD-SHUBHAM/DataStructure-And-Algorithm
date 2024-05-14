@@ -1,3 +1,10 @@
+'''
+Three Steps:
+ 1. Sort node based on their finish time.
+ 2. Reverse a graph.
+ 3. Perform DFS and check for individual components.
+'''
+
 from collections import defaultdict
 class Solution:
     
@@ -35,6 +42,7 @@ class Solution:
         # print(SCC)
         
         return count
+        # return len(SCC)
     
     # ---------------------------------------------------------------------------
     
