@@ -1,49 +1,33 @@
-'''
-Consider
-    y = x1 + x2 where,
-    
-    y = total sum
-    x1 = First element
-    x2 = second element.
+# ------- Brute --------------------
 
-    we can write the above formula as,
+class Solution:
+    def lenOfLongSubarr (self, arr, n, k) : 
+        #Complete the function
+        cur_sum = 0
+        
+        max_len = 0
+        
+        left = right = 0
+        
+        while right < n:
+            if cur_sum == k:
+                str_len = (right - left)
+                max_len = max(max_len , str_len)
+                cur_sum -= arr[left]
+                left += 1
+            elif cur_sum > k:
+                while left < right and cur_sum > k:
+                    cur_sum -= arr[left]
+                    left += 1
+                cur_sum -= arr[right]
+            else:
+                cur_sum += arr[right]
+                right += 1
+        
+        return max_len
 
-    y - x2 = x1
 
-    Here x2 = k
-
-    so, if x1 is present in the dictionary, then x2 is the subset we are looking for.
-
-
-Example:
-
-    arr = [1,2,3]
-
-    x1 = 1 + 2 = 3
-
-    x2 = 3
-
-    y = (1+2) + (3) = 6
-
-    Now, if we are looking for k = 4
-
-    then y - 4 = x1
-
-    if x1 = 2 ? No, so we dont have a x2 as subset whose sum is 4
-
-    Similarly, if k = 3
-
-    y - 3 = x1,
-
-    we have x1 = 3, so we know x2 wll be a subset of 3
-
-So, here we will assume
-
-x2 = k
-
-y - k = x1, if x1 is there in dictionary, then x2 is a subset with value as k.
-
-'''
+# ---------- Math --------------------
 
 class Solution:
     def lenOfLongSubarr (self, arr, n, k) : 
