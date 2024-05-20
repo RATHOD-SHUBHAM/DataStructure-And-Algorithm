@@ -17,3 +17,16 @@ class Solution:
         
         return max(dic)
         
+'''
+class Solution:
+    def majorityElement(self, nums: List[int]) -> int:
+        n = len(nums)
+
+        dic = collections.defaultdict(int)
+
+        for i in range(n):
+            dic[nums[i]] += 1
+        
+        return max(dic)
+
+'''

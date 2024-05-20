@@ -1,3 +1,24 @@
+# Sorting 
+# Tc: O(nlogn) | Sc: O(1)
+
+class Solution:
+    def majorityElement(self, nums: List[int]) -> int:
+        n = len(nums)
+
+        if n <= 1:
+            return nums
+
+        nums.sort()
+
+        left = 0
+        right = n - 1
+
+        mid = left + (right - left) // 2
+
+        return nums[mid]
+    
+# ------------------------------------------------------------
+
 # Mode calculation
 
 # Tc and Sc: O(n)
@@ -16,7 +37,34 @@ class Solution:
                 dic[cur_num] = 1
         
         return max(dic)
+    
+'''
+class Solution:
+    def majorityElement(self, nums: List[int]) -> int:
+        n = len(nums)
+
+        dic = collections.defaultdict(int)
+
+        for i in range(n):
+            dic[nums[i]] += 1
         
+        return max(dic)
+
+'''
+
+# ------------------------------------------------------------
+
+# Using counter
+
+class Solution:
+    def majorityElement(self, nums: List[int]) -> int:
+        n = len(nums)
+
+        dic = collections.Counter(nums)
+        
+        # print(max(dic, key = lambda x: dic.get(x)))
+
+        return max(dic, key = lambda x : dic.get(x))       
 
 # ------------------------------------------------------------
 
