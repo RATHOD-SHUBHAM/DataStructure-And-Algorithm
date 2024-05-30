@@ -57,3 +57,18 @@ class Solution:
         
         return max_profit
         
+
+#  ----------- OR ----------------
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        n = len(prices)
+
+        profit = 0
+
+        for i in range(1, n):
+            # best time to buy is the smallest value prior this day
+            best_buy = min(prices[ : i])
+
+            profit = max(prices[i] - best_buy, profit)
+        
+        return profit

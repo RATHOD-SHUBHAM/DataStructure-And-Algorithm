@@ -1,12 +1,3 @@
-'''
-    We need to maximize the sum
-
-    Note:
-     -ve number will only decrease the sum. So we need to skip negative numbers.
-
-     If we carefully observe our algorithm, we can notice that the subarray always starts at the particular index where the sum variable is equal to 0
-'''
-
 class Solution:
     def maxSubArray(self, nums: List[int]) -> int:
         n = len(nums)
@@ -44,3 +35,20 @@ class Solution:
 
         print(nums[left : right + 1]) 
         return max_sum
+
+
+
+# ------------------- Algo -----------------------
+
+class Solution:
+    def maxSubArray(self, nums: List[int]) -> int:
+        n = len(nums)
+
+        max_subarray_sum = cur_sum = nums[0]
+
+        for i in range(1, n):
+            cur_sum = max(nums[i] , cur_sum + nums[i])
+            # print(cur_sum)
+            max_subarray_sum = max(max_subarray_sum , cur_sum)
+        
+        return max_subarray_sum
