@@ -24,6 +24,22 @@ class Solution:
     
 #  ----------- Single Pass ----------------
 
+# TLE
+
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        n = len(prices)
+
+        profit = 0
+
+        for i in range(1, n):
+            # best time to buy is the smallest value prior this day
+            best_buy = min(prices[ : i])
+
+            profit = max(prices[i] - best_buy, profit)
+        
+        return profit
+
 '''
     Profit is calculated as:
         Some_value - boughtPrice
@@ -56,19 +72,25 @@ class Solution:
             max_profit = max(profit, max_profit)
         
         return max_profit
-        
 
-#  ----------- OR ----------------
+
+# 2 Pointers.
+
 class Solution:
     def maxProfit(self, prices: List[int]) -> int:
         n = len(prices)
 
         profit = 0
 
-        for i in range(1, n):
-            # best time to buy is the smallest value prior this day
-            best_buy = min(prices[ : i])
+        left = 0 # buy day
+        right = 1 # Sell day
 
-            profit = max(prices[i] - best_buy, profit)
+        while right < n:
+            if prices[right] < prices[left]:
+                left = right
+            
+            profit = max(prices[right] - prices[left], profit)
+
+            right += 1
         
         return profit
