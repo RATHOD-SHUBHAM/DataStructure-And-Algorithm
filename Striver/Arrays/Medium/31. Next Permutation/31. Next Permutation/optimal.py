@@ -25,21 +25,29 @@ class Solution:
         n = len(nums)
         
         # Step 1: Find Break Point
+        '''
+            We start from the back , because in general, when we sort the value, we usually compare the right most value and move left.
+        '''
         pivotIdx = -1
         for i in reversed(range(n-1)):
             if nums[i] < nums[i+1]:
-                pivotIdx = i
+                pivotIdx = i # break point found
                 break
         
         print(pivotIdx)
 
+        # Edge case: When this is the last possible permuted value,
         # There cant be a next lexicographically permutation
         if pivotIdx == -1:
             # print(reversed(nums))
             return nums.reverse()
 
         # Step 2: Find the immediate next greater element to pivot 
+        '''
+            Find a value that is greater than the break point but lesser that then remaining value.
+        '''
         for i in reversed(range(pivotIdx, n)):
+            # based on the graph we can see that we can cleverly swap the values.
             if nums[i] > nums[pivotIdx]:
                 # swap value
                 nums[i], nums[pivotIdx] = nums[pivotIdx] , nums[i]
