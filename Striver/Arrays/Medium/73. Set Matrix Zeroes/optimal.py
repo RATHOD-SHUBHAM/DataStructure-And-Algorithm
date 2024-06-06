@@ -6,15 +6,16 @@ class Solution:
         m = len(matrix)
         n = len(matrix[0])
 
-        cellZero = False
+        cellZero = False # Extra row cel for the 0th column
 
         # Mark the col and row where there is zero
         for i in range(m):
             for j in range(n):
                 if matrix[i][j] == 0:
                     
-                    matrix[0][j] = 0
+                    matrix[0][j] = 0 # Mark the column as zero
                     
+                    # Mark the row as zero
                     if i == 0:
                         cellZero = True
                     else:
