@@ -1,30 +1,33 @@
+from collections import defaultdict
 class Solution:
     def nextGreaterElement(self, nums1: List[int], nums2: List[int]) -> List[int]:
         n1 = len(nums1)
         n2 = len(nums2)
 
-        nextGreater = []
+        op = []
 
-        idx_dict = collections.defaultdict()
-
+        # keep track of the index
+        dic = defaultdict(int)
         for i in range(n2):
-            idx_dict[nums2[i]] = i
+            dic[nums2[i]] = i
         
+        # print(dic)
+
+        # Get the next greatest
         for i in range(n1):
-            idx_of_nums2 = idx_dict[nums1[i]]
-            
-            if idx_of_nums2 == n2 - 1:
-                nextGreater.append(-1)
-                continue
+            val = nums1[i]
+            idx = dic[nums1[i]]
 
-
-            for j in range(idx_of_nums2 + 1, n2):
-                if nums2[j] > nums1[i]:
-                    nextGreater.append(nums2[j])
+            for j in range(idx+1, n2):
+                if nums2[j] > val:
+                    op.append(nums2[j])
                     break
-
+                
                 if j == n2 - 1:
-                    nextGreater.append(-1)
-                    break
-
-        return nextGreater
+                    op.append(-1)
+            
+            if idx == n2 - 1:
+                op.append(-1)
+        
+        # print(op)
+        return op
