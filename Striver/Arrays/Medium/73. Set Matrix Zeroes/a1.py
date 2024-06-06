@@ -69,7 +69,8 @@ class Solution:
         m = len(matrix)
         n = len(matrix[0])
 
-        cellZero = False # Extra row cel for the 0th column
+        # keep track of zero in every col of first row
+        cellZero = False # Extra row cell for the 0th column
 
         # Mark the col and row where there is zero
         for i in range(m):
