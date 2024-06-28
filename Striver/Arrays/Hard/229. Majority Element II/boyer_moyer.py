@@ -18,11 +18,11 @@ class Solution:
 
             if count_1 == 0 and mode_2 != cur_num:
                 mode_1 = cur_num
-                count_1 += 1
-            elif count_2 == 0 and mode_1 != cur_num:
+
+            if count_2 == 0 and mode_1 != cur_num:
                 mode_2 = cur_num
-                count_2 += 1
-            elif mode_1 == cur_num:
+
+            if mode_1 == cur_num:
                 count_1 += 1
             elif mode_2 == cur_num:
                 count_2 += 1
