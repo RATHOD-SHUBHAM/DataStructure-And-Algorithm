@@ -1,0 +1,30 @@
+# Subarray Problem
+
+1. 53. Maximum Subarray :
+    >> Find the largest sum subarray
+
+Sol: 
+i. Keep a counter to check of sum < 0
+ii. Keep pointer to track the subarray.
+
+or
+
+Kadanes Algorithm: Check if adding current number will increase or decrease the sum.
+
+
+---
+
+560. Subarray Sum Equals K:
+    >> Find total number a subarray whose sum = K
+
+Sol:
+    >> Keep a dictionary of running sum: Prefix sum
+
+---
+
+Largest subarray with k sum
+    >> Compute the length of the largest subarray with sum = k.
+
+Sol:
+    >> Keep a dictionary of running sum: Prefix sum
+    >> This dictionary will hold index instead of the sum.
