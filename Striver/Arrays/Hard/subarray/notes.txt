@@ -28,3 +28,11 @@ Largest subarray with k sum
 Sol:
     >> Keep a dictionary of running sum: Prefix sum
     >> This dictionary will hold index instead of the sum.
+
+---
+
+Subarray with given XOR
+
+Sol:
+    >> Keep a dictionary of running xor: Prefix xor
+    >> This dictionary will hold count of the cur_xor.

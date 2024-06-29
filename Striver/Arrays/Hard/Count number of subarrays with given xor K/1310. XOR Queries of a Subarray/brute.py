@@ -8,6 +8,9 @@ class Solution:
             left, right = queries[i]
 
             while left <= right:
+                '''
+                    XOR of the entire window frame.
+                '''
                 xor ^= arr[left]
                 left += 1
             
