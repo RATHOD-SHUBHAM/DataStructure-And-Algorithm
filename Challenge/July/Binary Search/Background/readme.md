@@ -22,3 +22,10 @@ Binary Search maintains the left, right, and middle indicies of the search space
 If the search ends with an empty half, the condition cannot be fulfilled and target is not found.
 
 Binary Search can take many alternate forms and might not always be as straight forward as searching for a specific value. Sometimes you will have to apply a specific condition or rule to determine which side (left or right) to search next.
+
+---
+
+
+# A hint for binary search:
+
+If the answer is always within a given range [1 - n], and the question asks the find Max or Min possible integer.

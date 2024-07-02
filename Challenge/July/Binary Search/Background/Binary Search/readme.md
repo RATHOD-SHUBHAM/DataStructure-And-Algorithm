@@ -17,3 +17,15 @@ It return the index to be inserted at if target is not found.
 If target is found:
     * bisect_right : return the right index.
     * bisect_left : return the left index.
+
+---
+
+# 3 Parts of a Successful Binary Search
+
+Binary Search is generally composed of 3 main sections:
+
+    * Pre-processing - Sort if collection is unsorted.
+
+    * Binary Search - Using a loop or recursion to divide search space in half after each comparison.
+
+    * Post-processing - Determine viable candidates in the remaining space.
