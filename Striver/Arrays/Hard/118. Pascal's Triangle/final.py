@@ -7,8 +7,8 @@ class Solution:
             cur_list = []
 
 
-            for i in range(1, len(arr)):
-                cur_sum = arr[i-1] + arr[i] # current number is always sum of current and previous index
+            for j in range(1, len(arr)):
+                cur_sum = arr[j-1] + arr[j] # current number is always sum of current and previous index
                 cur_list.append(cur_sum)
             
             new_list = [1] + cur_list + [1]
