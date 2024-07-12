@@ -94,6 +94,7 @@ class Solution:
                 left += 1
                 right -= 1
 
+            # Avoid duplicate
             while left != idx + 1 and left < right and nums[left] == nums[left - 1]:
                     left += 1
 
