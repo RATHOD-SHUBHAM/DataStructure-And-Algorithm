@@ -18,11 +18,10 @@ def insertionSort(array):
     for i in range(n):
         j = i
 
-        # Check if predecessor is smaller than current value
-        while j > 0 and array[j] < array[j-1]:
+        # Check if the predecessor is larger than the current element.
+        while j > 0 and array[j-1] > array[j]:
             # Swap
             array[j-1], array[j] = array[j], array[j-1]
-
             j -= 1
-
+    
     return array
