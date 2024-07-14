@@ -4,6 +4,7 @@
 '''
 
 import collections
+from typing import List
 
 # Bucket Sort - Because the answer is guranted to be unique
 class Solution:
