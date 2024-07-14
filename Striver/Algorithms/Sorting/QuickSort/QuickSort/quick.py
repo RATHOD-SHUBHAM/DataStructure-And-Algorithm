@@ -10,7 +10,7 @@ def quickSort(array):
 
 def quick(array, start, end):
     if start >= end:
-        return
+        return array
 
     # Pointers
     pivot = start
@@ -37,7 +37,7 @@ def quick(array, start, end):
     swap(array, pivot, right)
 
     # Get the smaller subarray
-    small_sub_array = right - 1 - start < end - right + 1
+    small_sub_array = ((right - 1) - start) < (end - (right + 1))
 
     if small_sub_array:
         quick(array, start, right - 1)
