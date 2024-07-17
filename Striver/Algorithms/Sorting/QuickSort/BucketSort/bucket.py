@@ -15,6 +15,7 @@ class Solution:
 
         # Step 2: add them to frequency table
         # Even if each number occurs one time. length of this list will be equal to len(nums)
+        # [1,1,1,1], count = 4
         freq_lst = [[] for _ in range(len(nums) + 1)]
         # print(freq_lst)
 
