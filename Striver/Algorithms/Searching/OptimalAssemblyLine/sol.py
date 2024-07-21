@@ -1,3 +1,11 @@
+'''
+    Goal is to figure out what is the optimal configuration such that, whatever station is going to take the longest time step, can have lowest duration possible 
+
+Steps:
+    1. Get the optimal time.
+    2. Check if this is the optimal time.
+'''
+
 import math
 
 def optimalAssemblyLine(stepDurations, numStations):
