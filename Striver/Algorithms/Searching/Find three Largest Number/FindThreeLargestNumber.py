@@ -1,16 +1,34 @@
-# ip = [-2, -1, 7]
-# so I cant keep zeros in my threeLargest
+# Tc: O(n) | Sc: O(1)
 
 def findThreeLargestNumbers(array):
-	threeLargest = [None,None,None]
-	
-	for num in array:
-		if threeLargest[2] is None or num > threeLargest[2] :
-			update_3_largest(threeLargest, num,2)
-		elif threeLargest[1] is None or num > threeLargest[1]:
-			update_3_largest(threeLargest, num,1)
-		elif threeLargest[0] is None or num > threeLargest[0]:
-			update_3_largest(threeLargest, num,0)
-			
-	return threeLargest
-			
+    res = [None, None, None]
+    compare(res, array)
+    return res
+
+def compare(res, array):
+    '''
+        Comapre the number with 3 values
+    '''
+    for num in array:
+        if res[2] == None or num > res[2]:
+            shift(2, num, res)
+        elif res[1] == None or num > res[1]:
+            shift(1, num, res)
+        elif res[0] == None or num > res[0]:
+            shift(0, num, res)
+
+    return
+
+def shift(idx, num, res):
+    if res[idx] == None:
+        # First encounter
+        res[idx] = num
+    else:
+        # Shift and place value in correct position
+        for i in range(0, idx + 1):
+            if i == idx:
+                res[idx] = num
+            else:
+                # shift left
+                res[i] = res[i+1]
+    return
