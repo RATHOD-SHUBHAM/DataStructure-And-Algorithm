@@ -14,6 +14,7 @@ class Solution:
                 open_bracket_count -= 1
             
             if open_bracket_count > 0:
+                # if open_bracket_count == 0, then its the outermost bracket
                 res.append(i)
             
             if i == "(":
