@@ -1,0 +1,12 @@
+# Run time for different 'n' size.
+
+- If n <= 12 Time complexity can be O(n!).
+- If n <= 25 Time complexity can be O(2^n).
+- If n <= 100 Time complexity can be O(n^4).
+- If n <= 500 Time complexity can be O(n^3).
+- If n <= 10 ^ 4 Time complexity can be O(n^2).
+- If n <= 10 ^ 6 Time complexity can be O(n log n).
+- If n <= 10 ^ 8 Time complexity can be O(n).
+- If n > 10 ^ 8 Time complexity can be O(log n) or 0(1).
+- If n <= 10 ^ 9 Time complexity can be O(sqrt{n}).
+- If n > 10 ^ 9 Time complexity can be O(log n) or 0(1).
