@@ -1,4 +1,4 @@
-# Using Sorted
+# --------- Using Sorted ---------
 
 def isSorted(arr, n) -> bool:
     return arr == sorted(arr)
@@ -11,7 +11,7 @@ if __name__ == "__main__":
     print(ans)
 
 
-# Using for loop
+# --------- Using for loop -------------
 
 def isSorted(arr, n) -> bool:
     for i in range(1, n):

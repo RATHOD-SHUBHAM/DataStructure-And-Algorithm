@@ -67,10 +67,11 @@ class Solution:
         left = 0
         right = n - 1
 
-        # Handle Duplicate Values
+        # Handle Duplicate Values : Only for last elements [eg: 1 1 2 1]. 
         while left < right and nums[left] == nums[right]:
             left += 1
 
+        # Findig the lowest point
         while left < right:
             # Inflation point
             mid = left + (right - left) // 2
@@ -80,7 +81,7 @@ class Solution:
                 left = mid + 1
             else:
                 # right side is in increasing order - so check left for rotation point
-                right = mid
+                right = mid # this should be mid becuase, there can be a chance that this mid could be the potential inflation point [eg: 7 9 1 1 3]
         
         rotation_point = left # or right
 
