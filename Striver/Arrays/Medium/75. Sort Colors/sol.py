@@ -25,19 +25,22 @@ class Solution:
         """
         n = len(nums)
 
-        p0 = 0 # keep track of 0
-        left = 0
-        right = n - 1 # Keep track of 2
+        left = 0 # keep track of 0's
+        p = 0
+        right = n - 1 # keep track of 2's
 
-        while left <= right:
-            if nums[left] == 2:
-                val = self.swap(left, right, nums)
+        while p <= right:
+            if nums[p] == 0:
+                self.swap(p, left, nums)
+                left += 1
+                p += 1
+            elif nums[p] == 2:
+                self.swap(p, right, nums)
                 right -= 1
-            elif nums[left] == 0:
-                self.swap(left, p0, nums)
-                p0 += 1
-                left += 1
             else:
-                left += 1
+                p += 1
         
         return nums
+    
+    def swap(self, x, y, nums):
+        nums[x], nums[y] = nums[y], nums[x]
