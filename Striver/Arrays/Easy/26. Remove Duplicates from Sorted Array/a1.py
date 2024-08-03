@@ -8,6 +8,32 @@ class Solution:
         return len(nums)
     
 
+# ------------------------ 3 pointer -------------------------
+
+class Solution:
+    def removeDuplicates(self, nums: List[int]) -> int:
+        n = len(nums)
+
+        i = 0 # keep track of the last index of unique elemet
+        j = 1
+        k = 1 # next index for unique element
+
+        while j < n:
+            if nums[j] == nums[i]:
+                j += 1
+            else:
+                self.swap(k , j, nums)
+                i = k
+                k += 1
+                j += 1
+        
+        return i + 1
+    
+    def swap(self, k, j, nums):
+        nums[k], nums[j] = nums[j], nums[k]
+        return
+    
+
 
 # ------------------------ 2 pointer -------------------------
 
@@ -16,7 +42,7 @@ class Solution:
     def removeDuplicates(self, nums: List[int]) -> int:
         n = len(nums)
 
-        insertPosition = 1
+        insertPosition = 1 # next idx for unique elemet
         idx = 1
 
         while idx < n:
@@ -30,30 +56,3 @@ class Solution:
         
         # print(insertPosition)
         return insertPosition
-
-# ------------------------ 3 pointer -------------------------
-class Solution:
-    def removeDuplicates(self, nums: List[int]) -> int:
-        n = len(nums)
-
-        i = 0
-        j = i
-        k = 1
-
-        while j < n:
-            if nums[i] == nums[j]:
-                j += 1
-            else:
-                self.swap(k, j, nums)
-                i = k
-                k += 1
-                j += 1
-        
-        # print(i)
-        # print(nums)
-
-        return i + 1
-    
-    def swap(self, k, j ,nums):
-        nums[k] , nums[j] = nums[j], nums[k]
-        return
