@@ -1,3 +1,5 @@
+# keep track of the subarray
+
 class Solution:
     def maxSubArray(self, nums: List[int]) -> int:
         n = len(nums)
@@ -39,6 +41,8 @@ class Solution:
 
 
 # ------------------- Algo -----------------------
+
+# Kadanes - Just give the max sum
 
 class Solution:
     def maxSubArray(self, nums: List[int]) -> int:
