@@ -9,6 +9,7 @@ class Solution:
     
 
 # ------------------------ 3 pointer -------------------------
+# Swap the values
 
 class Solution:
     def removeDuplicates(self, nums: List[int]) -> int:
@@ -20,6 +21,7 @@ class Solution:
 
         while j < n:
             if nums[j] == nums[i]:
+                # compare with first occurance
                 j += 1
             else:
                 self.swap(k , j, nums)
@@ -36,7 +38,7 @@ class Solution:
 
 
 # ------------------------ 2 pointer -------------------------
-
+# Copy the values
 
 class Solution:
     def removeDuplicates(self, nums: List[int]) -> int:
@@ -49,7 +51,7 @@ class Solution:
             # if not dulicate
             if nums[idx] != nums[idx - 1]:
                 # this is the next position after unique character
-                nums[insertPosition] = nums[idx]
+                nums[insertPosition] = nums[idx] 
                 insertPosition += 1
 
             idx += 1
