@@ -1,3 +1,5 @@
+# This works for both positive and negative number
+
 class Solution:
     def rearrangeArray(self, nums: List[int]) -> List[int]:
         n = len(nums)
