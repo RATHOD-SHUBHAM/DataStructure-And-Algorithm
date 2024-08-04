@@ -103,7 +103,7 @@ class Solution:
         # print(nums)
 
         # Step 3: Sort the element after pivot idx
-        nums[pivotIdx + 1 : ] = reversed(nums[pivotIdx + 1 : ])
+        nums[pivotIdx + 1 : ] = reversed(nums[pivotIdx + 1 : ]) # just reverse the element, as they will be already sorted in decresing order
 
         # print(nums)
 
