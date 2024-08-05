@@ -2,17 +2,20 @@ class Solution:
     #Back-end complete function Template for Python 3
     
     #Function to find the leaders in the array.
-    def leaders(self, A, N):
-        leader = []
+    def leaders(self,n, arr):
+        #Code here
         
-        currentLeader = A[N-1]
+        leaders = []
         
-        for i in reversed(range(N)):
-            curNum = A[i]
+        cur_leader = arr[-1]
+        
+        for i in reversed(range(n)):
+            cur_num = arr[i]
             
-            if curNum >= currentLeader:
-                leader.append(curNum)
-                currentLeader = curNum
+            if cur_num >= cur_leader:
+                # Update the leader
+                leader = cur_num
+                leaders.append(leader)
                 
-        return leader[::-1]
-            
+        
+        return leaders[::-1]
