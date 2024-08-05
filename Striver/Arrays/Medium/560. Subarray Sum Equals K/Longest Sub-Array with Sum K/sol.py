@@ -3,7 +3,7 @@
 class Solution:
     def lenOfLongSubarr (self, arr, n, k) : 
         #Complete the function
-        dic = {}
+        dic = {0 : -1}
         
         max_len = 0
         
@@ -12,12 +12,8 @@ class Solution:
         for right in range(n):
             
             cur_sum += arr[right] # y = x1 + x2
-            
-            # first encounter of  sum == k
-            if cur_sum == k:
-                max_len = right + 1
                 
-            elif cur_sum - k in dic:
+            if cur_sum - k in dic:
                 '''
                     y = x1 + x2
                     y - x2 = x1
