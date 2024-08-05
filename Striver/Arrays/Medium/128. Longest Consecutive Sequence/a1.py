@@ -2,57 +2,57 @@
 
 class Solution:
     def longestConsecutive(self, nums: List[int]) -> int:
+        num_set = set(nums)
+        
         n = len(nums)
 
-        num_set = set(nums)
-
-        max_count = 0
+        LCS = 0
 
         for i in range(n):
             cur_num = nums[i]
 
-            if cur_num - 1 not in num_set:
-                count = 1
+            if cur_num - 1 in num_set:
+                continue
+            
+            count = 0
+            while cur_num in num_set:
+                count += 1
+                cur_num += 1
 
-                while cur_num + 1 in num_set:
-                    count += 1
-
-                    cur_num = cur_num + 1
-                
-                max_count = max(max_count, count)
-        
-        return max_count
+            LCS = max(LCS, count)
+            
+        return LCS
 
 # --------------- With sequence ---------------
 
 class Solution:
     def longestConsecutive(self, nums: List[int]) -> int:
+        num_set = set(nums)
+        
         n = len(nums)
 
-        num_set = set(nums)
+        LCS = 0
 
-        conseq_num = []
-
-        max_count = 0
+        sequence = []
 
         for i in range(n):
             cur_num = nums[i]
 
-            if cur_num - 1 not in num_set:
-                count = 1
-                cur_conseq_num = []
+            if cur_num - 1 in num_set:
+                continue
+            
+            count = 0
+            cur_seq = []
+            while cur_num in num_set:
+                count += 1
+                cur_seq.append(cur_num)
+                cur_num += 1
 
-                while cur_num + 1 in num_set:
-                    count += 1
-                    cur_conseq_num.append(cur_num)
 
-                    cur_num = cur_num + 1
-                
-                cur_conseq_num.append(cur_num) # append the last element
-                if count > max_count:
-                    max_count = count
-                    conseq_num = cur_conseq_num[:]
-        
-        print(conseq_num)
-        return max_count
+            if count > LCS:
+                LCS = count
+                sequence[:] = cur_seq[:]
+
+        print(sequence)
+        return LCS
 
