@@ -14,6 +14,26 @@ class Solution:
         
         return arr
     
+
+# ------------ Reverse the array and find the greatest ---------------
+
+class Solution:
+    def replaceElements(self, arr: List[int]) -> List[int]:
+        n = len(arr)
+
+        op = []
+        op.append(-1)
+
+        cur_greatest = arr[-1]
+
+        for i in reversed(range(n-1)):
+            op.append(cur_greatest)
+
+            if arr[i] > cur_greatest:
+                cur_greatest = arr[i]
+        
+        return op[::-1]
+    
 # ------------ Reverse the array and find the greatest ---------------
 
 # Tc: O(n) | Sc: O(1)
@@ -29,7 +49,7 @@ class Solution:
         for i in reversed(range(n - 1)):
             cur_val = arr[i] # store the current value
 
-            arr[i] = greatest # Update the value at current position
+            arr[i] = greatest # Update the greatest value at current position
 
             # Update the gratest value
             if cur_val > greatest:
