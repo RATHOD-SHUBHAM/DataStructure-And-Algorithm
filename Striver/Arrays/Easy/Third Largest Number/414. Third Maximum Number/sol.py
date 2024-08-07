@@ -1,4 +1,6 @@
 # Follow up to Second largest problem
+import math
+
 class Solution:
     def thirdMax(self, nums: List[int]) -> int:
         n = len(nums)
