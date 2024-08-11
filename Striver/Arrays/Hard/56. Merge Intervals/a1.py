@@ -64,3 +64,26 @@ class Solution:
                 merged_intervals[-1][1] = max(end, merged_intervals[-1][1])
         
         return merged_intervals
+
+# ---------------------- Without comments ----------------------
+
+class Solution:
+    def merge(self, intervals: List[List[int]]) -> List[List[int]]:
+        n = len(intervals)
+
+        intervals.sort()
+
+        merged_interval = []
+        merged_interval.append(intervals[0])
+
+        for i in range(1, n):
+            cur_interval = intervals[i]
+
+            prev_interval = merged_interval[-1]
+
+            if cur_interval[0] <= prev_interval[1]:
+                merged_interval[-1][1] = max(prev_interval[1] , cur_interval[1])
+            else:
+                merged_interval.append(cur_interval)
+        
+        return merged_interval
