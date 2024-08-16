@@ -33,7 +33,7 @@ class Solution:
                 cur_window_size = j - i + 1
                 max_freq = max(freq.values())
 
-                # No of character to file
+                # No of character to flip
                 no_of_flip = cur_window_size - max_freq
 
                 if no_of_flip <= k:

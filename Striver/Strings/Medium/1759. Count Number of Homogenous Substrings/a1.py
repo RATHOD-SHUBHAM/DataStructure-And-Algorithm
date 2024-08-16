@@ -73,6 +73,7 @@ class Solution:
                 right += 1
 
             x = len(s[left : right])
+            # Total no of subarray that can be formed
             cnt += (x * (x+1)) // 2
 
             left = right
