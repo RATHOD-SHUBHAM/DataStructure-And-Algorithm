@@ -1,0 +1,9 @@
+# Airbnb | Implement Queue using fixed size array
+
+Q: Build a queue class with the enqueue and dequeue methods. 
+The queue can store an UNLIMITED number of elements but you are limited to using arrays that can store up to 5 elements max.
+
+or
+
+Q:  you only have a fixed size array of length 5. 
+Implement a queue datastructure that can get unlimitted number of elements.
