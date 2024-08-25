@@ -1,39 +1,31 @@
+# 1 Queue
+from collections import deque
 class MyStack:
 
     def __init__(self):
-        self.myQueue = []
-        
+        self.q1 = deque()
 
     def push(self, x: int) -> None:
-        self.myQueue.append(x)
+        self.q1.append(x)
 
-        n = len(self.myQueue)
-
-        # Reverse the Stack
-        for _ in range(n - 1):
-            val = self.pop()
-            self.myQueue.append(val)
-
+        # Rotate the Array
+        for _ in range(len(self.q1) - 1):
+            # Rotate till last but one array
+            self.q1.append(self.q1.popleft())
         
 
     def pop(self) -> int:
-        if self.empty():
-            return 
+        val = self.q1.popleft()
         
-        val = self.myQueue.pop(0)
-
         return val
         
 
     def top(self) -> int:
-        if self.empty():
-            return 
-        
-        return self.myQueue[0]
-        
+        top_ele = self.q1[0]
+        return top_ele
 
     def empty(self) -> bool:
-        if len(self.myQueue) == 0:
+        if not self.q1:
             return True
         else:
             return False
