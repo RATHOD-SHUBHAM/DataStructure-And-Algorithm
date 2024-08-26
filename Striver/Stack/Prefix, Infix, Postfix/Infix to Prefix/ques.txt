@@ -1,0 +1,4 @@
+Convert Infix To Prefix Notation
+
+Input: str = "x+y*z/w+u"
+Output: ++x/*yzwu
