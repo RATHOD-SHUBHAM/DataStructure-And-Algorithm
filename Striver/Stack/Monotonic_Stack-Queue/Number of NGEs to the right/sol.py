@@ -1,3 +1,5 @@
+# Tc: O(n), n = len(arr) | Sc: O(1)
+
 class Solution:
     def count_NGEs(self, N, arr, queries, indices):
         n = len(indices)
