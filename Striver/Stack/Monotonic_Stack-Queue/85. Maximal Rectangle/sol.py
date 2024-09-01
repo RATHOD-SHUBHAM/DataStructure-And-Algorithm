@@ -1,3 +1,6 @@
+# Tc: O(m*n) for prefix sum + O(n) Histogram stuff
+# Sc: O(m*n) + O(n)
+
 from typing import List
 import math
 
