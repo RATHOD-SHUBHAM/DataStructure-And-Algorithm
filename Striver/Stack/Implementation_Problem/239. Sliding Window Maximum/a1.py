@@ -36,7 +36,7 @@ class Solution:
             cur_ele = nums[i]
             
             # Check if the current element is the max elemenet, Pop from top of stack
-            while dq and cur_ele > nums[dq[-1]]:
+            while dq and cur_ele >= nums[dq[-1]]:
                 dq.pop()
             
             dq.append(i) # Monotonic deque
