@@ -17,3 +17,6 @@ if __name__ == '__main__':
     
     binary_str = '1011'
     print(obj.binaryTodecimal(binary_str=binary_str))
+
+
+
