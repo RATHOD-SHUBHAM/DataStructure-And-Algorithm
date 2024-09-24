@@ -8,6 +8,8 @@ class Solution:
             cur_bit = int(binary_str[i])
 
             decimal_number += cur_bit * (2 ** (n-i - 1))
+            # This also works
+            # decimal_number += cur_bit * (1 << (n-i - 1))
 
         
         return decimal_number
