@@ -228,3 +228,15 @@ class Solution:
         a = a ^ b
         
         return a , b
+    
+
+
+# ------------------------ Divide Two Integers ------------------------
+
+'''
+Tip:
+    Use the nearest power of two, can calculate how many of them were used.
+'''
+
+# ------------------------ END ------------------------
+
