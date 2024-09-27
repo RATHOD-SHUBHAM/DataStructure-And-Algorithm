@@ -171,7 +171,7 @@ Tip:
 # ------------------------ Count Set Bit ------------------------
 
 '''
-Tip:
+Tip: Kernighan’s bit count algorithm
     1. Count the number of set bit.
     2. Unset a set bit, and check how many time you un-set the bit: Kernighan’s bit count algorithm
 '''
