@@ -1,0 +1,1 @@
+Given a number n, the task is to find the XOR from 1 to n. 
