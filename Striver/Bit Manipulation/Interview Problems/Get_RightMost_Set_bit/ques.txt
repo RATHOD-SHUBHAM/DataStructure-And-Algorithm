@@ -1,0 +1,9 @@
+Find the the rightmost set bit of a number
+
+Input:
+N = 12
+Output = 4
+
+Input:
+N = 18
+Output = 2
