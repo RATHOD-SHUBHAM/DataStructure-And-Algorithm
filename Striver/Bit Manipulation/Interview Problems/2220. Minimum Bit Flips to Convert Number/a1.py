@@ -7,7 +7,6 @@ class Solution:
         count = 0
         while xor_result:
             count += xor_result & 1
-
             xor_result >>= 1
         
         return count

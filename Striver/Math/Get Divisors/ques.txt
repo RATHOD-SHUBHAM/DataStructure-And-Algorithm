@@ -1,0 +1,11 @@
+Given a positive integer N. Find all its divisor
+
+Input:
+N = 4
+Output:
+7
+
+Input:
+N = 12
+Output:
+28

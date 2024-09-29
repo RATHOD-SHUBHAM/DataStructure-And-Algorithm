@@ -1,0 +1,20 @@
+Given a number n. Reverse a number N.
+
+
+Examples :
+
+Input: n = 12
+Output: 21
+
+Input: n = 2446
+Output: 6442
+
+Input: n = 23
+Output: 32
+
+Expected Time Complexity: O(n)
+Expected Space Complexity: O(1)
+ 
+
+Constraints:
+1<= n <=105
