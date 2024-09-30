@@ -1,0 +1,11 @@
+Given a positive integer N, the task is to write a Python program to check if the number is Prime or not.
+
+Input:
+7
+Output:
+True
+
+Input:
+36
+output:
+False
