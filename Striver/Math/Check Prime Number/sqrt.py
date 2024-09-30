@@ -11,6 +11,9 @@ import sys
 import math
 class Solution:
     def check_prime(self, num):
+        if num > 1 and num < 4:
+            return True
+        
         count = 0
         sqrt_n = math.floor(math.sqrt(num))
 
