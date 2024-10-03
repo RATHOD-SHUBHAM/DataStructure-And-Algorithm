@@ -1,0 +1,33 @@
+Count Primes In Range
+
+Given two numbers L and R(L<R). Count all the prime numbers in the range [L, R].
+
+Example 1:
+
+Input:
+L=1,R=10
+Output:
+4
+Explanation:
+There are 4 primes in this range, 
+which are 2,3,5 and 7.
+Example 2:
+
+Input:
+L=5,R=10
+Output:
+2
+Explanation:
+There are 2 primes in this range, 
+which are 5 and 7.
+
+Your Task:
+You don't need to read input or print anything. Your task is to complete the function countPrimes() which takes the two integers L and R as input parameters and returns the number of prime numbers in the range [L, R].
+
+
+Expected Time Complexity:O(RLogLog(R))
+Expected Auxillary Space:O(R)
+
+
+Constraints:
+1<=L<R<=2*105
