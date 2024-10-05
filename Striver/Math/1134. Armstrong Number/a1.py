@@ -41,3 +41,18 @@ class Solution:
         power_n = self.getPower(str_n, k)
 
         return n == power_n
+
+# --------------------------------------
+
+class Solution:
+    def isArmstrong(self, n: int) -> bool:
+        nums = str(n)
+
+        x = len(nums)
+        armstrong_number = 0
+
+        for num in nums:
+            cur_num = int(num)
+            armstrong_number += (cur_num ** x)
+        
+        return armstrong_number == n
