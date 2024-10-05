@@ -1,5 +1,5 @@
 class Solution:
-    def evenlyDivides (self, N):
+    def reverse_number (self, N):
         count = 0
         new_number = 0
         
