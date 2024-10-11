@@ -16,6 +16,11 @@ we know that the maximum value of result is 2^31−1.
 So, if result turns out to be more than this, it means that the leftmost set bit is a sign bit. 
 So, we need to convert it to 2's complement. 
 We can do this by subtracting 2^32 from result
+
+INT_MAX = (2 ** 31) - 1
+        
+if result > INT_MAX:
+    result = result - (2 ** 32)
 '''
 
 # Tc: O(N * 32) | Sc: O(1)
