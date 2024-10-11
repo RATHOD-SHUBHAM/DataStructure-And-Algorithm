@@ -1,0 +1,11 @@
+Bit Manipulation
+
+Given a 32 bit unsigned integer num. Get the right most set bit.
+
+Examples :
+
+Input: 10 
+Output: 0010
+
+Input: 12
+Output: 0100
