@@ -22,7 +22,7 @@ class Solution:
             return False
         
         count = 0
-        x = 1
+        x = 1 # Power
 
         while x <= n:
             if (n & x) >= 1:

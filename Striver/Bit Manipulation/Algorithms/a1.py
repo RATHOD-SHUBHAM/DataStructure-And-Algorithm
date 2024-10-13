@@ -220,7 +220,7 @@ Tip: Kernighan’s bit count algorithm
 '''
 
 
-# ------------------------ Set Un-Set ------------------------
+# ------------------------ Set Un-Set Right Most Bit------------------------
 
 '''
 One number above can set a bit
