@@ -38,7 +38,48 @@ class Solution:
                 left += 1
 
 
+class Solution:
+    def __init__(self):
+        self.op = []
 
+    def threeSum(self, nums: List[int]) -> List[List[int]]:
+        n = len(nums)
+
+        nums.sort()
+
+        for i in range(n - 2):
+            if nums[i] > 0:
+                break
+            
+            if i == 0 or nums[i] != nums[i-1]:
+                self.twoSum(i, nums, n)
+            
+        
+        return self.op
+    
+    def twoSum(self, i, nums, n):
+        left = i + 1
+        right = n - 1
+
+        while left < right:
+            cur_sum = nums[i] + nums[left] + nums[right]
+
+            if cur_sum == 0:
+                self.op.append([nums[i] , nums[left] , nums[right]])
+                left += 1
+                right -= 1
+
+                while left < right and nums[left] == nums[left - 1]:
+                    left += 1
+                
+                while left < right and nums[right] == nums[right + 1]:
+                    right -= 1
+                
+            elif cur_sum > 0:
+                right -= 1
+            
+            else:
+                left += 1
 # ------------------------------ Two Sum III ------------------------------
 
 class TwoSum:
@@ -102,3 +143,76 @@ class Solution:
                 max_sum = max(max_sum, cur_sum)
         
         return max_sum
+
+# ------------------------------ Three Sum  ------------------------------
+
+class Solution:
+    def __init__(self):
+        self.op = []
+
+    def threeSum(self, nums: List[int]) -> List[List[int]]:
+        n = len(nums)
+
+        nums.sort()
+
+        for i in range(n - 2):
+            if nums[i] > 0:
+                break
+            
+            if i == 0 or nums[i] != nums[i-1]:
+                self.twoSum(i, nums, n)
+            
+        
+        return self.op
+    
+    def twoSum(self, i, nums, n):
+        left = i + 1
+        right = n - 1
+
+        while left < right:
+            cur_sum = nums[i] + nums[left] + nums[right]
+
+            if cur_sum == 0:
+                self.op.append([nums[i] , nums[left] , nums[right]])
+                left += 1
+                right -= 1
+
+                while left < right and nums[left] == nums[left - 1]:
+                    left += 1
+                
+                while left < right and nums[right] == nums[right + 1]:
+                    right -= 1
+                
+            elif cur_sum > 0:
+                right -= 1
+            
+            else:
+                left += 1
+
+
+# ------------------------------ Three Sum Smaller ------------------------------
+
+class Solution:
+    def threeSumSmaller(self, nums: List[int], target: int) -> int:
+        nums.sort()
+        n = len(nums)
+
+        count = 0
+
+        for i in range(n):
+
+            left = i + 1 
+            right = n - 1
+
+            while left < right:
+                cur_sum = nums[i] + nums[left] + nums[right]
+
+                if cur_sum < target:
+                    count += 1
+                    # we know all the elements in between will also result in sum less than target.
+                    count += (right - left - 1) 
+                    left += 1
+                else:
+                    right -= 1
+
+        return count 
