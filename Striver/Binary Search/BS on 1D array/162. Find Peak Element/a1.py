@@ -48,7 +48,7 @@ class Solution:
         
         mid = left + (right - left) // 2
 
-        # Edge
+        # Edge - Number is grater than both left and right
         if (mid - 1 == -1 or nums[mid] > nums[mid - 1]) and (mid + 1 == n or nums[mid] > nums[mid + 1]):
             return mid
         
