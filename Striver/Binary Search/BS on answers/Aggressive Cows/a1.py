@@ -89,7 +89,7 @@ class Solution:
         
         # Max distance will be when first cow is placed in first position and last cow is placed in last position
         right = max(stalls) 
-        left = min(stalls)
+        left = 1
 
         largest_min_dist = -1
 
