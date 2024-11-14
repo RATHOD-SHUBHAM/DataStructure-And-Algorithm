@@ -33,8 +33,8 @@ class Solution:
 
         while left <= right:
             '''
-                mid1 = # of element from nums1
-                mid2 = # of element from nums2
+                arr1 = mid1 = # of element from nums1
+                arr2 = mid2 = # of element from nums2
             '''
             mid1 =(left + right) // 2
             mid2 = left_side - mid1
@@ -55,6 +55,14 @@ class Solution:
                 l2 = nums2[mid2 - 1]
 
             # step 2.2 : Check if this form the perfect symmetry
+            """
+            We will only check the symmertries -> Why?
+            Because l1 will always be less than r1, and l2 will always be less that r2
+            why?
+            Because l1 belong the same array as r1, and this array is already sorted
+            similarly
+            l2 belong the same array as r2, and this array is already sorted
+            """
             if l1 <= r2 and l2 <= r1:
                 if V % 2 == 0:
                     return (max(l1, l2) + min(r1, r2)) / 2
