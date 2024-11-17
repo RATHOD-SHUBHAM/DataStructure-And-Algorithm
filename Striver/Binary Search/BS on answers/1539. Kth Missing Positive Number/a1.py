@@ -1,15 +1,3 @@
-# --------------------- Brute Force ---------------------
-
-# Push the scale
-class Solution:
-    def findKthPositive(self, arr: List[int], k: int) -> int:
-        for num in arr:
-            if num > k:
-                return k
-            else:
-                k += 1
-        return k
-    
 # --------------------- Set Brute Force ---------------------
 
 class Solution:
@@ -30,6 +18,19 @@ class Solution:
         
         return cur_missing
 
+
+# --------------------- Brute Force ---------------------
+
+# Push the scale
+class Solution:
+    def findKthPositive(self, arr: List[int], k: int) -> int:
+        for num in arr:
+            if num > k:
+                return k
+            else:
+                k += 1
+        return k
+    
 # --------------------- Better ---------------------
 
 class Solution:
