@@ -6,23 +6,28 @@
 #         self.val = val
 #         self.left = left
 #         self.right = right
+
 class Solution:
-    def preorderTraversal(self, root: Optional[TreeNode]) -> List[int]:
+    def postorderTraversal(self, root: Optional[TreeNode]) -> List[int]:
         if not root:
             return []
-
+        
         op = []
         self.dfs(root, op)
         return op
     
     def dfs(self, root, op):
-        op.append(root.val)
-
+        # Left
         if root.left:
             self.dfs(root.left, op)
+        
+        # Right
         if root.right:
             self.dfs(root.right, op)
         
+        # Root
+        op.append(root.val)
+
         return
     
 
@@ -34,23 +39,30 @@ class Solution:
 #         self.val = val
 #         self.left = left
 #         self.right = right
+
 class Solution:
-    def preorderTraversal(self, root: Optional[TreeNode]) -> List[int]:
+    def postorderTraversal(self, root: Optional[TreeNode]) -> List[int]:
         if not root:
             return []
-
+        
         op = []
         stack = [root]
 
         while stack:
-            node = stack.pop()
-            op.append(node.val)
+            node = stack[-1]
 
-            # Append in opposite direction
+            # It can be a leaft node or root node. If this is the root node - then there will be no edges,
+            if not node.left and not node.right:
+                leaf_node = stack.pop()
+                op.append(leaf_node.val)
+            
+            # Remove edges for the current node
             if node.right:
                 stack.append(node.right)
+                node.right = None
             
             if node.left:
                 stack.append(node.left)
+                node.left = None
         
         return op
