@@ -50,6 +50,7 @@ class Solution:
             for _ in range(q_size):
                 node, depth = queue.pop(0)
 
+                # Check if leaf node
                 if not node.left and not node.right:
                     return depth
 

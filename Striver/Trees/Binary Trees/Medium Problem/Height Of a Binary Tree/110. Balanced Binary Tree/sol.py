@@ -10,26 +10,25 @@ class Solution:
         if not root:
             return True
         
-        depth_of_left_subTree = self.depth(root.left)
-        depth_of_right_subTree = self.depth(root.right)
-
+        left_child_depth = self.height(root.left)
+        right_child_depth = self.height(root.right)
 
         # Check if left subtree and right subtree are balanced
-        if depth_of_left_subTree == -1 or depth_of_right_subTree == -1 or abs(depth_of_left_subTree - depth_of_right_subTree) > 1:
+        if left_child_depth == -1 or right_child_depth == -1 or abs(left_child_depth - right_child_depth) > 1:
             return False
-        else:
-            return True
+        
+        return True
     
-
-    def depth(self, root):
+    def height(self, root):
         if not root:
             return 0
-        
-        left_subTree_height = self.depth(root.left)
-        right_subTree_height = self.depth(root.right)
 
-        if left_subTree_height == -1 or right_subTree_height == -1 or abs(left_subTree_height - right_subTree_height) > 1:
+        left_child_depth = self.height(root.left)
+        right_child_depth = self.height(root.right)
+
+        # Check if left subtree and right subtree are balanced
+        if left_child_depth == -1 or right_child_depth == -1 or abs(left_child_depth - right_child_depth) > 1:
             return -1
         
-        # height of subtree
-        return 1 + max(left_subTree_height , right_subTree_height)
+        # Height of a Binary Tree
+        return 1 + max(left_child_depth, right_child_depth)
