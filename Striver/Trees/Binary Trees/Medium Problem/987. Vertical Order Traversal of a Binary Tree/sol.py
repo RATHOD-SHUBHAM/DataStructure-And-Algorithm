@@ -13,19 +13,23 @@ class Solution:
         self.column_wise_data = defaultdict(list) # Key = column , value = (row, node)
     
     def bfs(self, root):
-        queue = deque([(root, 0, 0)]) # Node, Row, Column
+        queue = [(root, 0, 0)] # Node, Row, Column
 
         while queue:
-            node, row, column = queue.popleft()
+            node, row, column = queue.pop(0)
 
-            if node is not None:
-                self.column_wise_data[column].append((row, node.val))
-                self.min_column = min(self.min_column, column)
-                self.max_column = max(self.max_column, column)
+            self.column_wise_data[column].append((row, node.val))
+            self.min_column = min(self.min_column, column)
+            self.max_column = max(self.max_column, column)
 
-                # left and right children will be at positions (row + 1, col - 1) and (row + 1, col + 1)
+            # left and right children will be at positions (row + 1, col - 1) and (row + 1, col + 1)
+            if node.left:
                 queue.append((node.left, row + 1, column - 1))
+            
+            if node.right:
                 queue.append((node.right, row + 1, column + 1))
+        
+        return
 
     def verticalTraversal(self, root: Optional[TreeNode]) -> List[List[int]]:
         if root is None:
@@ -33,15 +37,15 @@ class Solution:
 
         # step 1). BFS traversal
         self.bfs(root)
-        print(self.column_wise_data)
+        # print(columnTable)
 
         # step 2). Extract the values from the columnTable
-        ret = []
+        op = []
         for col in range(self.min_column, self.max_column + 1):
             # sort first by 'row', if they belong to same row then sort by 'value', in ascending order
             temp = []
             for row, val in sorted(self.column_wise_data[col]):
                 temp.append(val)
-            ret.append(temp)
+            op.append(temp)
 
-        return ret
+        return op
