@@ -2,7 +2,7 @@
 # Space Complexity = O(log)n
 
 def quickselect(array, k):
-    pos = k - 1
+	pos = k - 1
 	helper(array,0,len(array)-1,pos)
 	return array[pos]
 	 
