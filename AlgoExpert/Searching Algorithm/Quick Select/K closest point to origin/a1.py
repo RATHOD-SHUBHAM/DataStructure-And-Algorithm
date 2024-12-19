@@ -100,71 +100,73 @@ class Solution:
 
 # --------------------- Binary Search + Quick Select  ---------------------
 
+import math
+
 class Solution:
-    def kClosest(self, points, k):
-        return self.quickSelect(points, k)
-
-    def quickSelect(self, points, k):
-        n = len(points)
-
-        left = 0
-        right = n - 1
-
-        pivot_index = n
-
-        while pivot_index != k:
-            # Binray Search
-            pivot_index = self.partition(points,left,right) # divide the array by placing the pivot at right position
-
-            # if my k < pivot then I should sort left array
-            if k > pivot_index:
-                left = pivot_index  
-            elif k < pivot_index:
-                right = pivot_index - 1
-
-        return(points[:k])
+    def swap(self, i, j, points):
+        points[i], points[j] = points[j], points[i]
 
 
-    def partition(self,points,left,right):
-        '''Binary Search'''
-        
-        # find the pivot
-        pivot = left + (right - left) // 2 # Mid
-        pivotVal = self.getDistance(points[pivot])
-        # print(pivotVal)
+    def getDistance(self, point):
+        x1 = 0
+        y1 = 0
 
-        '''Sort the Points'''
-        while left < right:
-            # start putting the elements greater than pivot to right of pivot
-            if self.getDistance(points[left]) >= pivotVal:
-                # swap elements to make sure that all points closer than the pivot are to the left
-                self.swap(points,left,right)
-                right -= 1 # the greater array is on right of pivot so decrese the pointer
+        x2 , y2 = point
+
+        euclidian_distance = math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
+
+        return euclidian_distance
+
+    def binary_sort(self, points, left, right):
+        # Consider mid to be our pivot val
+        pivotIdx = left + (right - left) // 2
+        pivotVal = self.getDistance(points[pivotIdx])
+
+        # Place all the element smaller than this pivotVal to the left of it
+        while left <= right:
+            left_distance = self.getDistance(points[left])
+
+            if left_distance >= pivotVal:
+                self.swap(left, right, points)
+                right -= 1
             else:
                 left += 1
 
 
-        # print(points)
-        
-        # if my left is same as pivot or greater than pivot then all the elements on left of pivot is sorted
-        if self.getDistance(points[left]) < pivotVal:
-            left += 1 # pivot value is on left
-            # print(left)
+        # if left is same as pivot or greater than pivot then all the elements on left of pivot is smaller than pivot
+        left_distance = self.getDistance(points[left])
+        if left_distance < pivotVal:
+            # Pivot point is on the left
+            left += 1
+            # all the element on left is smaller than this val
             return left
-        else: # points[left] >= points[pivot] # if my left is same as pivot or greater than pivot then all the elements on left of pivot is sorted
+        else:
             return left
-    
 
-    def getDistance(self, points):
-        x1 = 0
-        y1 = 0
+    def binary_quick_select(self, points, k):
+        n = len(points)
 
-        x2 , y2 = points
+        # Initial Hypothetical Pivot Index
+        pivot_idx = n
 
-        euclidian_dist = math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
+        left = 0
+        right = n - 1
+
+        while pivot_idx != k: 
+            # get the new pivot index
+            new_pivot_idx = self.binary_sort(points, left, right)
+
+            if new_pivot_idx < k:
+                left = new_pivot_idx
+            elif new_pivot_idx > k:
+                right = new_pivot_idx - 1
+            else:
+                # new_pivot_idx == k
+                break
+            
+            pivot_idx = new_pivot_idx
         
-        return euclidian_dist
-        
+        return points[ : k]
 
-    def swap(self,array,left,right):
-        array[left], array[right] = array[right], array[left]
+    def kClosest(self, points: List[List[int]], k: int) -> List[List[int]]:
+        return self.binary_quick_select(points, k)
