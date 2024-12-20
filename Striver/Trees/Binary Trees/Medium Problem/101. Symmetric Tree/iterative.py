@@ -1,5 +1,4 @@
 # Definition for a binary tree node.
-
 # class TreeNode:
 #     def __init__(self, val=0, left=None, right=None):
 #         self.val = val
@@ -7,37 +6,25 @@
 #         self.right = right
 
 class Solution:
-    def isSymmetric(self, root: TreeNode) -> bool:
-        if not root.left and not root.right:
-            return True
+    def isSymmetric(self, root: Optional[TreeNode]) -> bool:
         
-        if not root.left or not root.right:
-            return False
-        
-        queue = [root.left, root.right]
+        queue = [[root.left, root.right]]
 
         while queue:
-            node_one = queue.pop(0)
-            node_two = queue.pop(0)
+            node_1, node_2 = queue.pop(0)
 
-            if not node_one and not node_two:
+            if not node_1 and not node_2:
+                # Continue because there can other nodes after this
                 continue
 
-            if not node_one or not node_two:
+            if not node_1 or not node_2:
                 return False
-        
             
-            if node_one.val != node_two.val:
+            if node_1.val != node_2.val:
                 return False
-
             
-            # node_one -> Left child, node_two -> Right Child
-            queue.append(node_one.left)
-            queue.append(node_two.right)
-
-            # node_one -> Right child, node_two -> Left Child
-            queue.append(node_one.right)
-            queue.append(node_two.left)
-
+            # Append in symmetrical manner
+            queue.append([node_1.left, node_2.right])
+            queue.append([node_2.left, node_1.right])
         
         return True

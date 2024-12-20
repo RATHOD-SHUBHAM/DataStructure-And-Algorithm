@@ -1,5 +1,4 @@
 # Definition for a binary tree node.
-
 # class TreeNode:
 #     def __init__(self, val=0, left=None, right=None):
 #         self.val = val
@@ -7,19 +6,20 @@
 #         self.right = right
 
 class Solution:
-    def isSymmetric(self, root: TreeNode) -> bool:
-        
-        leftChild = root.left
-        rightChild = root.right
-
-        return self.helper(leftChild, rightChild)
-    
-    def helper(self, leftChild, rightChild):
-        if leftChild and rightChild: # is not None
-            return leftChild.val == rightChild.val and self.helper(leftChild.left,rightChild.right) and self.helper(leftChild.right,rightChild.left)
-        
-        if (not leftChild and rightChild) or (leftChild and not rightChild):
-            return False
-        else:
+    def isSymmetric(self, root: Optional[TreeNode]) -> bool:
+        if not root.left and not root.right:
             return True
-            
+
+        if not root.left or not root.right:
+            return False
+        
+        return self.dfs(root.left, root.right)
+    
+    def dfs(self, root_1, root_2):
+        if not root_1 and not root_2:
+            return True
+        
+        if not root_1 or not root_2:
+            return False
+        
+        return root_1.val == root_2.val and self.dfs(root_1.left, root_2.right) and self.dfs(root_2.left, root_1.right)
