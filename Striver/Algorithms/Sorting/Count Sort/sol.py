@@ -1,3 +1,5 @@
+# Tc and Sc: O(N+M)
+
 class Solution:
     def count_sort(self, arr, k):
         n = len(arr)
