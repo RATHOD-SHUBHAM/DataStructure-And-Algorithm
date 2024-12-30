@@ -83,8 +83,10 @@ def construct_tree(nodes):
     tree_nodes = [root]
     
     index = 0  # Index to start at the root node
+    parent_idx = ((n-1)-1) // 2 # parentIdx of last node = (i-1)/2
+    for i in range(1, parent_idx+1):
     # Jump 2 - Since we have 2 children.
-    for i in range(1, n, 2):
+    # for i in range(1, n, 2):
         current_node = tree_nodes[index]  # Current node we're assigning children to
         
         # Left child index
