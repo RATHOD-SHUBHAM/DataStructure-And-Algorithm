@@ -18,7 +18,7 @@ def construct_tree(nodes):
     index = 0  # Index to start at the root node
 
     parent_idx = ((n-1)-1) // 2 # parentIdx of last node = (i-1)/2
-    for i in range(1, parent_idx+1):
+    for i in range(parent_idx+1):
     # for i in range(1, n, 2):
         current_node = tree_nodes[index]  # Current node we're assigning children to
         
@@ -42,7 +42,8 @@ def construct_tree(nodes):
     return root
 
 # Example usage:
-nodes = [1, 2, 3, 4, 5, 6, 7]
+# nodes = [1, 2, 3, 4, 5, 6, 7]
+nodes = [4,7,2,9,6,3,1]
 root = construct_tree(nodes)
 
 # To verify, you can write a helper function to print level-order traversal (just for testing)
