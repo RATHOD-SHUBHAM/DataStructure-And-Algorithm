@@ -34,7 +34,7 @@ class Solution:
         # get the left and right subtree info of the current node
         root_idx = inorder_dict[root_val]
 
-        # build the left and right subtree
+        # build the left and right subtree: Root -> Left -> Right
         root.left = self.construct(start, root_idx - 1, inorder_dict, preorder)
         root.right = self.construct(root_idx + 1, end, inorder_dict, preorder)
 
