@@ -14,6 +14,7 @@ class Solution:
         if not root:
             return 0
         
+        # Check if the tree is balanced or not
         # leftChild_height = self.height(root.left)
         # rightChild_height = self.height(root.right)
 
@@ -23,9 +24,11 @@ class Solution:
 
 
         if leftChild_height == rightChild_height:
+            """The Tree is Balanced"""
             # no of nodes = 2^h - 1
             return (2 ** leftChild_height) - 1
         else:
+            """The Tree is not Balanced"""
             # Count the nodes
             left_subtree_node_count = self.subtree_countNodes(root.left)
             right_subtree_node_count = self.subtree_countNodes(root.right)
@@ -33,15 +36,16 @@ class Solution:
             return 1 + left_subtree_node_count + right_subtree_node_count
     
 
-    def height(self, root):
-        """This will only work for balanced binary tree"""
-        if not root:
-            return 0
+    
+    # def height(self, root):
+    #     """This will only work for balanced binary tree"""
+    #     if not root:
+    #         return 0
         
-        leftChild_height = self.height(root.left)
-        rightChild_height = self.height(root.right)
+    #     leftChild_height = self.height(root.left)
+    #     rightChild_height = self.height(root.right)
 
-        return 1 + max(leftChild_height, rightChild_height)
+    #     return 1 + max(leftChild_height, rightChild_height)
     
     # For complete binary tree we can count left most and right most nodes, if they are not same, then they are imbalanced
     def left_height(self, node):
