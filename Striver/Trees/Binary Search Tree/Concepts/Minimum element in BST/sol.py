@@ -10,7 +10,7 @@ import math
 
 class Solution:
     #Function to find the minimum element in the given BST.
-    def __init__(self):
+    def __init__(self)s:
         self.min_val = math.inf
         
     def minValue(self, root):
