@@ -61,7 +61,39 @@ def print_level_order(root):
 # Print the level-order traversal of the constructed tree
 print(print_level_order(root))  # Expected output: [1, 2, 3, 4, 5, 6, 7]
 
+# ------------------------ Queue -------------------------------------
 
+class Solution:
+    def createTree(self, root, l):
+        # Code here
+        n = len(l)
+        
+        idx = 1
+        queue = [root]
+        
+        while stack:
+            node = queue.pop(0)
+            
+            if idx < n:
+                cur_val = l[idx]
+                node.left = Node(cur_val)
+                queue.append(node.left)
+            else:
+                break
+            
+            
+            idx += 1
+            
+            if idx < n:
+                cur_val = l[idx]
+                node.right = Node(cur_val)
+                queue.append(node.right)
+            else:
+                break
+            
+            idx += 1
+        
+        return root
 
 # ------------------------- Child -------------------------------------
 
@@ -129,3 +161,35 @@ def print_level_order(root):
 
 # Print the level-order traversal of the constructed tree
 print(print_level_order(root))  # Expected output: [1, 2, 3, 4, 5, 6, 7]
+
+# ------------------------- Child Queue -------------------------------------
+
+class Solution:
+    def createTree(self, root, l):
+        # Code here
+        n = len(l)
+        
+        queue = [(root, 0)]
+        
+        while queue:
+            node, i = queue.pop(0)
+            
+            first_child_idx = (2 * i) + 1
+            
+            if first_child_idx < n:
+                node.left = Node(l[first_child_idx])
+                queue.append((node.left, first_child_idx))
+                
+                
+                second_child_idx = (2 * i) + 2
+                
+                if second_child_idx < n:
+                    node.right = Node(l[second_child_idx])
+                    queue.append((node.right, second_child_idx))
+                else:
+                    break
+            
+            else:
+                break
+        
+        return root
