@@ -43,18 +43,20 @@ class Solution:
 class Solution:
     def removeDuplicates(self, nums: List[int]) -> int:
         n = len(nums)
-
-        insertPosition = 1 # next idx for unique elemet
-        idx = 1
-
-        while idx < n:
-            # if not dulicate
-            if nums[idx] != nums[idx - 1]:
-                # this is the next position after unique character
-                nums[insertPosition] = nums[idx] 
-                insertPosition += 1
-
-            idx += 1
         
-        # print(insertPosition)
-        return insertPosition
+        swap_idx = 0
+        i = 1
+        
+        while i < n:
+            if nums[i - 1] != nums[i]:
+                self.swap(i-1, swap_idx, nums)
+                swap_idx += 1
+            
+            i += 1
+        
+        self.swap(n-1, swap_idx, nums)
+
+        return swap_idx + 1
+    
+    def swap(self, i, j, nums):
+        nums[i], nums[j] = nums[j], nums[i]
