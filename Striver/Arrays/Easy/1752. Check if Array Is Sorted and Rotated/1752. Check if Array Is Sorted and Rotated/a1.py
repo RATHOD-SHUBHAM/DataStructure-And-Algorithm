@@ -1,4 +1,4 @@
-# Brute Force ------------------------------------------------
+# ----------------   Brute Force --------------------------------
 
 # Tc :O(n^2) | Sc :O(n)
 
@@ -8,40 +8,36 @@
 class Solution:
     def check(self, nums: List[int]) -> bool:
         n = len(nums)
+        sorted_nums = sorted(nums)
 
         for i in range(n):
-            if nums == sorted(nums):
-                return True
-            
-            # rotate array once
-            nums = nums[1 : ] + [nums[0]]
+            new_nums = nums[i : ] + nums[ : i]
 
+            if new_nums == sorted_nums:
+                return True
+        
         return False
     
-# Better Brute ------------------------------------------------
+# ------------------------- Better Brute: Inflation Point ----------------------------
 
 class Solution:
     def check(self, nums: List[int]) -> bool:
         n = len(nums)
-
-        i = 1
+        sorted_nums = sorted(nums)
 
         inflation_point = 0
 
-        while i < n:
-            if nums[i-1] <= nums[i]:
-                i += 1
-            else:
+        for i in range(1, n):
+            # Compare to previous element to get the inflation point
+            if nums[i-1] > nums[i]:
                 inflation_point = i
-                break
         
-        if nums[inflation_point :] + nums[ : inflation_point] == sorted(nums):
-            return True
-        else:
-            return False
+        new_nums = nums[inflation_point : ] + nums[ : inflation_point]
+
+        return new_nums == sorted_nums
     
 
-# Binary Search ------------------------------------------------
+# ----------------------- Binary Search -----------------------------
 
 
 '''
@@ -59,36 +55,34 @@ class Solution:
 class Solution:
     def check(self, nums: List[int]) -> bool:
         n = len(nums)
-
-        # if the array is just sorted and not rotated
-        if nums == sorted(nums):
-            return True
+        sorted_nums = sorted(nums)
 
         left = 0
         right = n - 1
 
-        # Handle Duplicate Values : Only for last elements [eg: 1 1 2 1]. 
+        inflation_point = self.binarySearch(left, right, nums)
+
+        new_nums = nums[inflation_point : ] + nums[ : inflation_point]
+
+        return new_nums == sorted_nums
+
+    def binarySearch(self, left, right, nums):
+
+        # Handle Duplicate Values
         while left < right and nums[left] == nums[right]:
             left += 1
 
-        # Findig the lowest point
         while left < right:
-            # Inflation point
             mid = left + (right - left) // 2
 
             if nums[mid] > nums[right]:
-                # left side is in increasing order - so check left for rotation point
+                # The inflation point is on the right
                 left = mid + 1
-            else:
-                # right side is in increasing order - so check left for rotation point
-                right = mid # this should be mid becuase, there can be a chance that this mid could be the potential inflation point [eg: 7 9 1 1 3]
+            elif nums[mid] <= nums[right]:
+                # Mid can be the inflation point or the inflation point is on the left
+                right = mid
         
-        rotation_point = left # or right
-
-        if nums[rotation_point :] + nums[ : rotation_point] == sorted(nums):
-            return True
-        else:
-            return False
+        return left
 
 
 
@@ -97,17 +91,16 @@ class Solution:
 class Solution:
     def check(self, nums: List[int]) -> bool:
         n = len(nums)
-        
-        # count no of inflation/break points
+
         count = 0
 
         for i in range(n):
-            # Compare every element to its previous element - also compare the last element to the first element.
-            if nums[(i-1) % n] > nums[i]:        
-                count += 1
+            prev_idx = (i-1) % n
 
+            if nums[prev_idx] > nums[i]:
+                count += 1
+            
             if count > 1:
-                # if break point greater than one, array cant be rotated
                 return False
         
         return True

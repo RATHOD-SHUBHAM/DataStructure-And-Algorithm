@@ -4,12 +4,12 @@
 class Solution:
     def check(self, nums: List[int]) -> bool:
         n = len(nums)
+        sorted_nums = sorted(nums)
 
         for i in range(n):
-            if nums == sorted(nums):
-                return True
-            
-            # rotate array once
-            nums = nums[1 : ] + [nums[0]]
+            new_nums = nums[i : ] + nums[ : i]
 
+            if new_nums == sorted_nums:
+                return True
+        
         return False

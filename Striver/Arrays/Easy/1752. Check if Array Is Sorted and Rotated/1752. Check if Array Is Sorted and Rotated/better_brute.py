@@ -1,19 +1,17 @@
+# Inflation point
+
 class Solution:
     def check(self, nums: List[int]) -> bool:
         n = len(nums)
-
-        i = 1
+        sorted_nums = sorted(nums)
 
         inflation_point = 0
 
-        while i < n:
-            if nums[i-1] <= nums[i]:
-                i += 1
-            else:
+        for i in range(1, n):
+            # Compare to previous element to get the inflation point
+            if nums[i-1] > nums[i]:
                 inflation_point = i
-                break
         
-        if nums[inflation_point :] + nums[ : inflation_point] == sorted(nums):
-            return True
-        else:
-            return False
+        new_nums = nums[inflation_point : ] + nums[ : inflation_point]
+
+        return new_nums == sorted_nums

@@ -1,3 +1,5 @@
+# Binary Search
+
 '''
     We Know that when an array is sorted 
         right > left
@@ -13,33 +15,31 @@
 class Solution:
     def check(self, nums: List[int]) -> bool:
         n = len(nums)
-
-        # if the array is just sorted and not rotated
-        if nums == sorted(nums):
-            return True
+        sorted_nums = sorted(nums)
 
         left = 0
         right = n - 1
+
+        inflation_point = self.binarySearch(left, right, nums)
+
+        new_nums = nums[inflation_point : ] + nums[ : inflation_point]
+
+        return new_nums == sorted_nums
+
+    def binarySearch(self, left, right, nums):
 
         # Handle Duplicate Values
         while left < right and nums[left] == nums[right]:
             left += 1
 
         while left < right:
-            # Inflation point
             mid = left + (right - left) // 2
 
             if nums[mid] > nums[right]:
-                # left side is in increasing order - so check left for rotation point
+                # The inflation point is on the right
                 left = mid + 1
-            else:
-                # right side is in increasing order - so check left for rotation point
+            elif nums[mid] <= nums[right]:
+                # Mid can be the inflation point or the inflation point is on the left
                 right = mid
         
-        rotation_point = left # or right
-
-        if nums[rotation_point :] + nums[ : rotation_point] == sorted(nums):
-            return True
-        else:
-            return False
-        
+        return left
