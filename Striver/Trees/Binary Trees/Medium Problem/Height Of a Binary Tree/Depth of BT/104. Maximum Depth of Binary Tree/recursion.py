@@ -9,11 +9,15 @@
 
 class Solution:
     def maxDepth(self, root: Optional[TreeNode]) -> int:
+        return self.heightOfTree(root)
+    
+    def heightOfTree(self, root:Optional[TreeNode]) -> int:
         if not root:
             return 0
+        
+        leftTree = self.heightOfTree(root.left)
+        rightTree = self.heightOfTree(root.right)
 
+        height_of_tree = 1 + max(leftTree, rightTree)
 
-        left_tree_height = self.maxDepth(root.left)
-        right_tree_height = self.maxDepth(root.right)
-
-        return 1 + max(left_tree_height , right_tree_height)
+        return height_of_tree

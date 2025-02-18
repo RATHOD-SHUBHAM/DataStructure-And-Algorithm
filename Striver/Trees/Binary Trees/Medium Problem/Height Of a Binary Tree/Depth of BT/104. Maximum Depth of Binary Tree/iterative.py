@@ -1,4 +1,6 @@
 # Definition for a binary tree node.
+
+# Definition for a binary tree node.
 # class TreeNode:
 #     def __init__(self, val=0, left=None, right=None):
 #         self.val = val
@@ -9,22 +11,20 @@ class Solution:
     def maxDepth(self, root: Optional[TreeNode]) -> int:
         if not root:
             return 0
+        
+        max_height = -math.inf
 
-        max_depth = 0     
-        cur_depth = 1
+        queue = [[root, 1]] # node, default node count
 
-        stack = []
-        stack.append([cur_depth, root])
+        while queue:
+            node, height = queue.pop(0)
 
-        while stack:
-            cur_depth , node = stack.pop()
-
-            max_depth = max(cur_depth, max_depth)
+            max_height = max(max_height, height)
 
             if node.left:
-                stack.append([cur_depth + 1, node.left])
+                queue.append([node.left, height + 1])
             
             if node.right:
-                stack.append([cur_depth + 1, node.right])
-
-        return max_depth
+                queue.append([node.right, height + 1])
+        
+        return max_height
