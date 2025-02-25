@@ -13,6 +13,7 @@ class Solution:
         
         self.column_wise_data = defaultdict(int)
     
+    # Vertical Order Traversal
     def bfs(self, root):
         queue =[[root, 0]] # Node, Column
         
