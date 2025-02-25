@@ -28,3 +28,32 @@ class Solution:
             queue.append([node_2.left, node_1.right])
         
         return True
+
+
+# --------------- Same Solution different way to write ---------------
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def isSymmetric(self, root: Optional[TreeNode]) -> bool:
+        stack = [[root.left, root.right]]
+
+        while stack:
+            p , q = stack.pop(0)
+
+            if not p and not q:
+                continue
+
+            if not p or not q:
+                return False
+            
+            if p.val != q.val:
+                return False
+            
+            stack.append([p.left, q.right])
+            stack.append([p.right, q.left])
+        
+        return True
