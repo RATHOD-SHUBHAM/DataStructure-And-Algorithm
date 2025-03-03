@@ -65,3 +65,61 @@ class Solution:
                         queue.append([nei, dist + 1])
             
         return op
+    
+# ----------------------- Iterative -----------------------
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution:
+    def __init__(self):
+        self.neighbor = collections.defaultdict(list)
+
+    def distanceK(self, root: TreeNode, target: TreeNode, k: int) -> List[int]:
+        stack = [[root, None]]
+
+        while stack:
+            node,parent = stack.pop()
+
+            if parent != None:
+                self.neighbor[node].append(parent)
+
+            if node.left:
+                self.neighbor[node].append(node.left)
+                stack.append([node.left, node])
+            
+            if node.right:
+                self.neighbor[node].append(node.right)
+                stack.append([node.right, node])
+        
+        op = []
+        visited = set()
+
+        stack = [[target, 0]]
+
+        count = 0 
+
+        while count <= k:
+            s_len = len(stack)
+
+            for i in range(s_len):
+
+                node, dist = stack.pop(0)
+                visited.add(node)
+
+                for nei in self.neighbor[node]:
+                    if nei not in visited:
+                        stack.append([nei, dist + 1])
+
+                if dist == k:
+                    op.append(node.val)
+
+            count += 1
+        
+        # print(op)
+        return op
+        
