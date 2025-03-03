@@ -27,6 +27,7 @@ class Solution:
         return self.op
     
     def dfs(self, root, cur_path):
+        # List is mutable.
         cur_path = cur_path + [root.data]
         
         if not root.left and not root.right:
