@@ -56,4 +56,45 @@ The height calculation methods use iterative approaches with O(1) extra space
 Therefore, the space complexity is O(log n)
 
 
+# Solution
+So basically , For every node we check if the node is a perfect binary tree
+if it is a perfect binary tree we apply the fomula to find the total number of nodes in the tree ((2^h) - 1).
+else, we recursively check if left or right subtree is a perfect binary tree or not.
+The we add current node count to the perfect binary tree that was returned.
+
+class Solution:
+    def countNodes(self, root: Optional[TreeNode]) -> int:
+        return self.completeBT(root)
+    
+    def completeBT(self, root):
+        if not root:
+            return 0
+        
+        leftTreeHeight = self.perfectBT_left(root)
+        rightTreeHeight = self.prefectBT_right(root)
+
+        if leftTreeHeight == rightTreeHeight:
+            return 2 ** rightTreeHeight - 1
+        else:
+            leftTree = self.completeBT(root.left)
+            rightTree = self.completeBT(root.right)
+
+            return 1 + leftTree + rightTree
+        
+    def perfectBT_left(self, root):
+        count = 0
+
+        while root:
+            count += 1
+            root = root.left
+        return count
+    
+    def prefectBT_right(self, root):
+        count = 0
+
+        while root:
+            count += 1
+            root = root.right
+        return count
+
 '''
