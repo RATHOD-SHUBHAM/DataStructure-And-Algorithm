@@ -40,7 +40,7 @@ class Codec:
         :type data: str
         :rtype: TreeNode
         """
-        nums = data.split(',')
+        nums = data.split(',') # string to list
         return self.construct_tree(nums)
 
     def construct_tree(self, nums):
