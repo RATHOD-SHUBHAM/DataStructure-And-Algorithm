@@ -29,20 +29,21 @@ class Solution:
     def validateBST(self, root):
         if not root:
             return NodeInfo(0, math.inf, -math.inf, True)
-
-        leftTree = self.validateBST(root.left)
-        rightTree = self.validateBST(root.right)
-
+        
+        left = self.validateBST(root.left)
+        right = self.validateBST(root.right)
+        
         info = NodeInfo(0, 0, 0, False)
-
-        info.min_val = min(root.val, leftTree.min_val)
-        info.max_val = max(root.val, rightTree.max_val)
-
-        if leftTree.isBST and rightTree.isBST and leftTree.max_val < root.val < rightTree.min_val:
-            info.size = leftTree.size + rightTree.size + 1
+        
+        info.min_val = min(root.val, left.min_val)
+        info.max_val = max(root.val, right.max_val)
+        
+        if left.isBST and right.isBST and left.max_val < root.val < right.min_val:
             info.isBST = True
+            info.size = 1 + left.size + right.size
         else:
-            info.size = max(leftTree.size, rightTree.size)
+            info.isBST = False
+            info.size = max(left.size , right.size)
         
         return info
     
