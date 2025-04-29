@@ -202,3 +202,93 @@ class Solution:
         result = dp(0, 0, 0)
         # If no valid path exists, return 0
         return max(0, result)
+    
+# ------------------------- Same Solution different way -------------------------
+class Solution:
+    def cherryPickup(self, grid: List[List[int]]) -> int:
+        n = len(grid)
+
+        memo = {}
+
+        r1 = 0
+        c1 = 0
+        r2 = 0
+
+        total_cherry_picked = self.memoization(r1, c1, r2, n, memo, grid)
+
+        return max(0, total_cherry_picked)
+
+    def memoization(self, r1, c1, r2, n, memo, grid):
+        # compute c2
+        c2 = r1 + c1 - r2
+
+        # base case
+        if r1 >= n or c1 >= n or r2 >= n or c2 >= n or grid[r1][c1] == -1 or grid[r2][c2] == -1:
+            return -math.inf
+        
+        # End cell
+        if r1 == n - 1 and c1 == n - 1:
+            return grid[n-1][n-1]
+        
+        if (r1, c1, r2) in memo:
+            return memo[(r1, c1, r2)]
+        
+        result = grid[r1][c1]
+        # check if both person are not on same cell
+        if r1 != r2 or c1 != c2:
+            result += grid[r2][c2]
+        
+
+        result += max(
+            self.memoization(r1+1, c1, r2, n, memo, grid),
+            self.memoization(r1, c1+1, r2, n, memo, grid),
+            self.memoization(r1+1, c1, r2+1, n, memo, grid),
+            self.memoization(r1, c1+1, r2+1, n, memo, grid)
+        )
+
+        memo[(r1, c1, r2)] = result
+        return memo[(r1, c1, r2)]
+    
+# ------------------------- Same Solution with all 4 vaiables -------------------------
+class Solution:
+    def cherryPickup(self, grid: List[List[int]]) -> int:
+        n = len(grid)
+
+        memo = {}
+
+        r1 = 0
+        c1 = 0
+        r2 = 0
+        c2 = 0
+
+        total_cherry_picked = self.memoization(r1, c1, r2, c2, n, memo, grid)
+
+        return max(0, total_cherry_picked)
+
+    def memoization(self, r1, c1, r2, c2, n, memo, grid):
+        # base case
+        if r1 >= n or c1 >= n or r2 >= n or c2 >= n or grid[r1][c1] == -1 or grid[r2][c2] == -1:
+            return -math.inf
+        
+        # End cell
+        if r1 == n - 1 and c1 == n - 1:
+            return grid[n-1][n-1]
+        
+        if (r1, c1, r2, c2) in memo:
+            return memo[(r1, c1, r2, c2)]
+        
+        result = grid[r1][c1]
+        # check if both person are not on same cell
+        if r1 != r2 or c1 != c2:
+            result += grid[r2][c2]
+        
+
+        result += max(
+            self.memoization(r1+1, c1, r2+1, c2, n, memo, grid), # Both move down
+            self.memoization(r1, c1+1, r2, c2+1, n, memo, grid), # Both move right
+            self.memoization(r1+1, c1, r2, c2+1, n, memo, grid), # p1-> down, p2->right
+            self.memoization(r1, c1+1, r2+1, c2, n, memo, grid) # p1->right, p2->down
+        )
+
+        memo[(r1, c1, r2, c2)] = result
+        return memo[(r1, c1, r2, c2)]
