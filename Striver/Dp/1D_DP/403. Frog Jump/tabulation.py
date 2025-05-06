@@ -1,44 +1,18 @@
 """
-For memoization, we will use an integer array or map dp, which will initially have all the entries as -1, representing that the answer for these states has not been calculated yet. Then as we proceed, we will store 1 or 0, denoting true or false if the frog can cross the river for these states or not respectively.
-
-We need a way to find out if there is a stone at a particular position or not. This is because when we will find out the next position of the frog, we will check if there is any stone there or not, and then only we will mark the frog's index as the index of stone at that position. This can be done by creating a map mark from the position of stones to their indices.
-
-Why Last Jump Size Matters
-Let's say you're at stone position 3. Whether you can reach the end depends not just on your current position, but also on what jumps you're allowed to make next.
-Consider two scenarios:
-
-You reached position 3 with a jump of size 1
-You reached position 3 with a jump of size 2
-
-These are different states because:
-
-In scenario 1, your next possible jumps are {0, 1, 2} (k-1, k, k+1)
-In scenario 2, your next possible jumps are {1, 2, 3} (k-1, k, k+1)
-
-These different jump options might lead to completely different outcomes!
-Concrete Example
-Let's look at a simple example: [0,1,3,5,7]
-Imagine you're at stone 3 (value = 5):
-
-If you got there with a jump of size 2, your next options are {1,2,3}:
-
-Jump 1: Position 6 (no stone)
-Jump 2: Position 7 (last stone) ✓
-Jump 3: Position 8 (no stone)
+While standing at my current position, If i know my previous jump, I can easily tell if i can reach the end or not.
 
 
-If you got there with a jump of size 4, your next options are {3,4,5}:
+Eg: 
+    If i am standing at stone 7.
+    My previous jump was 2.
 
-Jump 3: Position 8 (no stone)
-Jump 4: Position 9 (no stone)
-Jump 5: Position 10 (no stone)
+    From this i can say my next jump is going to be 1,2 or 3.
+
+    So that means i can reach stone 8,9,10 from stone 7.
+
+If 10 is my last stone, then i have reached the end.
 
 
-
-As you can see, in the first case you can reach the end, but in the second case you can't - even though you're at the same stone!
-Why Memoization Needs Both Variables
-So if you only memoize based on the stone index, you would incorrectly assume that once you've determined you can reach the end from a certain stone, that's true for all paths through that stone. But as we've seen, that's not the case.
-This is a classic example of needing to include the "history" (last jump size) in your state definition because it affects future decisions.
 """
 class Solution:
     def canCross(self, stones: List[int]) -> bool:
@@ -133,3 +107,41 @@ class Solution:
         # Check if we can reach the last stone with any jump size
         last_stone = stones[-1]
         return len(dp[last_stone]) > 0
+    
+# -------------------- Same Solution --------------------
+class Solution:
+    def canCross(self, stones: List[int]) -> bool:
+        n = len(stones)
+
+        if n < 2:
+            return True
+
+        if stones[1] != 1:
+            return False
+
+        # stone_mapping = {}
+        # for i in range(n):
+        #     stone_mapping[stones[i]] = i 
+        stone_mapping = set(stones)
+        
+        
+        # for stone in stones:
+        #     dp[stone] = set()
+        dp = collections.defaultdict(set)
+        dp[0].add(0)
+        dp[1].add(1)
+
+        for stone in stones:
+            if stone == 0:
+                continue
+            
+            for jump in dp[stone]:
+                for nxtJump in range(jump-1, jump+2):
+                    if nxtJump > 0:
+                        nxtPos = stone + nxtJump
+
+                        if nxtPos in stone_mapping:
+                            dp[nxtPos].add(nxtJump)
+            
+
+        return len(dp[stones[-1]]) > 0
