@@ -15,4 +15,25 @@ class Solution:
             prev = cur_pick
         
         return cur_pick
+
+# -------------------------- Same Solution ------------------
+class Solution:
+    def rob(self, nums: List[int]) -> int:
+        n = len(nums)
         
+        if n < 2:
+            return nums[0]
+        
+        p_prev = nums[0]
+        prev = max(nums[0], nums[1])
+
+        for i in range(2, n):
+            pick = nums[i] + p_prev
+            no_pick = 0 + prev
+
+            cur = max(pick, no_pick)
+            
+            p_prev = prev
+            prev = cur
+        
+        return prev
