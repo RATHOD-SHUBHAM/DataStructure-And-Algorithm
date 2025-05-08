@@ -29,3 +29,32 @@ class Solution:
                     dp[j] = dp[j] + dp[j-1]
         
         return dp[-1]
+
+# ----------------------------- Same Solution ------------------------------
+class Solution:
+    def uniquePathsWithObstacles(self, grid: List[List[int]]) -> int:
+        m = len(grid)
+        n = len(grid[0])
+
+        if grid[0][0] == 1:
+            return 0
+
+        dp = [0 for _ in range(n)]
+        dp[0] = 1
+        
+        for i in range(m):
+            for j in range(n):
+                if i == 0 and j == 0:
+                    continue
+
+                if grid[i][j] == 1:
+                    dp[j] = 0
+                    continue
+                
+                up = dp[j] if i - 1 >= 0 else 0
+                left = dp[j-1] if j-1 >= 0 else 0
+                
+                dp[j] = up + left
+        
+
+        return dp[-1]
