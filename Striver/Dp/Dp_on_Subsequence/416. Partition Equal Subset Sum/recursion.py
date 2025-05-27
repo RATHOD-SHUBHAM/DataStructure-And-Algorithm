@@ -4,6 +4,7 @@ class Solution:
 
         total_sum = sum(nums)
 
+        # If total sum is odd, we cannot partition it into two equal subsets
         if total_sum % 2 != 0:
             return False
 

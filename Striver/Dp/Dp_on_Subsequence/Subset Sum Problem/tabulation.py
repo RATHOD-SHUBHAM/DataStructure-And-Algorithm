@@ -31,6 +31,7 @@ class Solution:
         if sum >= arr[0]:
             dp[0][arr[0]] = True
         
+        # number of ways to achieve sum j using first i numbers
         for idx in range(1, n):
             for target in range(1, sum+1):
                 if target >= arr[idx]:
