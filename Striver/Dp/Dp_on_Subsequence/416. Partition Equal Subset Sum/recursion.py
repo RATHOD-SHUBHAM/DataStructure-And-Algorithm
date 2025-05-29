@@ -2,28 +2,33 @@ class Solution:
     def canPartition(self, nums: List[int]) -> bool:
         n = len(nums)
 
-        total_sum = sum(nums)
+        total = sum(nums)
 
-        # If total sum is odd, we cannot partition it into two equal subsets
-        if total_sum % 2 != 0:
-            return False
-
-        idx = n - 1
-
-        cur_sum = 0
-
-        return self.recursion(idx, nums, n, cur_sum, total_sum)
-    
-    def recursion(self, idx, nums, n, cur_sum, total_sum):
-        # base case
-        if cur_sum == total_sum // 2:
-            return True
-
-        if idx < 0:
+        if total % 2 != 0:
             return False
         
-
-        take = self.recursion(idx-1, nums, n, cur_sum + nums[idx], total_sum)
-        dont_take = self.recursion(idx-1, nums, n, cur_sum, total_sum)
-
-        return take or dont_take
+        target = total // 2
+        idx = n - 1
+        
+        return self.recursion(idx, nums, target)
+    
+    def recursion(self, idx, arr, target):
+        # base case
+        if idx == 0:
+            if target == 0:
+                return True
+                
+            if arr[0] == target:
+                return True
+            else:
+                return False
+        
+        # Take
+        if arr[idx] <= target:
+            take = self.recursion(idx - 1, arr, target - arr[idx])
+        else:
+            take = False
+        
+        no_take = self.recursion(idx - 1, arr, target)
+        
+        return take or no_take
