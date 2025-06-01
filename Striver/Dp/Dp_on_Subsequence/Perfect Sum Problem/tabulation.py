@@ -7,10 +7,7 @@ class Solution:
         # dp[i][j] will store the count of subsets from arr[0...i] with sum j
         dp = [[0 for _ in range(target + 1)] for _ in range(n)]
         
-        # Base case: there's one way to get sum=0 (by not selecting any element)
-        for i in range(n):
-            dp[i][0] = 1
-        
+        # Base case:
         # Handle first element properly
         if arr[0] == 0:
             # If first element is 0, there are 2 ways to get sum 0:
@@ -18,7 +15,9 @@ class Solution:
             # 2. Take it (still sum 0)
             dp[0][0] = 2  # Both ways lead to sum 0
         else:
-            # First element is non-zero
+            # If first element is non-zero, we can only form sum 0 by not taking it
+            dp[0][0] = 1
+            # First element is non-zero, then it can only contribute to its own value
             if arr[0] <= target:
                 dp[0][arr[0]] = 1
         
@@ -34,4 +33,6 @@ class Solution:
                 
                 dp[idx][cur_sum] = take + no_take
         
+        # Dp table tell user the count of subsets with sum equal to target
         return dp[n-1][target]
+    
