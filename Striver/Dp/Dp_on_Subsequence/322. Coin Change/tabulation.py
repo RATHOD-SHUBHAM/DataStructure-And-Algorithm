@@ -5,7 +5,7 @@ class Solution:
         dp = [[math.inf for _ in range(amount + 1)]for _ in range(n)]
 
         # base case
-        # We can never have a coin with zero amount
+        # # If i dont pick any coins, we can form amount of zero
         for i in range(n):
             dp[i][0] = 0
         

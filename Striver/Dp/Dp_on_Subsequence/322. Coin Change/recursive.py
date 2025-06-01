@@ -13,6 +13,7 @@ class Solution:
     
     def recursion(self, idx, arr, target):
         if idx == 0:
+            # Take the first coin as many times as possible
             if target % arr[0] == 0:
                 return target // arr[0]
             else:
