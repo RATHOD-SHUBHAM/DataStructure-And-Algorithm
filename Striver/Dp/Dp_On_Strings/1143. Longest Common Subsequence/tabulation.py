@@ -1,3 +1,5 @@
+# Tc: O(m * n)
+# Sc: O(m * n)
 class Solution:
     def longestCommonSubsequence(self, text1: str, text2: str) -> int:
         m = len(text1)
