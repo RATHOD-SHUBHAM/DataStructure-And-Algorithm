@@ -21,6 +21,8 @@ Valid subsequences:
 
 [ ] (empty subsequence) # very important 
 
+# ----------------------------------------------------------------------------------------------------- #
+
 ## Subset
 ### Definition:
 A subset is any combination of elements from a set (or array), regardless of their order or positions.
@@ -58,3 +60,32 @@ Subset: Order is irrelevant; just any selection of elements.
 If the question asks about sequence or order, think “subsequence”.
 If it’s just “pick any group”, think “subset”.
 
+# ----------------------------------------------------------------------------------------------------- #
+
+# The difference between a substring and a subsequence lies in order and continuity:
+
+# 🔹 Substring
+A substring is a contiguous (continuous) part of a string.
+
+All characters in a substring appear in the same order and are adjacent in the original string.
+
+Example:
+For the string "abcde":
+
+Valid substrings: "ab", "bcd", "abcde", "c"
+
+Invalid substring: "ace" (not contiguous)
+
+# 🔹 Subsequence
+A subsequence is a sequence that appears in the same relative order, but not necessarily contiguous.
+
+You can skip characters, but you cannot change the order.
+
+Example:
+For the string "abcde":
+
+Valid subsequences: "ace", "bd", "abc", "e"
+
+Invalid subsequence: "aec" (characters out of order)
+
+# ----------------------------------------------------------------------------------------------------- #
