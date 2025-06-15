@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jump Game II - Real Breaking Example</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .array-visual {
+            display: flex;
+            gap: 5px;
+            margin: 20px 0;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .cell {
+            width: 40px;
+            height: 40px;
+            border: 2px solid #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            position: relative;
+        }
+        .index {
+            position: absolute;
+            top: -20px;
+            font-size: 10px;
+            color: #666;
+        }
+        .current { 
+            border-color: #ff0000; 
+            border-width: 3px; 
+            background: #ffe6e6;
+        }
+        .improvement {
+            background: #ffcccc;
+        }
+        .step {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: #fafafa;
+        }
+        .code {
+            background: #f4f4f4;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: monospace;
+            margin: 10px 0;
+            white-space: pre-line;
+            font-size: 12px;
+        }
+        .wrong {
+            background: #ffeeee;
+            border-left: 4px solid #ff6b6b;
+        }
+        .correct {
+            background: #eeffee;
+            border-left: 4px solid #51cf66;
+        }
+        .explanation {
+            background: #e8f4f8;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .highlight {
+            background: yellow;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+        .summary {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>The Real Breaking Example</h1>
+        
+        <div class="explanation">
+            <h2>Array: [7,0,9,6,9,6,1,7,9,0,1,2,9,0,3]</h2>
+            <p><strong>Correct Answer:</strong> 2 jumps</p>
+            <p><strong>Your Algorithm's Answer:</strong> Much higher (let's see how much!)</p>
+        </div>
+
+        <div class="array-visual">
+            <div class="cell"><div class="index">0</div>7</div>
+            <div class="cell"><div class="index">1</div>0</div>
+            <div class="cell"><div class="index">2</div>9</div>
+            <div class="cell"><div class="index">3</div>6</div>
+            <div class="cell"><div class="index">4</div>9</div>
+            <div class="cell"><div class="index">5</div>6</div>
+            <div class="cell"><div class="index">6</div>1</div>
+            <div class="cell"><div class="index">7</div>7</div>
+            <div class="cell"><div class="index">8</div>9</div>
+            <div class="cell"><div class="index">9</div>0</div>
+            <div class="cell"><div class="index">10</div>1</div>
+            <div class="cell"><div class="index">11</div>2</div>
+            <div class="cell"><div class="index">12</div>9</div>
+            <div class="cell"><div class="index">13</div>0</div>
+            <div class="cell"><div class="index">14</div>3</div>
+        </div>
+
+        <div class="explanation">
+            <h3>Optimal Solution: 2 jumps</h3>
+            <p><strong>Jump 1:</strong> 0 → 2 (using nums[0] = 7, can jump up to index 7)</p>
+            <p><strong>Jump 2:</strong> 2 → 14 (using nums[2] = 9, can jump 9 positions to reach index 11, but we can reach 14)</p>
+            <p>Path: 0 → 2 → 14 (target reached in 2 jumps)</p>
+        </div>
+
+        <div class="step">
+            <h3>Your Algorithm - Step by Step Trace</h3>
+            <div class="code wrong">
+max_jump_dist = 0, count_jump = 0
+
+idx=0: nums[0]=7, cur_jump_dist = 0+7 = 7
+    7 > 0, so max_jump_dist = 7, count_jump = 1 ✓
+
+idx=1: nums[1]=0, cur_jump_dist = 1+0 = 1
+    1 < 7, so no change
+
+idx=2: nums[2]=9, cur_jump_dist = 2+9 = 11
+    11 > 7, so max_jump_dist = 11, count_jump = 2 ✓
+
+idx=3: nums[3]=6, cur_jump_dist = 3+6 = 9  
+    9 < 11, so no change
+
+idx=4: nums[4]=9, cur_jump_dist = 4+9 = 13
+    13 > 11, so max_jump_dist = 13, count_jump = 3 ❌
+
+idx=5: nums[5]=6, cur_jump_dist = 5+6 = 11
+    11 < 13, so no change
+
+idx=6: nums[6]=1, cur_jump_dist = 6+1 = 7
+    7 < 13, so no change
+
+idx=7: nums[7]=7, cur_jump_dist = 7+7 = 14
+    14 > 13, so max_jump_dist = 14, count_jump = 4 ❌
+    14 >= 14 (target), return 4
+            </div>
+        </div>
+
+        <div class="summary">
+            <h3>🔥 Your Algorithm: 4 jumps (WRONG!)</h3>
+            <h3>✅ Correct Answer: 2 jumps</h3>
+            
+            <p><strong>Why Your Algorithm Fails:</strong></p>
+            <ul>
+                <li>At index 4: You count an "improvement" from 11 to 13, but this isn't needed for optimal path</li>
+                <li>At index 7: You count another "improvement" from 13 to 14, but you could already reach 14 from index 2!</li>
+            </ul>
+            
+            <p><strong>The Problem:</strong> You're counting every improvement in reach distance, even if those improvements don't contribute to the optimal solution.</p>
+        </div>
+
+        <div class="step">
+            <h3>Correct Greedy Algorithm Trace</h3>
+            <div class="code correct">
+jumps = 0, current_end = 0, farthest = 0
+
+i=0: farthest = max(0, 0+7) = 7
+     i == current_end (0), so make jump: jumps = 1, current_end = 7
+
+i=1: farthest = max(7, 1+0) = 7, i != current_end
+i=2: farthest = max(7, 2+9) = 11, i != current_end  
+i=3: farthest = max(11, 3+6) = 11, i != current_end
+i=4: farthest = max(11, 4+9) = 13, i != current_end
+i=5: farthest = max(13, 5+6) = 13, i != current_end
+i=6: farthest = max(13, 6+1) = 13, i != current_end
+i=7: farthest = max(13, 7+7) = 14, i == current_end (7)
+     Make jump: jumps = 2, current_end = 14
+     current_end >= 14, so return 2 ✅
+            </div>
+        </div>
+
+        <div class="explanation">
+            <h3>The Key Insight</h3>
+            <p><strong>Your approach:</strong> "Every time I find a position that can reach farther, I count it as a jump"</p>
+            <p><strong>Correct approach:</strong> "I only count a jump when I've exhausted all positions reachable with my current number of jumps"</p>
+            
+            <p>In this example, from the starting position, you can reach positions 0-7 in 1 jump. You explore ALL of these positions to see the farthest you can go in the next jump. Only when you've explored positions 0-7 do you decide you need a second jump.</p>
+        </div>
+
+        <div class="step">
+            <h3>Visual Representation</h3>
+            <div class="explanation">
+                <p><strong>Level 0:</strong> Position 0 (starting point)</p>
+                <p><strong>Level 1:</strong> Positions 1-7 (reachable in 1 jump from level 0)</p>
+                <p><strong>Level 2:</strong> Positions 8-14 (reachable in 1 jump from level 1)</p>
+                
+                <p>Your algorithm incorrectly counts improvements within Level 1 as separate jumps, but they're all part of the same "jump level"!</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Railway Platform Visualizer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- TailwindCSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- React and ReactDOM via CDN -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <!-- Babel for JSX support -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+  <body class="bg-gray-100">
+    <div id="root"></div>
+
+    <script type="text/babel">
+      const { useState, useEffect } = React;
+
+      function PlatformVisualizer() {
+        const [currentStep, setCurrentStep] = useState(0);
+        const [isPlaying, setIsPlaying] = useState(false);
+        const [selectedExample, setSelectedExample] = useState(0);
+
+        const examples = [
+          {
+            name: "Simple Case",
+            arr: [100, 200, 300],
+            dep: [200, 300, 400],
+            description: "No overlapping trains"
+          },
+          {
+            name: "Complex Case",
+            arr: [900, 940, 950, 1100, 1500, 1800],
+            dep: [910, 1200, 1120, 1130, 1900, 2000],
+            description: "Multiple overlapping trains"
+          },
+          {
+            name: "Your Failing Case",
+            arr: [100, 200],
+            dep: [300, 400],
+            description: "Two overlapping trains"
+          }
+        ];
+
+        const currentExample = examples[selectedExample];
+
+        const createEvents = (arr, dep) => {
+          const events = [];
+          for (let i = 0; i < arr.length; i++) {
+            events.push({ time: arr[i], type: "arrival", trainId: i });
+            events.push({ time: dep[i], type: "departure", trainId: i });
+          }
+          return events.sort((a, b) => {
+            if (a.time !== b.time) return a.time - b.time;
+            return a.type === "departure" ? -1 : 1;
+          });
+        };
+
+        const events = createEvents(currentExample.arr, currentExample.dep);
+
+        const calculatePlatformStates = () => {
+          const states = [];
+          let platforms = 0;
+          let maxPlatforms = 0;
+          let trainPlatforms = {};
+          let availablePlatforms = [];
+
+          states.push({
+            step: 0,
+            event: { type: "start" },
+            platforms: 0,
+            maxPlatforms: 0,
+            trainPlatforms: {},
+            explanation: "Starting with 0 platforms in use"
+          });
+
+          events.forEach((event, index) => {
+            if (event.type === "arrival") {
+              let platformNum;
+              if (availablePlatforms.length > 0) {
+                platformNum = availablePlatforms.pop();
+              } else {
+                platformNum = Object.keys(trainPlatforms).length;
+              }
+
+              trainPlatforms[event.trainId] = platformNum;
+              platforms++;
+              maxPlatforms = Math.max(maxPlatforms, platforms);
+
+              states.push({
+                step: index + 1,
+                event,
+                platforms,
+                maxPlatforms,
+                trainPlatforms: { ...trainPlatforms },
+                explanation: `Train ${event.trainId} arrives at time ${event.time}. Assigned to platform ${platformNum}. Platforms in use: ${platforms}`
+              });
+            } else {
+              const platformNum = trainPlatforms[event.trainId];
+              delete trainPlatforms[event.trainId];
+              availablePlatforms.push(platformNum);
+              availablePlatforms.sort((a, b) => a - b);
+              platforms--;
+
+              states.push({
+                step: index + 1,
+                event,
+                platforms,
+                maxPlatforms,
+                trainPlatforms: { ...trainPlatforms },
+                explanation: `Train ${event.trainId} departs at time ${event.time}. Platform ${platformNum} is now free. Platforms in use: ${platforms}`
+              });
+            }
+          });
+
+          return states;
+        };
+
+        const states = calculatePlatformStates();
+        const currentState = states[currentStep] || states[0];
+
+        useEffect(() => {
+          if (isPlaying && currentStep < states.length - 1) {
+            const timer = setTimeout(() => {
+              setCurrentStep((s) => s + 1);
+            }, 1500);
+            return () => clearTimeout(timer);
+          } else if (isPlaying) {
+            setIsPlaying(false);
+          }
+        }, [isPlaying, currentStep, states.length]);
+
+        const togglePlay = () => {
+          if (currentStep >= states.length - 1) {
+            setCurrentStep(0);
+          }
+          setIsPlaying(!isPlaying);
+        };
+
+        const reset = () => {
+          setCurrentStep(0);
+          setIsPlaying(false);
+        };
+
+        const changeExample = (index) => {
+          setSelectedExample(index);
+          setCurrentStep(0);
+          setIsPlaying(false);
+        };
+
+        const timelineStart = Math.min(...currentExample.arr);
+        const timelineEnd = Math.max(...currentExample.dep);
+        const timelineWidth = 600;
+
+        const getTimePosition = (time) => {
+          return (
+            ((time - timelineStart) / (timelineEnd - timelineStart)) * timelineWidth
+          );
+        };
+
+        return (
+          <div className="p-6 max-w-6xl mx-auto bg-white min-h-screen">
+            <h1 className="text-3xl font-bold mb-6 text-center">
+              Railway Platform Visualizer
+            </h1>
+
+            <div className="mb-6">
+              <label className="block text-sm font-medium mb-2">Choose Example:</label>
+              <div className="flex gap-2">
+                {examples.map((example, index) => (
+                  <button
+                    key={index}
+                    onClick={() => changeExample(index)}
+                    className={`px-4 py-2 rounded ${
+                      selectedExample === index
+                        ? "bg-blue-500 text-white"
+                        : "bg-gray-200 hover:bg-gray-300"
+                    }`}
+                  >
+                    {example.name}
+                  </button>
+                ))}
+              </div>
+              <p className="text-sm text-gray-600 mt-2">{currentExample.description}</p>
+            </div>
+
+            <div className="mb-6 p-4 bg-gray-50 rounded">
+              <h3 className="font-semibold mb-2">Input Data:</h3>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <strong>Arrivals:</strong> [{currentExample.arr.join(", ")}]
+                </div>
+                <div>
+                  <strong>Departures:</strong> [{currentExample.dep.join(", ")}]
+                </div>
+              </div>
+            </div>
+
+            <div className="mb-6 flex gap-4 items-center">
+              <button
+                onClick={togglePlay}
+                className="px-6 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+              >
+                {isPlaying ? "Pause" : "Play"}
+              </button>
+              <button
+                onClick={reset}
+                className="px-6 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
+              >
+                Reset
+              </button>
+              <div className="flex gap-2 items-center">
+                <button
+                  onClick={() => setCurrentStep(Math.max(0, currentStep - 1))}
+                  disabled={currentStep === 0}
+                  className="px-3 py-1 bg-blue-500 text-white rounded disabled:bg-gray-300"
+                >
+                  ←
+                </button>
+                <span>
+                  Step {currentStep}/{states.length - 1}
+                </span>
+                <button
+                  onClick={() =>
+                    setCurrentStep(Math.min(states.length - 1, currentStep + 1))
+                  }
+                  disabled={currentStep >= states.length - 1}
+                  className="px-3 py-1 bg-blue-500 text-white rounded disabled:bg-gray-300"
+                >
+                  →
+                </button>
+              </div>
+            </div>
+
+            <div className="mb-6 p-4 bg-blue-50 rounded">
+              <h3 className="font-semibold mb-2">Current State:</h3>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <strong>Platforms in use:</strong> {currentState.platforms}
+                </div>
+                <div>
+                  <strong>Max platforms so far:</strong> {currentState.maxPlatforms}
+                </div>
+              </div>
+              <div className="mt-2">
+                <strong>Explanation:</strong> {currentState.explanation}
+              </div>
+            </div>
+
+            <div className="mb-6">
+              <h3 className="font-semibold mb-4">Platform Assignment:</h3>
+              <div className="border rounded p-4">
+                {[0, 1, 2, 3].map((platformId) => {
+                  const trainOnPlatform = Object.entries(
+                    currentState.trainPlatforms
+                  ).find(([trainId, platform]) => platform === platformId);
+
+                  return (
+                    <div key={platformId} className="flex items-center mb-2">
+                      <div className="w-20 text-sm font-medium">
+                        Platform {platformId}:
+                      </div>
+                      <div
+                        className={`h-8 flex-1 border-2 rounded flex items-center justify-center ${
+                          trainOnPlatform
+                            ? "bg-red-200 border-red-400"
+                            : "bg-gray-100 border-gray-300"
+                        }`}
+                      >
+                        {trainOnPlatform && (
+                          <span className="text-sm font-bold">
+                            Train {trainOnPlatform[0]} (Arr:{" "}
+                            {currentExample.arr[trainOnPlatform[0]]}, Dep:{" "}
+                            {currentExample.dep[trainOnPlatform[0]]})
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            <div className="mb-6">
+              <h3 className="font-semibold mb-4">Timeline View:</h3>
+              <div className="relative" style={{ height: "200px" }}>
+                <div className="absolute top-4 left-0 w-full h-1 bg-gray-300"></div>
+
+                {[timelineStart,
+                  Math.floor((timelineStart + timelineEnd) / 2),
+                  timelineEnd].map((time) => (
+                  <div
+                    key={time}
+                    className="absolute top-0 text-xs"
+                    style={{ left: `${getTimePosition(time)}px` }}
+                  >
+                    <div className="w-px h-6 bg-gray-400 mb-1"></div>
+                    <div>{time}</div>
+                  </div>
+                ))}
+
+                {currentExample.arr.map((arrTime, trainId) => {
+                  const depTime = currentExample.dep[trainId];
+                  const isActive = currentState.trainPlatforms.hasOwnProperty(trainId);
+                  const platform = currentState.trainPlatforms[trainId];
+
+                  return (
+                    <div
+                      key={trainId}
+                      className={`absolute h-6 rounded ${
+                        isActive ? "bg-red-400" : "bg-gray-400"
+                      } flex items-center justify-center text-white text-xs font-bold`}
+                      style={{
+                        left: `${getTimePosition(arrTime)}px`,
+                        width: `${getTimePosition(depTime) - getTimePosition(arrTime)}px`,
+                        top: `${40 + trainId * 30}px`
+                      }}
+                    >
+                      Train {trainId}
+                      {isActive && ` (P${platform})`}
+                    </div>
+                  );
+                })}
+
+                {currentState.event && currentState.event.time && (
+                  <div
+                    className="absolute top-0 w-0.5 h-full bg-red-600"
+                    style={{ left: `${getTimePosition(currentState.event.time)}px` }}
+                  >
+                    <div className="absolute -top-6 -left-8 bg-red-600 text-white px-2 py-1 rounded text-xs">
+                      Time {currentState.event.time}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div className="p-4 bg-green-50 rounded">
+              <h3 className="font-semibold mb-2">Algorithm Result:</h3>
+              <div className="text-lg">
+                <strong>
+                  Minimum platforms needed:{" "}
+                  {Math.max(...states.map((s) => s.maxPlatforms))}
+                </strong>
+              </div>
+              <div className="text-sm text-gray-600 mt-2">
+                This is the maximum number of platforms that were simultaneously in
+                use at any point in time.
+              </div>
+            </div>
+          </div>
+        );
+      }
+
+      const root = ReactDOM.createRoot(document.getElementById("root"));
+      root.render(<PlatformVisualizer />);
+    </script>
+  </body>
+</html>
