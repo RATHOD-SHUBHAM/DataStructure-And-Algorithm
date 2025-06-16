@@ -1,5 +1,40 @@
+
 # Tc: O(n)
 # Sc: O(1) if we are considering we only take two value
+
+class Solution:
+    def lemonadeChange(self, bills: List[int]) -> bool:
+        n = len(bills)
+
+        cash_counter = collections.defaultdict(int)
+
+        for i in range(n):
+            cur_bill = bills[i]
+
+            change = cur_bill - 5
+
+            if change == 15:
+                if cash_counter[10] > 0 and cash_counter[5] > 0:
+                    cash_counter[10] -= 1
+                    cash_counter[5] -= 1
+                elif cash_counter[5] >= 3:
+                    cash_counter[5] -= 3
+                else:
+                    return False
+            elif change == 5:
+                if cash_counter[5] > 0:
+                    cash_counter[5] -= 1
+                else:
+                    return False
+
+            # add the cuurent cash to the counter
+            cash_counter[cur_bill] += 1
+        
+        return True
+
+
+
+# ------------------------- Same Solution but with different variable names -------------------------
 
 class Solution:
     def lemonadeChange(self, bills: List[int]) -> bool:
