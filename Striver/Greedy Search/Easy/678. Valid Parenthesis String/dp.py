@@ -20,6 +20,8 @@ return dp[n][0]  # CORRECT!
 
 """
 
+
+# ------------------------------------ Wrong Solution ------------------------------------
 class Solution:
     def checkValidString(self, s: str) -> bool:
         n = len(s)
@@ -28,7 +30,7 @@ class Solution:
 
         # base case
         for i in range(n+1):
-            dp[i][0] = True # string is always valid when count is zero
+            dp[i][0] = True # Assumption: string is always valid when count is zero
         
         for idx in range(1, n+1):
             for count in range(1, n+1):
@@ -65,6 +67,7 @@ class Solution:
     def checkValidString(self, s: str) -> bool:
         n = len(s)
 
+        # Keep track of the count for opening brackets
         dp = [[False for _ in range(n + 1)] for _ in range(n+1)]
 
         # base case
