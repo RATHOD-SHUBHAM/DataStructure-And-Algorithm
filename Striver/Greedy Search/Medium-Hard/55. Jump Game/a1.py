@@ -109,10 +109,12 @@ class Solution:
         max_pos = 0
 
         for i in range(n-1):
+            # Base case
             # Check is current position is reachable from the start
             if i > max_pos:
                 return False
 
+            # Logic
             cur_jump_dist = i + nums[i]
 
             if cur_jump_dist > max_pos:
