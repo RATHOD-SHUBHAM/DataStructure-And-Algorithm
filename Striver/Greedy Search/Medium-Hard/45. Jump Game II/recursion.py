@@ -4,7 +4,7 @@ class Solution:
 
         idx = 0
 
-        return self.recursion(idx n, nums)
+        return self.recursion(idx, n, nums)
     
     def recursion(self, idx, n, nums):
         # base case
@@ -21,8 +21,6 @@ class Solution:
             min_jump = min(min_jump , cur_jump)
         
         return min_jump
-
-
 
 
 
