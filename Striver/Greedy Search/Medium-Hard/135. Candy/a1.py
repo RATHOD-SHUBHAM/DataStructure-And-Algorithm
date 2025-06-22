@@ -73,10 +73,13 @@ class Solution:
         i = 1 # starting from index 1
         while i < n:
 
-            if ratings[i] == ratings[i-1]:
+            # if ratings[i] == ratings[i-1]:
+            #     total_candy += 1
+            #     i += 1
+            #     continue
+            while i < n and ratings[i] == ratings[i-1]:
                 total_candy += 1
                 i += 1
-                continue
             
             # We reset the peak and down to 1
             peak = 1
