@@ -14,21 +14,18 @@ class Solution:
     def candy(self, ratings: List[int]) -> int:
         n = len(ratings)
 
-        # Firstly, we give 1 candy to each student.
+        # We give 1 candy to each student.
+        # assign candies from left to right
         candies = [1] * n
-
-        for i in range(n):
-            if i-1 >= 0:
-                if ratings[i-1] < ratings[i]:
-                    candies[i] = candies[i-1] + 1
+        for i in range(1, n):
+            if ratings[i] > ratings[i-1]:
+                candies[i] = candies[i-1] + 1
         
-        """
-        This time we need to update candies[i] only if candies[i] <= candies[i + 1]. 
-        This happens because this time we've already altered the candies array during the forward traversal and thus candies[i] isn't necessarily less than or equal to candies[i + 1].
-        """
-        for i in reversed(range(n)):
-            if i + 1 < n:
-                if ratings[i+1] < ratings[i]:
-                    candies[i] = max(candies[i], candies[i+1] + 1)
-
+        # assign candies from right to left
+        for i in reversed(range(n-1)):
+            if ratings[i] > ratings[i+1]:
+                cur_candy = candies[i+1] + 1
+                candies[i] = max(candies[i] , cur_candy)
+        
+        # print(candies)
         return sum(candies)

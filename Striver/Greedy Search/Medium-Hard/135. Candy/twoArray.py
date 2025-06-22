@@ -14,28 +14,23 @@ class Solution:
     def candy(self, ratings: List[int]) -> int:
         n = len(ratings)
 
-        # Firstly, we give 1 candy to each student.
+        # We give 1 candy to each student.
+        # assign candies from left to right
         left_candies = [1] * n
-
-        for i in range(n):
-            if i-1 >= 0:
-                if ratings[i-1] < ratings[i]:
-                    left_candies[i] = left_candies[i-1] + 1
+        for i in range(1, n):
+            if ratings[i] > ratings[i-1]:
+                left_candies[i] = left_candies[i-1] + 1
         
-        # Firstly, we give 1 candy to each student.
+        # assign candies from right to left
         right_candies = [1] * n
-
-        for i in reversed(range(n)):
-            if i+1 < n:
-                if ratings[i+1] < ratings[i]:
-                    right_candies[i] = right_candies[i+1] + 1
+        for i in reversed(range(n-1)):
+            if ratings[i] > ratings[i+1]:
+                right_candies[i] = right_candies[i+1] + 1
         
-        """
-        Now, for the i'th student in the array, we need to give max(left2right[i], right2left[i]) to them, 
-        in order to satisfy both the left and the right neighbor relationship. 
-        """
-        min_candies = 0
+        # We need max(left, right), in order to satisfy both the left and the right neighbor relationship. 
+        candies = [1] * n
         for i in range(n):
-            min_candies += max(left_candies[i], right_candies[i])
-
-        return min_candies
+            candies[i] = max(left_candies[i], right_candies[i])
+        
+        # print(candies)
+        return sum(candies)
