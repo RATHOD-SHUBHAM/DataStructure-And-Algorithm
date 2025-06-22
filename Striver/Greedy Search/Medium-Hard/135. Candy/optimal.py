@@ -10,6 +10,7 @@ class Solution:
         i = 1 # starting from index 1
         while i < n:
 
+            # When we have same ratings
             # if ratings[i] == ratings[i-1]:
             #     total_candy += 1
             #     i += 1
