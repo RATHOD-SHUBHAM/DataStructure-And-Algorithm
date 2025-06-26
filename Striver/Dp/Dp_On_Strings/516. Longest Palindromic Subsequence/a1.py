@@ -64,6 +64,45 @@ class Solution:
 # --------------------------- Recursive Approach ---------------------------
 class Solution:
     def longestPalindromeSubseq(self, s: str) -> int:
+        s_reversed = s[::-1]
+        print(s_reversed)
+
+        LCS = self.LCS(s, s_reversed)
+        return len(LCS)
+    
+    def LCS(self, s1, s2):
+        n = len(s1)
+
+        idx1 = n - 1
+        idx2 = n - 1
+
+        return self.recursion(idx1, idx2, s1, s2)
+    
+    def recursion(self, idx1, idx2, s1, s2):
+        # base case
+        if idx1 < 0 or idx2 < 0:
+            return ""
+        
+        # Logic
+        LCS = ""
+        if s1[idx1] == s2[idx2]:
+            LCS += self.recursion(idx1-1, idx2-1, s1, s2)
+            LCS += s1[idx1]
+            return LCS
+        
+        split_1 = self.recursion(idx1, idx2-1, s1, s2)
+        split_2 = self.recursion(idx1-1, idx2, s1, s2)
+
+        if len(split_1) > len(split_2):
+            LCS += split_1
+        else:
+            LCS += split_2
+
+        return LCS
+    
+# --------------------------- Better Recursive ---------------------------
+class Solution:
+    def longestPalindromeSubseq(self, s: str) -> int:
         s1 = s
         s2 = s[::-1] # reverse of s
 
