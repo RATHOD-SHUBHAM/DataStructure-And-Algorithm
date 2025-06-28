@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DP Table - Distinct Subsequences</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 20px;
+            background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .strings {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 30px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .code-section {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            overflow-x: auto;
+        }
+        .table-container {
+            overflow-x: auto;
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+        }
+        .dp-table {
+            border-collapse: collapse;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        .dp-table th, .dp-table td {
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 12px 15px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        .dp-table th {
+            background: rgba(255, 255, 255, 0.2);
+            color: #ffeb3b;
+        }
+        .dp-table .row-header {
+            background: rgba(255, 255, 255, 0.15);
+            color: #ffeb3b;
+        }
+        .dp-table .base-case {
+            background: rgba(76, 175, 80, 0.3);
+            color: #4caf50;
+        }
+        .dp-table .match-case {
+            background: rgba(255, 152, 0, 0.3);
+            color: #ff9800;
+        }
+        .dp-table .no-match-case {
+            background: rgba(156, 39, 176, 0.3);
+            color: #9c27b0;
+        }
+        .controls {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 10px 20px;
+            margin: 0 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        .explanation {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            line-height: 1.6;
+        }
+        .step-info {
+            background: rgba(255, 235, 59, 0.2);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            border-left: 4px solid #ffeb3b;
+        }
+        .current-cell {
+            background: rgba(255, 235, 59, 0.5) !important;
+            animation: pulse 1s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 DP Table Visualization</h1>
+            <h2>Distinct Subsequences Problem</h2>
+        </div>
+        
+        <div class="strings">
+            <div>s = "babgbag" (length: 7)</div>
+            <div>t = "bag" (length: 3)</div>
+        </div>
+        
+        <div class="code-section">
+            <h3>🔧 DP Solution Code:</h3>
+            <pre><code>def numDistinct(self, s: str, t: str) -> int:
+    m, n = len(s), len(t)
+    # dp[i][j] = number of ways to form t[0:j] using s[0:i]
+    dp = [[0] * (n + 1) for _ in range(m + 1)]
+    
+    # Base case: empty string t can be formed in 1 way
+    for i in range(m + 1):
+        dp[i][0] = 1
+    
+    for i in range(1, m + 1):
+        for j in range(1, n + 1):
+            # Always have option to not use s[i-1]
+            dp[i][j] = dp[i-1][j]
+            
+            # If characters match, add ways using s[i-1]
+            if s[i-1] == t[j-1]:
+                dp[i][j] += dp[i-1][j-1]
+    
+    return dp[m][n]</code></pre>
+        </div>
+        
+        <div class="controls">
+            <button class="btn" onclick="resetTable()">🔄 Reset</button>
+            <button class="btn" onclick="stepByStep()">▶️ Step by Step</button>
+            <button class="btn" onclick="fillComplete()">⚡ Fill Complete</button>
+        </div>
+        
+        <div id="step-info" class="step-info" style="display: none;"></div>
+        
+        <div class="table-container">
+            <table class="dp-table" id="dpTable">
+                <thead>
+                    <tr>
+                        <th>dp[i][j]</th>
+                        <th>ε</th>
+                        <th>b</th>
+                        <th>a</th>
+                        <th>g</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="explanation">
+            <h3>📝 Understanding the DP Table:</h3>
+            <p><strong>dp[i][j]</strong> = Number of ways to form t[0:j] using s[0:i]</p>
+            <p><strong>Base Case:</strong> dp[i][0] = 1 for all i (empty string can be formed in 1 way)</p>
+            <p><strong>Recurrence:</strong></p>
+            <ul>
+                <li>If s[i-1] == t[j-1]: dp[i][j] = dp[i-1][j-1] + dp[i-1][j]</li>
+                <li>Else: dp[i][j] = dp[i-1][j]</li>
+            </ul>
+            <p><strong>Color Legend:</strong></p>
+            <ul>
+                <li><span style="color: #4caf50;">🟢 Green</span> - Base cases (dp[i][0] = 1)</li>
+                <li><span style="color: #ff9800;">🟠 Orange</span> - Character match cases</li>
+                <li><span style="color: #9c27b0;">🟣 Purple</span> - No match cases</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        const s = "babgbag";
+        const t = "bag";
+        const m = s.length;
+        const n = t.length;
+        let dp = [];
+        let currentStep = 0;
+        let isAnimating = false;
+        
+        function initializeTable() {
+            dp = Array(m + 1).fill().map(() => Array(n + 1).fill(0));
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = '';
+            
+            // Create table rows
+            for (let i = 0; i <= m; i++) {
+                const row = document.createElement('tr');
+                
+                // Row header
+                const rowHeader = document.createElement('td');
+                rowHeader.className = 'row-header';
+                if (i === 0) {
+                    rowHeader.textContent = 'ε';
+                } else {
+                    rowHeader.textContent = s.substring(0, i);
+                }
+                row.appendChild(rowHeader);
+                
+                // Data cells
+                for (let j = 0; j <= n; j++) {
+                    const cell = document.createElement('td');
+                    cell.id = `cell-${i}-${j}`;
+                    cell.textContent = '?';
+                    row.appendChild(cell);
+                }
+                
+                tbody.appendChild(row);
+            }
+        }
+        
+        function updateCell(i, j, value, className = '') {
+            const cell = document.getElementById(`cell-${i}-${j}`);
+            cell.textContent = value;
+            if (className) {
+                cell.className = className;
+            }
+        }
+        
+        function resetTable() {
+            initializeTable();
+            currentStep = 0;
+            isAnimating = false;
+            document.getElementById('step-info').style.display = 'none';
+        }
+        
+        function fillComplete() {
+            if (isAnimating) return;
+            
+            // Initialize base cases
+            for (let i = 0; i <= m; i++) {
+                dp[i][0] = 1;
+                updateCell(i, 0, 1, 'base-case');
+            }
+            
+            // Fill the table
+            for (let i = 1; i <= m; i++) {
+                for (let j = 1; j <= n; j++) {
+                    dp[i][j] = dp[i-1][j];
+                    
+                    if (s[i-1] === t[j-1]) {
+                        dp[i][j] += dp[i-1][j-1];
+                        updateCell(i, j, dp[i][j], 'match-case');
+                    } else {
+                        updateCell(i, j, dp[i][j], 'no-match-case');
+                    }
+                }
+            }
+            
+            document.getElementById('step-info').innerHTML = `
+                <strong>✅ Table Complete!</strong><br>
+                Final Answer: dp[${m}][${n}] = ${dp[m][n]}<br>
+                There are ${dp[m][n]} distinct subsequences of "${s}" that equal "${t}".
+            `;
+            document.getElementById('step-info').style.display = 'block';
+        }
+        
+        function stepByStep() {
+            if (isAnimating) return;
+            isAnimating = true;
+            
+            // Reset and initialize base cases
+            resetTable();
+            
+            // Fill base cases first
+            for (let i = 0; i <= m; i++) {
+                dp[i][0] = 1;
+                updateCell(i, 0, 1, 'base-case');
+            }
+            
+            document.getElementById('step-info').innerHTML = `
+                <strong>Step 1:</strong> Initialize base cases<br>
+                dp[i][0] = 1 for all i (empty string can be formed in 1 way)
+            `;
+            document.getElementById('step-info').style.display = 'block';
+            
+            let step = 1;
+            
+            function nextStep() {
+                if (step > m * n) {
+                    isAnimating = false;
+                    document.getElementById('step-info').innerHTML = `
+                        <strong>✅ Animation Complete!</strong><br>
+                        Final Answer: dp[${m}][${n}] = ${dp[m][n]}<br>
+                        There are ${dp[m][n]} distinct subsequences of "${s}" that equal "${t}".
+                    `;
+                    return;
+                }
+                
+                const i = Math.floor((step - 1) / n) + 1;
+                const j = ((step - 1) % n) + 1;
+                
+                // Remove previous highlight
+                document.querySelectorAll('.current-cell').forEach(cell => {
+                    cell.classList.remove('current-cell');
+                });
+                
+                // Highlight current cell
+                document.getElementById(`cell-${i}-${j}`).classList.add('current-cell');
+                
+                // Calculate value
+                dp[i][j] = dp[i-1][j];
+                let explanation = `<strong>Step ${step + 1}:</strong> Computing dp[${i}][${j}]<br>`;
+                explanation += `Comparing s[${i-1}] = '${s[i-1]}' with t[${j-1}] = '${t[j-1]}'<br>`;
+                
+                if (s[i-1] === t[j-1]) {
+                    dp[i][j] += dp[i-1][j-1];
+                    explanation += `✅ Match! dp[${i}][${j}] = dp[${i-1}][${j}] + dp[${i-1}][${j-1}] = ${dp[i-1][j]} + ${dp[i-1][j-1]} = ${dp[i][j]}`;
+                    updateCell(i, j, dp[i][j], 'match-case current-cell');
+                } else {
+                    explanation += `❌ No match! dp[${i}][${j}] = dp[${i-1}][${j}] = ${dp[i][j]}`;
+                    updateCell(i, j, dp[i][j], 'no-match-case current-cell');
+                }
+                
+                document.getElementById('step-info').innerHTML = explanation;
+                
+                step++;
+                setTimeout(nextStep, 1500);
+            }
+            
+            setTimeout(nextStep, 1000);
+        }
+        
+        // Initialize table on page load
+        initializeTable();
+    </script>
+</body>
+</html>

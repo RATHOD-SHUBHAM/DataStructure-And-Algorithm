@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recursive Tree - Distinct Subsequences</title>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            margin: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .strings {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 30px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .tree {
+            font-size: 12px;
+            line-height: 1.6;
+            overflow-x: auto;
+            white-space: pre;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .node {
+            color: #ffeb3b;
+        }
+        .match {
+            color: #4caf50;
+            font-weight: bold;
+        }
+        .no-match {
+            color: #ff9800;
+        }
+        .base-case {
+            color: #e91e63;
+            font-weight: bold;
+        }
+        .return-value {
+            color: #00bcd4;
+            font-weight: bold;
+        }
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .color-box {
+            width: 15px;
+            height: 15px;
+            border-radius: 3px;
+        }
+        .explanation {
+            margin-top: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌳 Recursive Tree Visualization</h1>
+            <h2>Distinct Subsequences Problem</h2>
+        </div>
+        
+        <div class="strings">
+            <div>s = "babgbag" (indices: 0-6)</div>
+            <div>t = "bag" (indices: 0-2)</div>
+        </div>
+        
+        <div class="tree" id="tree"></div>
+        
+        <div class="legend">
+            <div class="legend-item">
+                <div class="color-box" style="background-color: #ffeb3b;"></div>
+                <span>Function Call</span>
+            </div>
+            <div class="legend-item">
+                <div class="color-box" style="background-color: #4caf50;"></div>
+                <span>Character Match</span>
+            </div>
+            <div class="legend-item">
+                <div class="color-box" style="background-color: #ff9800;"></div>
+                <span>No Match</span>
+            </div>
+            <div class="legend-item">
+                <div class="color-box" style="background-color: #e91e63;"></div>
+                <span>Base Case</span>
+            </div>
+            <div class="legend-item">
+                <div class="color-box" style="background-color: #00bcd4;"></div>
+                <span>Return Value</span>
+            </div>
+        </div>
+        
+        <div class="explanation">
+            <h3>📝 How to Read This Tree:</h3>
+            <p><strong>Each node shows:</strong> rec(i,j) where i is index in s="babgbag" and j is index in t="bag"</p>
+            <p><strong>Character comparison:</strong> Shows s[i] vs t[j] and whether they match</p>
+            <p><strong>Branching:</strong> When characters match, we have 2 choices: use the match (both i,j decrease) or skip it (only i decreases)</p>
+            <p><strong>Base cases:</strong> j < 0 means we found a complete subsequence (return 1), i < 0 means we ran out of characters in s (return 0)</p>
+            <p><strong>Final answer:</strong> Sum of all paths that reach j < 0</p>
+        </div>
+    </div>
+
+    <script>
+        const s = "babgbag";
+        const t = "bag";
+        
+        function generateTree() {
+            let result = "";
+            let visited = new Set();
+            
+            function recursion(i, j, depth = 0, prefix = "") {
+                const indent = "  ".repeat(depth);
+                const nodeKey = `${i},${j}`;
+                
+                // Avoid infinite recursion by tracking visited states
+                if (visited.has(nodeKey)) {
+                    return `${indent}<span class="node">rec(${i},${j}) [already computed]</span>\n`;
+                }
+                visited.add(nodeKey);
+                
+                result += `${indent}<span class="node">rec(${i},${j})</span>`;
+                
+                // Base cases
+                if (j < 0) {
+                    result += ` <span class="base-case">→ j < 0: MATCH FOUND!</span> <span class="return-value">return 1</span>\n`;
+                    return 1;
+                }
+                if (i < 0) {
+                    result += ` <span class="base-case">→ i < 0: NO MORE CHARS</span> <span class="return-value">return 0</span>\n`;
+                    return 0;
+                }
+                
+                // Show character comparison
+                const sChar = s[i];
+                const tChar = t[j];
+                
+                if (sChar === tChar) {
+                    result += ` <span class="match">→ s[${i}]='${sChar}' == t[${j}]='${tChar}' ✓</span>\n`;
+                    result += `${indent}├─ Use match: \n`;
+                    const split1 = recursion(i - 1, j - 1, depth + 1, "├─ ");
+                    result += `${indent}└─ Skip match: \n`;
+                    const split2 = recursion(i - 1, j, depth + 1, "└─ ");
+                    const total = split1 + split2;
+                    result += `${indent}<span class="return-value">return ${split1} + ${split2} = ${total}</span>\n\n`;
+                    return total;
+                } else {
+                    result += ` <span class="no-match">→ s[${i}]='${sChar}' != t[${j}]='${tChar}' ✗</span>\n`;
+                    result += `${indent}└─ Continue: \n`;
+                    const total = recursion(i - 1, j, depth + 1, "└─ ");
+                    result += `${indent}<span class="return-value">return ${total}</span>\n\n`;
+                    return total;
+                }
+            }
+            
+            const finalResult = recursion(s.length - 1, t.length - 1);
+            result += `\n<span class="return-value">🎯 FINAL ANSWER: ${finalResult} distinct subsequences</span>\n`;
+            
+            return result;
+        }
+        
+        document.getElementById('tree').innerHTML = generateTree();
+    </script>
+</body>
+</html>

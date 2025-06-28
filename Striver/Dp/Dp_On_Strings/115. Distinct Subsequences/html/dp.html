@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>DP Table Visualization – numDistinct("babgbag","bag")</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+      font-family: sans-serif;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    @keyframes gradientBG {
+      0% {background-position: 0% 50%;}
+      50% {background-position: 100% 50%;}
+      100% {background-position: 0% 50%;}
+    }
+
+    table {
+      border-collapse: collapse;
+      background: rgba(255,255,255,0.1);
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    }
+    th, td {
+      border: 1px solid rgba(255,255,255,0.3);
+      width: 60px;
+      height: 40px;
+      text-align: center;
+      position: relative;
+      opacity: 0;
+    }
+
+    th {
+      background: rgba(0,0,0,0.3);
+      font-weight: bold;
+    }
+
+    /* animation for each cell */
+    @keyframes fadeInCell {
+      from { opacity: 0; transform: translateY(-10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .fade-in {
+      animation: fadeInCell 0.5s ease forwards;
+    }
+
+    caption {
+      margin-bottom: 10px;
+      font-size: 1.2em;
+      font-weight: bold;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
+    }
+  </style>
+</head>
+<body>
+
+  <table id="dp-table">
+    <caption>dp[i][j] for t="bag" vs s="babgbag"</caption>
+    <thead>
+      <tr>
+        <th>i\j</th>
+        <th> </th>
+        <th>b</th>
+        <th>a</th>
+        <th>b</th>
+        <th>g</th>
+        <th>b</th>
+        <th>a</th>
+        <th>g</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th> </th>
+        <td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td>
+      </tr>
+      <tr>
+        <th>b</th>
+        <td>0</td><td>1</td><td>1</td><td>2</td><td>2</td><td>3</td><td>3</td><td>3</td>
+      </tr>
+      <tr>
+        <th>a</th>
+        <td>0</td><td>0</td><td>1</td><td>1</td><td>1</td><td>1</td><td>4</td><td>4</td>
+      </tr>
+      <tr>
+        <th>g</th>
+        <td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>1</td><td>1</td><td>5</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      const cells = Array.from(document.querySelectorAll('th, td'));
+      cells.forEach((cell, idx) => {
+        setTimeout(() => {
+          cell.classList.add('fade-in');
+        }, idx * 100);
+      });
+    });
+  </script>
+</body>
+</html>
