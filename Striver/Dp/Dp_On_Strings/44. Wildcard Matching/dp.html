@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wildcard Pattern Matching DP Visualizer</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        h1 {
+            text-align: center;
+            color: #4a5568;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .input-section {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+            align-items: end;
+        }
+
+        .input-group {
+            flex: 1;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #4a5568;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        button {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            height: fit-content;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .legend {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            border: 2px solid #333;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            margin-bottom: 20px;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        table {
+            border-collapse: collapse;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        th, td {
+            width: 50px;
+            height: 50px;
+            text-align: center;
+            border: 2px solid #e2e8f0;
+            font-weight: 600;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        th {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            font-size: 18px;
+        }
+
+        .header-cell {
+            background: linear-gradient(135deg, #4a5568, #2d3748);
+        }
+
+        .true-cell {
+            background: linear-gradient(135deg, #48bb78, #38a169);
+            color: white;
+        }
+
+        .false-cell {
+            background: linear-gradient(135deg, #f56565, #e53e3e);
+            color: white;
+        }
+
+        .current-cell {
+            animation: pulse 1.5s infinite;
+            transform: scale(1.1);
+            z-index: 10;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(102, 126, 234, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(102, 126, 234, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(102, 126, 234, 0); }
+        }
+
+        .explanation {
+            background: linear-gradient(135deg, #f7fafc, #edf2f7);
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 20px;
+            border-left: 4px solid #667eea;
+        }
+
+        .explanation h3 {
+            color: #4a5568;
+            margin-top: 0;
+        }
+
+        .step-controls {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .step-controls button {
+            padding: 8px 16px;
+            font-size: 14px;
+        }
+
+        .examples {
+            margin-top: 30px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .example {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 15px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .example:hover {
+            background: rgba(255, 255, 255, 1);
+            border-color: #667eea;
+            transform: translateY(-2px);
+        }
+
+        .example-title {
+            font-weight: 600;
+            color: #4a5568;
+            margin-bottom: 5px;
+        }
+
+        .example-content {
+            font-size: 14px;
+            color: #718096;
+        }
+
+        .result {
+            text-align: center;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .result.match {
+            background: linear-gradient(135deg, #c6f6d5, #9ae6b4);
+            color: #22543d;
+        }
+
+        .result.no-match {
+            background: linear-gradient(135deg, #fed7d7, #feb2b2);
+            color: #742a2a;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 Wildcard Pattern Matching DP Visualizer</h1>
+        
+        <div class="input-section">
+            <div class="input-group">
+                <label for="string-input">Input String (s):</label>
+                <input type="text" id="string-input" value="abceb" placeholder="Enter string to match">
+            </div>
+            <div class="input-group">
+                <label for="pattern-input">Pattern (p):</label>
+                <input type="text" id="pattern-input" value="a*c?b" placeholder="Enter pattern (* and ? allowed)">
+            </div>
+            <button onclick="generateTable()">Generate DP Table</button>
+        </div>
+
+        <div class="examples">
+            <div class="example" onclick="loadExample('abceb', 'a*c?b')">
+                <div class="example-title">Example 1</div>
+                <div class="example-content">s: "abceb", p: "a*c?b" → True</div>
+            </div>
+            <div class="example" onclick="loadExample('adceb', '*a*b*')">
+                <div class="example-title">Example 2</div>
+                <div class="example-content">s: "adceb", p: "*a*b*" → True</div>
+            </div>
+            <div class="example" onclick="loadExample('acdcb', 'a*c?b')">
+                <div class="example-title">Example 3</div>
+                <div class="example-content">s: "acdcb", p: "a*c?b" → False</div>
+            </div>
+            <div class="example" onclick="loadExample('abc', 'a***c')">
+                <div class="example-title">Example 4</div>
+                <div class="example-content">s: "abc", p: "a***c" → True</div>
+            </div>
+        </div>
+
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-color true-cell"></div>
+                <span>True (Match)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color false-cell"></div>
+                <span>False (No Match)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color header-cell"></div>
+                <span>Headers</span>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <table id="dp-table"></table>
+        </div>
+
+        <div class="step-controls">
+            <button onclick="stepByStep()">Step by Step</button>
+            <button onclick="prevStep()">Previous Step</button>
+            <button onclick="nextStep()">Next Step</button>
+            <button onclick="resetVisualization()">Reset</button>
+        </div>
+
+        <div id="result-display"></div>
+        <div id="explanation" class="explanation" style="display: none;"></div>
+    </div>
+
+    <script>
+        let currentStep = 0;
+        let totalSteps = 0;
+        let stepByStepMode = false;
+        let dpTable = [];
+        let currentString = '';
+        let currentPattern = '';
+        let steps = [];
+
+        function loadExample(s, p) {
+            document.getElementById('string-input').value = s;
+            document.getElementById('pattern-input').value = p;
+            generateTable();
+        }
+
+        function isMatch(s, p) {
+            const m = s.length;
+            const n = p.length;
+            
+            // Initialize DP table
+            dpTable = Array(m + 1).fill(null).map(() => Array(n + 1).fill(false));
+            steps = [];
+            
+            // Base case: empty string matches empty pattern
+            dpTable[0][0] = true;
+            steps.push({
+                i: 0, j: 0, 
+                explanation: "Base case: Empty string matches empty pattern",
+                action: "dp[0][0] = True"
+            });
+            
+            // Handle empty string with pattern containing only '*'
+            for (let j = 1; j <= n; j++) {
+                let flag = true;
+                for (let x = 0; x < j; x++) {
+                    if (p[x] !== '*') {
+                        flag = false;
+                        break;
+                    }
+                }
+                dpTable[0][j] = flag;
+                steps.push({
+                    i: 0, j: j,
+                    explanation: `Empty string vs pattern "${p.substring(0, j)}": ${flag ? 'All * can match empty string' : 'Contains non-* characters'}`,
+                    action: `dp[0][${j}] = ${flag}`
+                });
+            }
+            
+            // Fill the DP table
+            for (let i = 1; i <= m; i++) {
+                for (let j = 1; j <= n; j++) {
+                    const charS = s[i - 1];
+                    const charP = p[j - 1];
+                    
+                    if (charS === charP || charP === '?') {
+                        dpTable[i][j] = dpTable[i - 1][j - 1];
+                        steps.push({
+                            i: i, j: j,
+                            explanation: `Character '${charS}' ${charP === '?' ? 'matches wildcard ?' : `matches '${charP}'`}`,
+                            action: `dp[${i}][${j}] = dp[${i-1}][${j-1}] = ${dpTable[i][j]}`
+                        });
+                    } else if (charP === '*') {
+                        const emptyMatch = dpTable[i][j - 1];  // * matches empty
+                        const charMatch = dpTable[i - 1][j];   // * matches current char
+                        dpTable[i][j] = emptyMatch || charMatch;
+                        steps.push({
+                            i: i, j: j,
+                            explanation: `'*' can match empty (${emptyMatch}) OR match '${charS}' (${charMatch})`,
+                            action: `dp[${i}][${j}] = ${emptyMatch} OR ${charMatch} = ${dpTable[i][j]}`
+                        });
+                    } else {
+                        dpTable[i][j] = false;
+                        steps.push({
+                            i: i, j: j,
+                            explanation: `Character '${charS}' doesn't match '${charP}'`,
+                            action: `dp[${i}][${j}] = False`
+                        });
+                    }
+                }
+            }
+            
+            totalSteps = steps.length;
+            return dpTable[m][n];
+        }
+
+        function generateTable() {
+            const s = document.getElementById('string-input').value;
+            const p = document.getElementById('pattern-input').value;
+            
+            currentString = s;
+            currentPattern = p;
+            
+            const result = isMatch(s, p);
+            
+            renderTable();
+            showResult(result);
+            
+            currentStep = 0;
+            stepByStepMode = false;
+            document.getElementById('explanation').style.display = 'none';
+        }
+
+        function renderTable() {
+            const table = document.getElementById('dp-table');
+            const m = currentString.length;
+            const n = currentPattern.length;
+            
+            table.innerHTML = '';
+            
+            // Create header row
+            const headerRow = table.insertRow();
+            headerRow.insertCell().innerHTML = '';
+            headerRow.insertCell().innerHTML = 'ε';
+            for (let j = 0; j < n; j++) {
+                const cell = headerRow.insertCell();
+                cell.innerHTML = currentPattern[j];
+                cell.className = 'header-cell';
+            }
+            
+            // Create rows for each character in string
+            for (let i = 0; i <= m; i++) {
+                const row = table.insertRow();
+                const headerCell = row.insertCell();
+                headerCell.innerHTML = i === 0 ? 'ε' : currentString[i - 1];
+                headerCell.className = 'header-cell';
+                
+                for (let j = 0; j <= n; j++) {
+                    const cell = row.insertCell();
+                    const value = dpTable[i][j];
+                    cell.innerHTML = value ? 'T' : 'F';
+                    cell.className = value ? 'true-cell' : 'false-cell';
+                    cell.id = `cell-${i}-${j}`;
+                }
+            }
+        }
+
+        function showResult(result) {
+            const resultDiv = document.getElementById('result-display');
+            resultDiv.innerHTML = `
+                <div class="result ${result ? 'match' : 'no-match'}">
+                    Pattern ${result ? 'MATCHES' : 'DOES NOT MATCH'} the string!
+                    <br>
+                    Final Result: dp[${currentString.length}][${currentPattern.length}] = ${result}
+                </div>
+            `;
+        }
+
+        function stepByStep() {
+            stepByStepMode = true;
+            currentStep = 0;
+            showStep();
+        }
+
+        function nextStep() {
+            if (currentStep < totalSteps - 1) {
+                currentStep++;
+                showStep();
+            }
+        }
+
+        function prevStep() {
+            if (currentStep > 0) {
+                currentStep--;
+                showStep();
+            }
+        }
+
+        function resetVisualization() {
+            stepByStepMode = false;
+            currentStep = 0;
+            document.getElementById('explanation').style.display = 'none';
+            clearHighlights();
+        }
+
+        function showStep() {
+            if (!stepByStepMode || currentStep >= totalSteps) return;
+            
+            const step = steps[currentStep];
+            clearHighlights();
+            
+            // Highlight current cell
+            const cell = document.getElementById(`cell-${step.i}-${step.j}`);
+            if (cell) {
+                cell.classList.add('current-cell');
+            }
+            
+            // Show explanation
+            const explanationDiv = document.getElementById('explanation');
+            explanationDiv.style.display = 'block';
+            explanationDiv.innerHTML = `
+                <h3>Step ${currentStep + 1} of ${totalSteps}</h3>
+                <p><strong>Position:</strong> dp[${step.i}][${step.j}]</p>
+                <p><strong>Explanation:</strong> ${step.explanation}</p>
+                <p><strong>Action:</strong> ${step.action}</p>
+                <p><strong>Progress:</strong> ${currentStep + 1}/${totalSteps}</p>
+            `;
+        }
+
+        function clearHighlights() {
+            const cells = document.querySelectorAll('.current-cell');
+            cells.forEach(cell => cell.classList.remove('current-cell'));
+        }
+
+        // Initialize with default example
+        window.onload = function() {
+            generateTable();
+        };
+    </script>
+</body>
+</html>

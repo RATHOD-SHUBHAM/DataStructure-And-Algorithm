@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Fancy Edit Distance Visualization</title>
+  <style>
+    /* Page & Background */
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #a1c4fd, #c2e9fb);
+      background-size: 400% 400%;
+      animation: bgAnim 15s ease infinite;
+      font-family: Arial, sans-serif;
+    }
+    @keyframes bgAnim {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Frosted Glass Container */
+    .container {
+      background: rgba(255,255,255,0.3);
+      backdrop-filter: blur(10px);
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      text-align: center;
+      width: 90%;
+      max-width: 800px;
+    }
+    h1 {
+      margin: 0;
+      color: #333;
+    }
+    p.desc {
+      margin: 5px 0 20px;
+      font-weight: 500;
+      color: #555;
+    }
+
+    /* Controls */
+    .controls {
+      margin-bottom: 20px;
+    }
+    .btn {
+      background: rgba(255,255,255,0.6);
+      border: none;
+      padding: 10px 16px;
+      margin: 0 8px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background 0.3s, transform 0.3s;
+    }
+    .btn:hover {
+      background: rgba(255,255,255,0.8);
+      transform: translateY(-2px);
+    }
+
+    /* Table Styling */
+    .table-wrap {
+      overflow-x: auto;
+    }
+    table {
+      border-collapse: collapse;
+      margin: 0 auto;
+      background: rgba(255,255,255,0.8);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      width: 50px;
+      height: 40px;
+      text-align: center;
+      vertical-align: middle;
+      font-size: 14px;
+      opacity: 0;
+      transform: translateY(-10px);
+      transition: opacity 0.3s, transform 0.3s;
+    }
+    th {
+      background: #f0f0f0;
+      font-weight: 600;
+      color: #333;
+      opacity: 1;
+      transform: translateY(0);
+    }
+    td.current {
+      background: #fdcb6e;
+    }
+    .show {
+      opacity: 1 !important;
+      transform: translateY(0) !important;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>📝 Edit Distance DP Table</h1>
+    <p class="desc" id="desc"></p>
+
+    <div class="controls">
+      <button class="btn" onclick="reset()">🔄 Reset</button>
+      <button class="btn" onclick="fillAll()">⚡ Fill Complete</button>
+      <button class="btn" onclick="step()">▶️ Step Through</button>
+    </div>
+
+    <div class="table-wrap">
+      <table id="dpTable"></table>
+    </div>
+  </div>
+
+  <script>
+    // Customize these two strings
+    const word1 = "horse";
+    const word2 = "ros";
+    const m = word1.length, n = word2.length;
+
+    let dp = [];
+    let stepIndex = 0;
+    let cells = [];
+    let intervalID = null;
+
+    function computeDP() {
+      dp = Array.from({length: m+1}, () => Array(n+1).fill(0));
+      for (let i = 0; i <= m; i++) dp[i][0] = i;
+      for (let j = 0; j <= n; j++) dp[0][j] = j;
+      for (let i = 1; i <= m; i++) {
+        for (let j = 1; j <= n; j++) {
+          dp[i][j] = (word1[i-1] === word2[j-1])
+            ? dp[i-1][j-1]
+            : 1 + Math.min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1]);
+        }
+      }
+    }
+
+    function buildTable() {
+      const table = document.getElementById('dpTable');
+      let html = '<tr><th>i\\j</th><th>ε</th>';
+      for (let j = 0; j < n; j++) html += `<th>${word2[j]}</th>`;
+      html += '</tr>';
+      for (let i = 0; i <= m; i++) {
+        html += `<tr><th>${i === 0 ? 'ε' : word1[i-1]}</th>`;
+        for (let j = 0; j <= n; j++) {
+          html += `<td id="cell-${i}-${j}"></td>`;
+        }
+        html += '</tr>';
+      }
+      table.innerHTML = html;
+      document.getElementById('desc').textContent =
+        `word1 = "${word1}", word2 = "${word2}" → distance = ${dp[m][n]}`;
+    }
+
+    function reset() {
+      clearInterval(intervalID);
+      stepIndex = 0;
+      computeDP();
+      buildTable();
+      document.querySelectorAll('td').forEach(td => {
+        td.classList.remove('current', 'show');
+        td.textContent = '';
+      });
+    }
+
+    function fillAll() {
+      reset();
+      document.querySelectorAll('td').forEach(td => {
+        const [i, j] = td.id.slice(5).split('-').map(Number);
+        td.textContent = dp[i][j];
+        td.classList.add('show');
+      });
+    }
+
+    function step() {
+      reset();
+      cells = [];
+      for (let i = 0; i <= m; i++) {
+        for (let j = 0; j <= n; j++) {
+          cells.push({i, j});
+        }
+      }
+      intervalID = setInterval(() => {
+        if (stepIndex >= cells.length) {
+          clearInterval(intervalID);
+          return;
+        }
+        document.querySelectorAll('td.current').forEach(el =>
+          el.classList.remove('current')
+        );
+        const {i, j} = cells[stepIndex++];
+        const td = document.getElementById(`cell-${i}-${j}`);
+        td.textContent = dp[i][j];
+        td.classList.add('show', 'current');
+      }, 400);
+    }
+
+    // Initialize on page load
+    window.onload = reset;
+  </script>
+</body>
+</html>
