@@ -10,13 +10,17 @@ class Solution:
     
     def recursion(self, i, j, s1, s2):
         # base case
+        if i < 0 and j < 0:
+            # When everything matched perfectly
+            return 0
+
         if j < 0:
-            # Minimum opertation to convert s1 to s2, will be to delete element in s1
-            return i + 1 # No of elements to delete
+            # delete elements from word1 as word2 is 0
+            return i + 1
         
         if i < 0:
-            # Minimum opertation to convert s1 to s2, will be to insert element in s1
-            return j + 1 # No of elements to insert
+            # Insert element in word1 to match word2
+            return j + 1
         
         # Logic
         if s1[i] == s2[j]:
