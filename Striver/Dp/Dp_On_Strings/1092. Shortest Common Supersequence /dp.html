@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LCS DP Table Explanation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .dp-table {
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .dp-table th, .dp-table td {
+            border: 1px solid #333;
+            padding: 8px 12px;
+            text-align: center;
+            min-width: 40px;
+        }
+        .dp-table th {
+            background-color: #f0f0f0;
+            font-weight: bold;
+        }
+        .highlight {
+            background-color: #ffeb3b;
+            font-weight: bold;
+        }
+        .path {
+            background-color: #e8f5e8;
+        }
+        .example {
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-left: 4px solid #2196F3;
+            margin: 20px 0;
+        }
+        .step {
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ddd;
+            background-color: #fafafa;
+        }
+        .arrow {
+            color: #2196F3;
+            font-weight: bold;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Understanding LCS DP Table and Backtracking</h1>
+    
+    <div class="example">
+        <h3>Example: str1 = "abc", str2 = "ac"</h3>
+        <p>Let's trace through how the DP table is built and why backtracking works.</p>
+    </div>
+
+    <h2>Step 1: Understanding the DP Table</h2>
+    <p>The DP table <code>dp[i][j]</code> represents the length of LCS of <code>str1[0..i-1]</code> and <code>str2[0..j-1]</code></p>
+    
+    <table class="dp-table">
+        <tr>
+            <th></th>
+            <th>""</th>
+            <th>a</th>
+            <th>c</th>
+        </tr>
+        <tr>
+            <th>""</th>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+        </tr>
+        <tr>
+            <th>a</th>
+            <td>0</td>
+            <td class="highlight">1</td>
+            <td>1</td>
+        </tr>
+        <tr>
+            <th>b</th>
+            <td>0</td>
+            <td>1</td>
+            <td>1</td>
+        </tr>
+        <tr>
+            <th>c</th>
+            <td>0</td>
+            <td>1</td>
+            <td class="highlight">2</td>
+        </tr>
+    </table>
+
+    <h2>Step 2: How Each Cell is Filled</h2>
+    
+    <div class="step">
+        <h4>At dp[1][1] (comparing 'a' with 'a'):</h4>
+        <p>str1[0] = 'a', str2[0] = 'a' → They match!</p>
+        <p>dp[1][1] = dp[0][0] + 1 = 0 + 1 = 1</p>
+    </div>
+
+    <div class="step">
+        <h4>At dp[2][1] (comparing "ab" with "a"):</h4>
+        <p>str1[1] = 'b', str2[0] = 'a' → They don't match</p>
+        <p>dp[2][1] = max(dp[1][1], dp[2][0]) = max(1, 0) = 1</p>
+        <p><strong>Key insight:</strong> We took the value from <code>dp[1][1]</code> (above), which means we're <em>not using</em> str1[1] = 'b'</p>
+    </div>
+
+    <div class="step">
+        <h4>At dp[3][2] (comparing "abc" with "ac"):</h4>
+        <p>str1[2] = 'c', str2[1] = 'c' → They match!</p>
+        <p>dp[3][2] = dp[2][1] + 1 = 1 + 1 = 2</p>
+    </div>
+
+    <h2>Step 3: Backtracking Logic</h2>
+    <p>Now we trace back from dp[3][2] = 2 to reconstruct the supersequence:</p>
+
+    <table class="dp-table">
+        <tr>
+            <th></th>
+            <th>""</th>
+            <th>a</th>
+            <th>c</th>
+        </tr>
+        <tr>
+            <th>""</th>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+        </tr>
+        <tr>
+            <th>a</th>
+            <td>0</td>
+            <td class="path">1</td>
+            <td>1</td>
+        </tr>
+        <tr>
+            <th>b</th>
+            <td>0</td>
+            <td class="path">1</td>
+            <td>1</td>
+        </tr>
+        <tr>
+            <th>c</th>
+            <td>0</td>
+            <td>1</td>
+            <td class="highlight path">2</td>
+        </tr>
+    </table>
+
+    <div class="step">
+        <h4>At dp[3][2]: i=3, j=2</h4>
+        <p>str1[2] = 'c', str2[1] = 'c' → They match!</p>
+        <p>Add 'c' to result, move to dp[2][1]</p>
+        <p>Result so far: ['c']</p>
+    </div>
+
+    <div class="step">
+        <h4>At dp[2][1]: i=2, j=1</h4>
+        <p>str1[1] = 'b', str2[0] = 'a' → They don't match</p>
+        <p>dp[1][1] = 1, dp[2][0] = 0</p>
+        <p>Since dp[1][1] > dp[2][0], the LCS value came from above (dp[1][1])</p>
+        <p><strong>This means:</strong> When we computed dp[2][1], we didn't use str1[1] = 'b'</p>
+        <p><strong>Therefore:</strong> 'b' is NOT part of the LCS, so we must include it in the supersequence</p>
+        <p>Add 'b' to result, move to dp[1][1]</p>
+        <p>Result so far: ['c', 'b']</p>
+    </div>
+
+    <div class="step">
+        <h4>At dp[1][1]: i=1, j=1</h4>
+        <p>str1[0] = 'a', str2[0] = 'a' → They match!</p>
+        <p>Add 'a' to result, move to dp[0][0]</p>
+        <p>Result so far: ['c', 'b', 'a']</p>
+    </div>
+
+    <h2>Final Result</h2>
+    <p>Reverse the result: ['c', 'b', 'a'] → "abc"</p>
+    <p>Wait, that's not right! Let me recalculate...</p>
+
+    <div class="example">
+        <h3>Correct Calculation for str1="abc", str2="ac"</h3>
+        <p>Let me redo this step by step more carefully:</p>
+        
+        <h4>Backtracking from dp[3][2]:</h4>
+        <ol>
+            <li><strong>dp[3][2]:</strong> str1[2]='c', str2[1]='c' match → add 'c', go to dp[2][1]</li>
+            <li><strong>dp[2][1]:</strong> str1[1]='b', str2[0]='a' don't match
+                <br>dp[1][1] = 1 > dp[2][0] = 0
+                <br>So value came from above → add str1[1]='b', go to dp[1][1]</li>
+            <li><strong>dp[1][1]:</strong> str1[0]='a', str2[0]='a' match → add 'a', go to dp[0][0]</li>
+        </ol>
+        
+        <p>Result built backwards: ['c', 'b', 'a']</p>
+        <p>Reversed: "abc"</p>
+        <p><strong>Check:</strong> "abc" contains "abc" ✓ and "ac" ✓</p>
+    </div>
+
+    <h2>Key Insight</h2>
+    <p class="example">
+        <strong>When dp[i-1][j] > dp[i][j-1]:</strong><br>
+        • The LCS value at dp[i][j] came from dp[i-1][j] (the cell above)<br>
+        • This means when we computed dp[i][j], we chose NOT to use str1[i-1]<br>
+        • Since str1[i-1] is not part of the LCS, it must be included in the supersequence<br>
+        • That's why we add str1[i-1] and move up (i-1)
+    </p>
+
+    <script>
+        // Add some interactivity
+        document.addEventListener('DOMContentLoaded', function() {
+            const cells = document.querySelectorAll('.dp-table td');
+            cells.forEach(cell => {
+                cell.addEventListener('mouseenter', function() {
+                    this.style.backgroundColor = '#e3f2fd';
+                });
+                cell.addEventListener('mouseleave', function() {
+                    if (!this.classList.contains('highlight') && !this.classList.contains('path')) {
+                        this.style.backgroundColor = '';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
