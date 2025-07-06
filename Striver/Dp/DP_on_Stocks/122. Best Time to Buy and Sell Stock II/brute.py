@@ -1,3 +1,8 @@
+"""
+Look for every peak following a valley, 
+and track the costs corresponding to the peaks and valleys along with the maximum profit
+"""
+
 # Tc: O(n)
 # Sc: O(1)
 
