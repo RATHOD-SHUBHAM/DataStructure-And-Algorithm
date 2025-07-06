@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DP Table for Stock Trading</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .dp-table {
+            border-collapse: collapse;
+            margin: 20px auto;
+            font-size: 16px;
+        }
+        .dp-table th, .dp-table td {
+            border: 2px solid #333;
+            padding: 15px;
+            text-align: center;
+            min-width: 100px;
+        }
+        .dp-table th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .buy-state {
+            background-color: #e8f5e8;
+        }
+        .sell-state {
+            background-color: #fff3e0;
+        }
+        .base-case {
+            background-color: #f0f0f0;
+            font-weight: bold;
+        }
+        .explanation {
+            background: #e3f2fd;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #2196F3;
+        }
+        .step {
+            background: #f0f8ff;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border-left: 3px solid #4CAF50;
+        }
+        .calculation {
+            background: #fff8e1;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-family: monospace;
+        }
+        .highlight {
+            background: #ffeb3b;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+        .state-meaning {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+        }
+        .state-box {
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            flex: 1;
+            margin: 0 10px;
+        }
+        .prices-array {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+        .final-answer {
+            background: #e8f5e8;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            color: #2e7d32;
+            margin: 20px 0;
+        }
+        .code-block {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 DP Table for Stock Trading Problem</h1>
+        
+        <div class="prices-array">
+            prices = [2, 4, 1] → indices [0, 1, 2]
+        </div>
+
+        <div class="explanation">
+            <h2>What Each Cell Represents:</h2>
+            <p><strong>dp[idx][buy]</strong> = Maximum profit we can achieve from day <em>idx</em> to the end, given our current state</p>
+        </div>
+
+        <div class="state-meaning">
+            <div class="state-box buy-state">
+                <h3>buy = 0 (Can Buy)</h3>
+                <p>We don't currently own any stock</p>
+                <p>We're free to buy if we want</p>
+            </div>
+            <div class="state-box sell-state">
+                <h3>buy = 1 (Must Sell)</h3>
+                <p>We currently own stock</p>
+                <p>We must sell before buying again</p>
+            </div>
+        </div>
+
+        <h2>Your Code Logic:</h2>
+        <div class="code-block">
+if buy == 0:  # Can buy
+    purchase = dp[idx+1][1] - prices[idx]      # Buy today, future profit
+    no_purchase = dp[idx+1][0] - 0             # Don't buy, future profit
+    profit = max(purchase, no_purchase)
+else:  # Must sell
+    sell = prices[idx] + dp[idx+1][0]          # Sell today, future profit
+    no_sell = 0 + dp[idx+1][1]                # Don't sell, future profit
+    profit = max(sell, no_sell)
+        </div>
+
+        <h2>DP Table Construction (Bottom-Up)</h2>
+        
+        <table class="dp-table">
+            <thead>
+                <tr>
+                    <th>idx</th>
+                    <th>Price</th>
+                    <th>dp[idx][0]<br>(Can Buy)</th>
+                    <th>dp[idx][1]<br>(Must Sell)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="base-case">
+                    <td>3</td>
+                    <td>-</td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+                <tr class="sell-state">
+                    <td>2</td>
+                    <td>1</td>
+                    <td id="dp-2-0">0</td>
+                    <td id="dp-2-1">1</td>
+                </tr>
+                <tr class="buy-state">
+                    <td>1</td>
+                    <td>4</td>
+                    <td id="dp-1-0">0</td>
+                    <td id="dp-1-1">4</td>
+                </tr>
+                <tr class="buy-state">
+                    <td>0</td>
+                    <td>2</td>
+                    <td id="dp-0-0">2</td>
+                    <td id="dp-0-1">4</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="final-answer">
+            Answer: dp[0][0] = <span id="final-answer">2</span> (Maximum profit starting from day 0, when we can buy)
+        </div>
+
+        <h2>Step-by-Step Calculation</h2>
+        <div id="step-by-step"></div>
+
+        <div class="step">
+            <h3>🎯 Optimal Strategy for [2,4,1]:</h3>
+            <p>Starting at day 0 with ability to buy:</p>
+            <ul>
+                <li>Buy at price 2 (day 0)</li>
+                <li>Sell at price 4 (day 1)</li>
+                <li>Don't buy at price 1 (day 2) - no future selling opportunity</li>
+            </ul>
+            <p><strong>Total Profit = 4 - 2 = 2</strong></p>
+        </div>
+    </div>
+
+    <script>
+        // Implement the exact code logic provided
+        function calculateDP() {
+            const prices = [2, 4, 1];
+            const n = prices.length;
+            
+            // Initialize DP table
+            const dp = Array(n + 1).fill(null).map(() => Array(2).fill(0));
+            
+            // Base case: idx == n, return 0
+            for (let j = 0; j < 2; j++) {
+                dp[n][j] = 0;
+            }
+            
+            let stepByStep = "";
+            
+            stepByStep += `<div class="step"><h3>Base Case (idx = ${n}):</h3>`;
+            stepByStep += `<p>No more days left, so profit = 0 regardless of state</p>`;
+            stepByStep += `<div class="calculation">dp[${n}][0] = 0<br>dp[${n}][1] = 0</div></div>`;
+            
+            // Logic - iterate from n-1 to 0
+            for (let idx = n - 1; idx >= 0; idx--) {
+                stepByStep += `<div class="step"><h3>Day ${idx} (price = ${prices[idx]}):</h3>`;
+                
+                for (let buy = 0; buy < 2; buy++) {
+                    let profit;
+                    
+                    if (buy == 0) {
+                        // Can buy
+                        const purchase = dp[idx + 1][1] - prices[idx];
+                        const no_purchase = dp[idx + 1][0] - 0;
+                        profit = Math.max(purchase, no_purchase);
+                        
+                        stepByStep += `<p><strong>dp[${idx}][0] (Can Buy):</strong></p>`;
+                        stepByStep += `<div class="calculation">`;
+                        stepByStep += `purchase = dp[${idx + 1}][1] - prices[${idx}] = ${dp[idx + 1][1]} - ${prices[idx]} = ${purchase}<br>`;
+                        stepByStep += `no_purchase = dp[${idx + 1}][0] - 0 = ${dp[idx + 1][0]} - 0 = ${no_purchase}<br>`;
+                        stepByStep += `profit = max(${purchase}, ${no_purchase}) = <span class="highlight">${profit}</span>`;
+                        stepByStep += `</div>`;
+                        
+                    } else {
+                        // Must sell
+                        const sell = prices[idx] + dp[idx + 1][0];
+                        const no_sell = 0 + dp[idx + 1][1];
+                        profit = Math.max(sell, no_sell);
+                        
+                        stepByStep += `<p><strong>dp[${idx}][1] (Must Sell):</strong></p>`;
+                        stepByStep += `<div class="calculation">`;
+                        stepByStep += `sell = prices[${idx}] + dp[${idx + 1}][0] = ${prices[idx]} + ${dp[idx + 1][0]} = ${sell}<br>`;
+                        stepByStep += `no_sell = 0 + dp[${idx + 1}][1] = 0 + ${dp[idx + 1][1]} = ${no_sell}<br>`;
+                        stepByStep += `profit = max(${sell}, ${no_sell}) = <span class="highlight">${profit}</span>`;
+                        stepByStep += `</div>`;
+                    }
+                    
+                    dp[idx][buy] = profit;
+                }
+                
+                stepByStep += `</div>`;
+                
+                // Update table
+                document.getElementById(`dp-${idx}-0`).textContent = dp[idx][0];
+                document.getElementById(`dp-${idx}-1`).textContent = dp[idx][1];
+            }
+            
+            document.getElementById('step-by-step').innerHTML = stepByStep;
+            document.getElementById('final-answer').textContent = dp[0][0];
+        }
+        
+        // Run the calculation when page loads
+        calculateDP();
+    </script>
+</body>
+</html>
