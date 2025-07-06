@@ -39,5 +39,27 @@ class Solution:
 
         return total_profit
 
+# --------------------------------- Same logic with a different approach ---------------------------------
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        n = len(prices)
+        
+        total_profit = 0
+
+        i = 0
+
+        while i < n: # Iterate for valley
+            j = i + 1
+
+            # Find the peak
+            while j < n and prices[j] > prices[j-1]:
+                j += 1
+            
+            profit = prices[j-1] - prices[i] # Sell - Buy
+            total_profit += profit
+            
+            i = j # Move to the next valley
+        
+        return total_profit
 
         
