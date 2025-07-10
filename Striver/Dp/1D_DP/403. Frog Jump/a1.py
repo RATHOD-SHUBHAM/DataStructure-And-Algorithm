@@ -31,7 +31,7 @@ class Solution:
         for nextJump in range(k-1, k+2):
             # Check if nextJump is greater than 0 because the frog cannot jump in the backward direction, and staying at the same index won't change the outcome.
             # Check if, at this next position, there is a stone or not. If there is an entry in dictionary, it implies that the stone is there.
-            nextPos = stones[index] + nextJump
+            nextPos = stones[index] + nextJump # Next Stone
             if (nextJump > 0) and (nextPos in stones_mapping):
                 # Check if we can reach the last stone from next postion
                 next_index = stones_mapping[nextPos]
