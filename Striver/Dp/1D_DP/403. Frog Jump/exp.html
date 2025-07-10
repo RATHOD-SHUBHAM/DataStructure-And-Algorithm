@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frog Crossing DP Step-by-Step</title>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f8f9fa;
+            line-height: 1.6;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+        
+        .step-container {
+            border: 2px solid #3498db;
+            border-radius: 10px;
+            margin: 20px 0;
+            padding: 20px;
+            background: #f8f9fa;
+        }
+        
+        .step-header {
+            background: #3498db;
+            color: white;
+            padding: 10px 15px;
+            margin: -20px -20px 15px -20px;
+            border-radius: 8px 8px 0 0;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        
+        .current-state {
+            background: #e8f5e8;
+            border: 2px solid #27ae60;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+        
+        .dp-state {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .iteration {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 10px 15px;
+            margin: 10px 0;
+        }
+        
+        .code-block {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+        }
+        
+        .highlight {
+            background: #ffeb3b;
+            padding: 2px 4px;
+            border-radius: 3px;
+            color: #000;
+        }
+        
+        .success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        
+        .failure {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        
+        .controls {
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 0 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        button:hover {
+            background: #2980b9;
+        }
+        
+        button:disabled {
+            background: #95a5a6;
+            cursor: not-allowed;
+        }
+        
+        .stones-display {
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            margin: 20px 0;
+            padding: 15px;
+            background: #ecf0f1;
+            border-radius: 8px;
+        }
+        
+        .current-stone {
+            color: #e74c3c;
+            background: #ffebee;
+            padding: 5px 10px;
+            border-radius: 5px;
+            margin: 0 5px;
+        }
+        
+        .visited-stone {
+            color: #27ae60;
+            background: #e8f5e8;
+            padding: 5px 10px;
+            border-radius: 5px;
+            margin: 0 5px;
+        }
+        
+        .unvisited-stone {
+            color: #7f8c8d;
+            background: #ecf0f1;
+            padding: 5px 10px;
+            border-radius: 5px;
+            margin: 0 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🐸 Frog Crossing: Step-by-Step DP Execution</h1>
+        
+        <div class="stones-display">
+            <strong>Stones:</strong> [0, 1, 3, 5, 6, 8, 12, 17]
+        </div>
+        
+        <div class="controls">
+            <button onclick="previousStep()" id="prevBtn">← Previous</button>
+            <button onclick="nextStep()" id="nextBtn">Next →</button>
+            <button onclick="reset()">Reset</button>
+        </div>
+        
+        <div id="stepContent">
+            <!-- Steps will be populated here -->
+        </div>
+    </div>
+
+    <script>
+        const stones = [0, 1, 3, 5, 6, 8, 12, 17];
+        let currentStepIndex = 0;
+        let steps = [];
+        
+        function generateSteps() {
+            steps = [];
+            
+            // Step 0: Initialization
+            steps.push({
+                title: "Step 0: Initialization",
+                content: `
+                    <div class="current-state">
+                        <strong>Initialize DP dictionary and check basic conditions</strong>
+                    </div>
+                    <div class="code-block">
+n = len(stones) = 8
+if stones[1] != 1: return False  # stones[1] = 1 ✓
+stone_mapping = {0, 1, 3, 5, 6, 8, 12, 17}
+dp = defaultdict(set)
+dp[0].add(0)  # Start at stone 0 with jump size 0
+dp[1].add(1)  # Must reach stone 1 with jump size 1
+                    </div>
+                    <div class="dp-state">
+                        <strong>Current DP state:</strong><br>
+                        dp[0] = {0}<br>
+                        dp[1] = {1}<br>
+                        dp[3] = {}<br>
+                        dp[5] = {}<br>
+                        dp[6] = {}<br>
+                        dp[8] = {}<br>
+                        dp[12] = {}<br>
+                        dp[17] = {}
+                    </div>
+                `
+            });
+            
+            // Step 1: Processing stone 1
+            steps.push({
+                title: "Step 1: Processing stone = 1",
+                content: `
+                    <div class="current-state">
+                        <strong>Current stone: 1, Available jumps: {1}</strong>
+                    </div>
+                    <div class="code-block">
+for stone in stones:
+    if stone == 0: continue  # Skip stone 0
+    
+    # <span class="highlight">stone = 1</span>
+    for jump in dp[1]:  # jump = 1
+        for nxtJump in range(jump-1, jump+2):  # range(0, 3) = [0, 1, 2]
+                    </div>
+                    <div class="iteration">
+                        <strong>Iteration 1:</strong> jump = 1<br>
+                        → Try nxtJump = 0: nxtPos = 1 + 0 = 1 (already current stone, skip)<br>
+                        → Try nxtJump = 1: nxtPos = 1 + 1 = 2 (not in stone_mapping, skip)<br>
+                        → Try nxtJump = 2: nxtPos = 1 + 2 = 3 (✓ in stone_mapping)<br>
+                        → <span class="highlight">dp[3].add(2)</span>
+                    </div>
+                    <div class="dp-state">
+                        <strong>DP state after processing stone 1:</strong><br>
+                        dp[0] = {0}<br>
+                        dp[1] = {1}<br>
+                        dp[3] = {2} ← Updated!<br>
+                        dp[5] = {}<br>
+                        dp[6] = {}<br>
+                        dp[8] = {}<br>
+                        dp[12] = {}<br>
+                        dp[17] = {}
+                    </div>
+                `
+            });
+            
+            // Step 2: Processing stone 3
+            steps.push({
+                title: "Step 2: Processing stone = 3",
+                content: `
+                    <div class="current-state">
+                        <strong>Current stone: 3, Available jumps: {2}</strong>
+                    </div>
+                    <div class="code-block">
+    # <span class="highlight">stone = 3</span>
+    for jump in dp[3]:  # jump = 2
+        for nxtJump in range(jump-1, jump+2):  # range(1, 4) = [1, 2, 3]
+                    </div>
+                    <div class="iteration">
+                        <strong>Iteration 1:</strong> jump = 2<br>
+                        → Try nxtJump = 1: nxtPos = 3 + 1 = 4 (not in stone_mapping, skip)<br>
+                        → Try nxtJump = 2: nxtPos = 3 + 2 = 5 (✓ in stone_mapping)<br>
+                        → <span class="highlight">dp[5].add(2)</span><br>
+                        → Try nxtJump = 3: nxtPos = 3 + 3 = 6 (✓ in stone_mapping)<br>
+                        → <span class="highlight">dp[6].add(3)</span>
+                    </div>
+                    <div class="dp-state">
+                        <strong>DP state after processing stone 3:</strong><br>
+                        dp[0] = {0}<br>
+                        dp[1] = {1}<br>
+                        dp[3] = {2}<br>
+                        dp[5] = {2} ← Updated!<br>
+                        dp[6] = {3} ← Updated!<br>
+                        dp[8] = {}<br>
+                        dp[12] = {}<br>
+                        dp[17] = {}
+                    </div>
+                `
+            });
+            
+            // Step 3: Processing stone 5
+            steps.push({
+                title: "Step 3: Processing stone = 5",
+                content: `
+                    <div class="current-state">
+                        <strong>Current stone: 5, Available jumps: {2}</strong>
+                    </div>
+                    <div class="code-block">
+    # <span class="highlight">stone = 5</span>
+    for jump in dp[5]:  # jump = 2
+        for nxtJump in range(jump-1, jump+2):  # range(1, 4) = [1, 2, 3]
+                    </div>
+                    <div class="iteration">
+                        <strong>Iteration 1:</strong> jump = 2<br>
+                        → Try nxtJump = 1: nxtPos = 5 + 1 = 6 (✓ in stone_mapping)<br>
+                        → <span class="highlight">dp[6].add(1)</span><br>
+                        → Try nxtJump = 2: nxtPos = 5 + 2 = 7 (not in stone_mapping, skip)<br>
+                        → Try nxtJump = 3: nxtPos = 5 + 3 = 8 (✓ in stone_mapping)<br>
+                        → <span class="highlight">dp[8].add(3)</span>
+                    </div>
+                    <div class="dp-state">
+                        <strong>DP state after processing stone 5:</strong><br>
+                        dp[0] = {0}<br>
+                        dp[1] = {1}<br>
+                        dp[3] = {2}<br>
+                        dp[5] = {2}<br>
+                        dp[6] = {3, 1} ← Updated!<br>
+                        dp[8] = {3} ← Updated!<br>
+                        dp[12] = {}<br>
+                        dp[17] = {}
+                    </div>
+                `
+            });
+            
+            // Step 4: Processing stone 6
+            steps.push({
+                title: "Step 4: Processing stone = 6",
+                content: `
+                    <div class="current-state">
+                        <strong>Current stone: 6, Available jumps: {3, 1}</strong>
+                    </div>
+                    <div class="code-block">
+    # <span class="highlight">stone = 6</span>
+    for jump in dp[6]:  # jump = 3, then jump = 1
+        for nxtJump in range(jump-1, jump+2):
+                    </div>
+                    <div class="iteration">
+                        <strong>Iteration 1:</strong> jump = 3<br>
+                        → Try nxtJump = 2: nxtPos = 6 + 2 = 8 (✓ in stone_mapping)<br>
+                        → <span class="highlight">dp[8].add(2)</span><br>
+                        → Try nxtJump = 3: nxtPos = 6 + 3 = 9 (not in stone_mapping, skip)<br>
+                        → Try nxtJump = 4: nxtPos = 6 + 4 = 10 (not in stone_mapping, skip)<br><br>
+                        
+                        <strong>Iteration 2:</strong> jump = 1<br>
+                        → Try nxtJump = 0: nxtPos = 6 + 0 = 6 (current stone, skip)<br>
+                        → Try nxtJump = 1: nxtPos = 6 + 1 = 7 (not in stone_mapping, skip)<br>
+                        → Try nxtJump = 2: nxtPos = 6 + 2 = 8 (✓ in stone_mapping)<br>
+                        → <span class="highlight">dp[8].add(2)</span> (already exists, set doesn't add duplicates)
+                    </div>
+                    <div class="dp-state">
+                        <strong>DP state after processing stone 6:</strong><br>
+                        dp[0] = {0}<br>
+                        dp[1] = {1}<br>
+                        dp[3] = {2}<br>
+                        dp[5] = {2}<br>
+                        dp[6] = {3, 1}<br>
+                        dp[8] = {3, 2} ← Updated!<br>
+                        dp[12] = {}<br>
+                        dp[17] = {}
+                    </div>
+                `
+            });
+            
+            // Step 5: Processing stone 8
+            steps.push({
+                title: "Step 5: Processing stone = 8",
+                content: `
+                    <div class="current-state">
+                        <strong>Current stone: 8, Available jumps: {3, 2}</strong>
+                    </div>
+                    <div class="code-block">
+    # <span class="highlight">stone = 8</span>
+    for jump in dp[8]:  # jump = 3, then jump = 2
+        for nxtJump in range(jump-1, jump+2):
+                    </div>
+                    <div class="iteration">
+                        <strong>Iteration 1:</strong> jump = 3<br>
+                        → Try nxtJump = 2: nxtPos = 8 + 2 = 10 (not in stone_mapping, skip)<br>
+                        → Try nxtJump = 3: nxtPos = 8 + 3 = 11 (not in stone_mapping, skip)<br>
+                        → Try nxtJump = 4: nxtPos = 8 + 4 = 12 (✓ in stone_mapping)<br>
+                        → <span class="highlight">dp[12].add(4)</span><br><br>
+                        
+                        <strong>Iteration 2:</strong> jump = 2<br>
+                        → Try nxtJump = 1: nxtPos = 8 + 1 = 9 (not in stone_mapping, skip)<br>
+                        → Try nxtJump = 2: nxtPos = 8 + 2 = 10 (not in stone_mapping, skip)<br>
+                        → Try nxtJump = 3: nxtPos = 8 + 3 = 11 (not in stone_mapping, skip)
+                    </div>
+                    <div class="dp-state">
+                        <strong>DP state after processing stone 8:</strong><br>
+                        dp[0] = {0}<br>
+                        dp[1] = {1}<br>
+                        dp[3] = {2}<br>
+                        dp[5] = {2}<br>
+                        dp[6] = {3, 1}<br>
+                        dp[8] = {3, 2}<br>
+                        dp[12] = {4} ← Updated!<br>
+                        dp[17] = {}
+                    </div>
+                `
+            });
+            
+            // Step 6: Processing stone 12
+            steps.push({
+                title: "Step 6: Processing stone = 12",
+                content: `
+                    <div class="current-state">
+                        <strong>Current stone: 12, Available jumps: {4}</strong>
+                    </div>
+                    <div class="code-block">
+    # <span class="highlight">stone = 12</span>
+    for jump in dp[12]:  # jump = 4
+        for nxtJump in range(jump-1, jump+2):  # range(3, 6) = [3, 4, 5]
+                    </div>
+                    <div class="iteration">
+                        <strong>Iteration 1:</strong> jump = 4<br>
+                        → Try nxtJump = 3: nxtPos = 12 + 3 = 15 (not in stone_mapping, skip)<br>
+                        → Try nxtJump = 4: nxtPos = 12 + 4 = 16 (not in stone_mapping, skip)<br>
+                        → Try nxtJump = 5: nxtPos = 12 + 5 = 17 (✓ in stone_mapping)<br>
+                        → <span class="highlight">dp[17].add(5)</span>
+                    </div>
+                    <div class="dp-state">
+                        <strong>DP state after processing stone 12:</strong><br>
+                        dp[0] = {0}<br>
+                        dp[1] = {1}<br>
+                        dp[3] = {2}<br>
+                        dp[5] = {2}<br>
+                        dp[6] = {3, 1}<br>
+                        dp[8] = {3, 2}<br>
+                        dp[12] = {4}<br>
+                        dp[17] = {5} ← Updated!
+                    </div>
+                `
+            });
+            
+            // Step 7: Processing stone 17 and Final Result
+            steps.push({
+                title: "Step 7: Processing stone = 17 & Final Result",
+                content: `
+                    <div class="current-state">
+                        <strong>Current stone: 17, Available jumps: {5}</strong>
+                    </div>
+                    <div class="code-block">
+    # <span class="highlight">stone = 17</span>
+    for jump in dp[17]:  # jump = 5
+        for nxtJump in range(jump-1, jump+2):  # range(4, 7) = [4, 5, 6]
+                    </div>
+                    <div class="iteration">
+                        <strong>Iteration 1:</strong> jump = 5<br>
+                        → Try nxtJump = 4: nxtPos = 17 + 4 = 21 (not in stone_mapping, skip)<br>
+                        → Try nxtJump = 5: nxtPos = 17 + 5 = 22 (not in stone_mapping, skip)<br>
+                        → Try nxtJump = 6: nxtPos = 17 + 6 = 23 (not in stone_mapping, skip)<br>
+                        → No new stones reachable from stone 17
+                    </div>
+                    <div class="code-block">
+return len(dp[stones[-1]]) > 0
+return len(dp[17]) > 0
+return len({5}) > 0
+return 1 > 0
+return True
+                    </div>
+                    <div class="success">
+                        <strong>✅ RESULT: TRUE</strong><br>
+                        The frog CAN cross the river!<br>
+                        Final path: 0 → 1 → 3 → 5 → 8 → 12 → 17<br>
+                        Jump sequence: 1 → 2 → 2 → 3 → 4 → 5
+                    </div>
+                `
+            });
+        }
+        
+        function renderStep(stepIndex) {
+            const step = steps[stepIndex];
+            const stepContent = document.getElementById('stepContent');
+            
+            stepContent.innerHTML = `
+                <div class="step-container">
+                    <div class="step-header">${step.title}</div>
+                    ${step.content}
+                </div>
+            `;
+            
+            // Update button states
+            document.getElementById('prevBtn').disabled = stepIndex === 0;
+            document.getElementById('nextBtn').disabled = stepIndex === steps.length - 1;
+        }
+        
+        function nextStep() {
+            if (currentStepIndex < steps.length - 1) {
+                currentStepIndex++;
+                renderStep(currentStepIndex);
+            }
+        }
+        
+        function previousStep() {
+            if (currentStepIndex > 0) {
+                currentStepIndex--;
+                renderStep(currentStepIndex);
+            }
+        }
+        
+        function reset() {
+            currentStepIndex = 0;
+            renderStep(currentStepIndex);
+        }
+        
+        // Initialize
+        generateSteps();
+        renderStep(0);
+    </script>
+</body>
+</html>
