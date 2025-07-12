@@ -1,21 +1,26 @@
 class Solution:
     def minimumTotal(self, triangle: List[List[int]]) -> int:
         m = len(triangle)
-        n = len(triangle[0])
+        n = len(triangle[-1])
 
-        row = 0
-        col = 0
-
-        return self.recursion(row, col, m, n, triangle)
-    
-    def recursion(self, row, col, m, n, triangle):
-        # base case
-        if row >= m:
-            return 0
+        min_path_sum = math.inf
+        i = m - 1
+        for j in reversed(range(n)):
+            cur_path_sum = self.recursion(i, j, triangle)
+            min_path_sum = min(min_path_sum, cur_path_sum)
         
-        down = self.recursion(row+1, col, m, n, triangle)
-        down_right = self.recursion(row+1, col+1, m, n, triangle)
+        return min_path_sum
+    
+    def recursion(self, i, j, grid):
+        # base case
+        if i == 0 and j == 0:
+            return grid[0][0]
+        
+        if i < 0 or j < 0 or j >= len(grid[i]):
+            return math.inf
+        
+        # Logic
+        up = self.recursion(i - 1, j, grid)
+        left = self.recursion(i - 1, j - 1, grid)
 
-        cur_path_sum = triangle[row][col] + min(down, down_right)
-
-        return cur_path_sum
+        return grid[i][j] + min(up, left)

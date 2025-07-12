@@ -1,28 +1,31 @@
 class Solution:
-    def minimumTotal(self, triangle: List[List[int]]) -> int:
-        m = len(triangle)
-        n = len(triangle[0])
+    def minFallingPathSum(self, matrix: List[List[int]]) -> int:
+        m = len(matrix)
+        n = len(matrix[0])
 
-        row = 0
-        col = 0
-
-        memo = {}
-
-        return self.recursion(row, col, memo, m, n, triangle)
+        min_sum = math.inf
+        i = m - 1
+        for j in reversed(range(n)):
+            cur_sum = self.recursion(i, j, {}, matrix)
+            min_sum = min(cur_sum, min_sum)
+        
+        return min_sum
     
-    def recursion(self, row, col, memo, m, n, triangle):
+    def recursion(self, i, j, memo, matrix):
         # base case
-        if row >= m:
-            return 0
+        if i == 0 and (j >= 0 and j < len(matrix)):
+            return matrix[0][j]
         
-        if (row, col) in memo:
-            return memo[(row,col)]
+        if i < 0 or j < 0 or j >= len(matrix):
+            return math.inf
         
-        down = self.recursion(row+1, col, memo, m, n, triangle)
-        down_right = self.recursion(row+1, col+1, memo, m, n, triangle)
+        if (i, j) in memo:
+            return memo[(i, j)]
+        
+        # Logic
+        up = self.recursion(i-1, j, memo, matrix)
+        left = self.recursion(i-1, j-1, memo, matrix)
+        right = self.recursion(i-1, j+1, memo, matrix)
 
-        cur_path_sum = triangle[row][col] + min(down, down_right)
-
-        memo[(row,col)] = cur_path_sum
-
-        return memo[(row,col)]
+        memo[(i,j)] = matrix[i][j] + min(up, left, right)
+        return memo[(i, j)]

@@ -1,21 +1,21 @@
 class Solution:
-    def minimumTotal(self, triangle: List[List[int]]) -> int:
-        m = len(triangle)
-        n = len(triangle[-1])
+    def minFallingPathSum(self, matrix: List[List[int]]) -> int:
+        m = len(matrix)
+        n = len(matrix[0])
 
         dp = [[math.inf for _ in range(n)]for _ in range(m)]
-        dp[0][0] = triangle[0][0]
 
-        for i in range(1,m):
-            dp[i][0] = dp[i-1][0] + triangle[i][0]
-
-            for j in range(1,n):
-                if len(triangle[i]) <= j:
-                    break
-                
+        # basecase
+        for j in range(n):
+            dp[0][j] = matrix[0][j]
+        
+        for i in range(1, m):
+            for j in range(n):
+                # Logic
                 up = dp[i-1][j]
-                up_left = dp[i-1][j-1]
+                left = dp[i-1][j-1] if j-1 >= 0 else math.inf
+                right = dp[i-1][j+1] if j+1 < n else math.inf
 
-                dp[i][j] = triangle[i][j] + min(up, up_left)
-  
-        return min(dp[-1])
+                dp[i][j] = matrix[i][j] + min(up, left, right)
+        
+        return min(dp[m-1])

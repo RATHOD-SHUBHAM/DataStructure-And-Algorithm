@@ -3,29 +3,25 @@ class Solution:
         m = len(matrix)
         n = len(matrix[0])
 
-        min_path = math.inf
-        row = 0
-        for col in range(n):
-            cur_path = self.recursion(row, col, m, n, matrix)
-            min_path = min(min_path, cur_path)
+        min_sum = math.inf
+        i = m - 1
+        for j in reversed(range(n)):
+            cur_sum = self.recursion(i, j, matrix)
+            min_sum = min(cur_sum, min_sum)
         
-        return min_path
+        return min_sum
     
-    def recursion(self, row, col, m, n, matrix):
+    def recursion(self, i, j, matrix):
         # base case
-        if row >= m:
-            return 0
+        if i == 0 and (j >= 0 and j < len(matrix)):
+            return matrix[0][j]
         
-        if col < 0 or col >= n:
+        if i < 0 or j < 0 or j >= len(matrix):
             return math.inf
         
-        # down
-        down = self.recursion(row+1, col, m, n, matrix)
+        # Logic
+        up = self.recursion(i-1, j, matrix)
+        left = self.recursion(i-1, j-1, matrix)
+        right = self.recursion(i-1, j+1, matrix)
 
-        # diagonals
-        diag_left = self.recursion(row+1, col-1, m, n, matrix)
-        diag_right = self.recursion(row+1, col+1, m, n, matrix)
-
-        cur_path = matrix[row][col] + min(down, diag_left, diag_right)
-
-        return cur_path
+        return matrix[i][j] + min(up, left, right)
