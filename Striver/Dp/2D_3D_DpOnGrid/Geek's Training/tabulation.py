@@ -15,12 +15,10 @@ class Solution:
         for i in range(no_of_tasks):
             dp[0][i] = arr[0][i]
         
-        # Remaining days
-        for i in range(1, n):
-            # for every task
-            for cur_task in range(no_of_tasks):
-                # For each activity on day i, find best activity from day i-1
-                for prev_day_task in range(no_of_tasks):
+        for i in range(1, n): # For each day (starting from day 1)
+            for cur_task in range(no_of_tasks): # For each possible task on current day
+                for prev_day_task in range(no_of_tasks): # Check all tasks from previous day
+                    
                     if prev_day_task == cur_task:
                         continue
                     
