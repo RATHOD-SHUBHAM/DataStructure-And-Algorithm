@@ -21,6 +21,9 @@ class Solution:
             if arr[0] <= target:
                 dp[0][arr[0]] = 1
         
+        # for i in range(1, n): # this will be handled automatically by the loop below
+        #     dp[i][0] = 1
+        
         # Build up the dp table
         for idx in range(1, n):
             for cur_sum in range(target + 1):

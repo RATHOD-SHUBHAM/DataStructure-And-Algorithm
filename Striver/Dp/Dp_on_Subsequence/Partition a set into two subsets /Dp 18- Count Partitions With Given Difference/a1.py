@@ -25,7 +25,28 @@ def recursion(idx, target, arr):
     return take + no_take
 
 
+"""
 
+    Count partitions where S1 >= S2 and S1 - S2 = d
+    
+    Mathematical Analysis:
+    - Let S1 = sum of subset 1, S2 = sum of subset 2
+    - We know: S1 + S2 = total (sum of all elements)
+    - We want: S1 - S2 = d
+    
+    Solving these equations:
+    - From S1 + S2 = total and S1 - S2 = d
+    - Adding: 2*S1 = total + d, so S1 = (total + d) / 2
+    - Subtracting: 2*S2 = total - d, so S2 = (total - d) / 2
+    
+    For valid partitions:
+    1. S1 and S2 must be integers, so (total + d) must be even
+    2. S1 >= 0 and S2 >= 0, so total >= d
+    3. S1 <= total (subset sum can't exceed total)
+
+
+
+"""
 
 def countPartitions(n: int, d: int, arr: List[int]) -> int:
     # write your code here
@@ -36,6 +57,13 @@ def countPartitions(n: int, d: int, arr: List[int]) -> int:
     Edge Cases:
     1. (S + D) must be even - otherwise no valid partition exists
     2. D < S difference can't be larger than total sum
+    """
+    """
+    Mathematical constraint:
+
+    We need S1 = (total + d) / 2
+    For S1 to be an integer, (total + d) must be even
+    
     """
     if d > total or (total + d) % 2 != 0:
         return 0
