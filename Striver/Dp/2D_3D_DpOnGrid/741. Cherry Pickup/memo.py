@@ -168,7 +168,7 @@ class Solution:
         if r1 >= n or c1 >= n or r2 >= n or c2 >= n or grid[r1][c1] == -1 or grid[r2][c2] == -1:
             return -math.inf
         
-        # End cell
+        # End cell - both will reach end cell at the same time
         if r1 == n - 1 and c1 == n - 1:
             return grid[n-1][n-1]
         
