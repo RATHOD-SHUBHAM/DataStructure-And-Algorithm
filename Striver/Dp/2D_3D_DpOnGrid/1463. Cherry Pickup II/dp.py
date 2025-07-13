@@ -12,7 +12,7 @@ class Solution:
         
         for row in range(1, m):
             for c1 in range(n):
-                for c2 in range(n):
+                for c2 in reversed(range(n)):
                     # Try all possible moves from previous row
                     for prev_c1 in [c1-1, c1, c1+1]:
                         for prev_c2 in [c2-1, c2, c2+1]:
