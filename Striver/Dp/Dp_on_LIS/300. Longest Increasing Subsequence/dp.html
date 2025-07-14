@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LIS DP Table Visualizer</title>
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; background: linear-gradient(to right, #43cea2, #185a9a); color: white; text-align: center; padding: 20px; }
+    .array span { display: inline-block; width: 40px; height: 40px; line-height: 40px; margin: 5px; background: #ffffff33; border-radius: 6px; font-size: 20px; }
+    .controls { margin: 20px 0; }
+    button { background: #ffffff88; border: none; padding: 10px 20px; margin: 0 10px; font-size: 16px; border-radius: 5px; cursor: pointer; transition: background 0.3s ease; }
+    button:hover { background: #ffffffbb; }
+    table { margin: 20px auto; border-collapse: collapse; background: #ffffff22; color: white; }
+    th, td { border: 1px solid #ffffff44; padding: 8px; width: 50px; text-align: center; }
+    th { background: #ffffff33; }
+    .highlight { background-color: #facc15 !important; color: black; }
+    .info-block { max-width: 600px; margin: 20px auto; text-align: left; background: #ffffff22; padding: 15px; border-radius: 8px; line-height: 1.4; }
+    .info-block h2 { margin-top: 0; }
+  </style>
+</head>
+<body>
+  <h1>LIS DP Table Visualizer</h1>
+  <p>Array: <span id="array-container" class="array"></span></p>
+  <div class="controls">
+    <button onclick="nextStep()">Next Step ▶️</button>
+    <button onclick="reset()">Reset 🔄</button>
+  </div>
+  <table id="dp-table"></table>
+  <div id="step-info" class="info-block">
+    <h2>Step Info</h2>
+    Click "Next Step" to start computing.<br />
+  </div>
+  <div id="formula-info" class="info-block">
+    <h2>Formula Details</h2>
+    Formulas will appear here for each cell.
+  </div>
+  <div id="cell-info" class="info-block">
+    <h2>Cell Meaning</h2>
+    <p>dp[i][j] represents the length of the longest increasing subsequence starting at index <em>i</em>, given that the previous selected element is at index <em>j - 1</em>. Column <em>j = 0</em> means no previous element (<em>prev_idx = -1</em>).</p>
+  </div>
+  <script>
+    const nums = [0, 1, 0, 3, 2, 3];
+    const n = nums.length;
+    let dp = Array.from({ length: n + 1 }, () => Array(n + 1).fill(0));
+    let idx = n - 1;
+    let prev_idx = idx - 1;
+
+    function renderArray() {
+      document.getElementById('array-container').innerHTML = nums.map(v => `<span>${v}</span>`).join('');
+    }
+
+    function renderTable() {
+      const table = document.getElementById('dp-table');
+      table.innerHTML = '';
+      const header = document.createElement('tr');
+      header.innerHTML = `<th>idx/prev+1</th>${
+        [...Array(n + 1).keys()].map(j => `<th>${j}</th>`).join('')
+      }`;
+      table.appendChild(header);
+      for (let i = 0; i <= n; i++) {
+        const row = document.createElement('tr');
+        row.innerHTML = `<th>${i}</th>` +
+          [...Array(n + 1).keys()].map(j => {
+            const cellClass = (i === idx && j === prev_idx + 1) ? 'highlight' : '';
+            return `<td class="${cellClass}">${dp[i][j]}</td>`;
+          }).join('');
+        table.appendChild(row);
+      }
+    }
+
+    function nextStep() {
+      if (idx < 0) return;
+      if (prev_idx < -1) { idx--; prev_idx = idx - 1; }
+      if (idx < 0) return;
+      const i = idx, p = prev_idx;
+      // Values and comparison
+      const valI = nums[i];
+      const valP = (p === -1 ? 'N/A' : nums[p]);
+      const condition = (p === -1 || nums[i] > nums[p]);
+      // Calculate take and no_take
+      let take = 0;
+      if (condition) take = 1 + dp[i + 1][i + 1];
+      const no_take = dp[i + 1][p + 1];
+      // Store result
+      dp[i][p + 1] = Math.max(take, no_take);
+      // Update step info
+      document.getElementById('step-info').innerHTML =
+        `<h2>Step Info</h2>` +
+        `<p><strong>idx</strong> = ${i}, <strong>prev_idx</strong> = ${p}</p>` +
+        `<p><code>take</code> = ${take}, <code>no_take</code> = ${no_take}</p>` +
+        `<p>Updating <code>dp[${i}][${p + 1}]</code> = ${dp[i][p + 1]}</p>`;
+      // Update formula info
+      document.getElementById('formula-info').innerHTML =
+        `<h2>Formula Details</h2>` +
+        `<p>nums[${i}] = ${valI}, nums[${p}] = ${valP}</p>` +
+        `<p>Condition (<em>p</em> === -1 || nums[i] &gt; nums[p]) → ${condition}</p>` +
+        `<p>Comparison: ${valI} &gt; ${valP} → ${condition}</p>` +
+        `<p>take = ${condition ? `1 + dp[${i + 1}][${i + 1}]` : '0'} = ${take}</p>` +
+        `<p>no_take = dp[${i + 1}][${p + 1}] = ${no_take}</p>`;
+      prev_idx--;
+      renderTable();
+    }
+
+    function reset() {
+      dp = Array.from({ length: n + 1 }, () => Array(n + 1).fill(0));
+      idx = n - 1; prev_idx = idx - 1;
+      document.getElementById('step-info').innerHTML = `<h2>Step Info</h2><p>Click "Next Step" to start computing.</p>`;
+      document.getElementById('formula-info').innerHTML = `<h2>Formula Details</h2><p>Formulas will appear here for each cell.</p>`;
+      renderTable();
+    }
+
+    renderArray(); renderTable();
+  </script>
+</body>
+</html>
