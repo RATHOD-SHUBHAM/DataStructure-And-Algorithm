@@ -57,7 +57,7 @@ class Solution:
         
         # Logic
         if prev_idx == -1 or nums[idx] > nums[prev_idx]:
-            take = 1 + self.recursion(idx + 1, idx, n, nums)
+            take = 1 + self.recursion(idx = idx + 1, prev_idx = idx, n = n, nums =nums)
         else:
             take = 0
         
@@ -90,7 +90,7 @@ class Solution:
         
         # Logic
         if prev_idx == -1 or nums[idx] > nums[prev_idx]:
-            take = 1 + self.recursion(idx + 1, idx, memo, n, nums)
+            take = 1 + self.recursion(idx = idx + 1, prev_idx = idx, n = n, nums =nums)
         else:
             take = 0
         
