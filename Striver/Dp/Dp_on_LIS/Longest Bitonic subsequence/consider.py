@@ -24,11 +24,11 @@ class Solution:
         # code here
         lis = self.LIS(nums)
         reverse_lis = self.LIS(nums[::-1])
-        reverse_lis = reverse_lis[::-1]
+        lds = reverse_lis[::-1]
         
         max_bitonic_seq = 0
         for i in range(n):
-            cur_seq = (lis[i] + reverse_lis[i]) - 1
+            cur_seq = (lis[i] + lds[i]) - 1
             max_bitonic_seq = max(max_bitonic_seq, cur_seq)
         
         return max_bitonic_seq

@@ -7,26 +7,32 @@ class Solution:
         
         dp = [1] * n
         
-        for i in range(n):
+        for i in range(1, n):
             for j in range(i):
                 if nums[j] < nums[i]:
-                    dp[i] = max(dp[i], 1 + dp[j])
-        
+                    cur = 1 + dp[j]
+                    dp[i] = max(dp[i], cur)
+            
         return dp
         
     def LongestBitonicSequence(self, n : int, nums : List[int]) -> int:
         # code here
         lis = self.LIS(nums)
         reverse_lis = self.LIS(nums[::-1])
-        reverse_lis = reverse_lis[::-1]
+        lds = reverse_lis[::-1]
         
-        max_bitonic_seq = 0
+        longest_bitonic_sub = 0
         for i in range(n):
             # For a valid bitonic sequence at position i:
             # - There must be at least one element before i that's smaller (lis[i] > 1)
-            # - There must be at least one element after i that's smaller (reverse_lis[i] > 1)
-            if lis[i] > 1 and reverse_lis[i] > 1:
-                cur_seq = (lis[i] + reverse_lis[i]) - 1
-                max_bitonic_seq = max(max_bitonic_seq, cur_seq)
+            # - There must be at least one element after i that's smaller (lds[i] > 1)
+            if lis[i] == 1 or lds[i] == 1:
+                continue
+            cur_len = (lis[i] + lds[i]) - 1
+            longest_bitonic_sub = max(longest_bitonic_sub, cur_len)
         
-        return max_bitonic_seq
+        return longest_bitonic_sub
+            
+        
+        
+        
