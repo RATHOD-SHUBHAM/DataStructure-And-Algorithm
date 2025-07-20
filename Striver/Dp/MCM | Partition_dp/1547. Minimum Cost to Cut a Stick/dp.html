@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cut Stick DP Visualization</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            min-height: 100vh;
+        }
+        
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        h1, h2 {
+            color: #4a5568;
+            text-align: center;
+        }
+        
+        .setup-section {
+            background: #f7fafc;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            border-left: 5px solid #4299e1;
+        }
+        
+        .stick-visual {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 20px 0;
+            height: 60px;
+        }
+        
+        .stick {
+            height: 20px;
+            background: linear-gradient(45deg, #8b5a2b, #deb887);
+            border: 2px solid #654321;
+            position: relative;
+            margin: 0 10px;
+            border-radius: 3px;
+        }
+        
+        .cut-mark {
+            position: absolute;
+            top: -15px;
+            width: 2px;
+            height: 50px;
+            background: #e53e3e;
+            transform: translateX(-1px);
+        }
+        
+        .cut-label {
+            position: absolute;
+            top: -35px;
+            font-size: 12px;
+            font-weight: bold;
+            color: #e53e3e;
+            transform: translateX(-8px);
+        }
+        
+        .boundary {
+            font-size: 14px;
+            font-weight: bold;
+            color: #2d3748;
+        }
+        
+        .controls {
+            text-align: center;
+            margin: 30px 0;
+        }
+        
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            margin: 0 10px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        button:disabled {
+            background: #cbd5e0;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .dp-table {
+            margin: 20px 0;
+            border-collapse: collapse;
+            width: 100%;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .dp-table th, .dp-table td {
+            border: 1px solid #e2e8f0;
+            padding: 12px;
+            text-align: center;
+            font-weight: 500;
+        }
+        
+        .dp-table th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .current-cell {
+            background: #fef5e7 !important;
+            border: 3px solid #f6ad55 !important;
+            animation: pulse 1s infinite;
+        }
+        
+        .computed-cell {
+            background: #e6fffa !important;
+            color: #00695c;
+            font-weight: bold;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(246, 173, 85, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(246, 173, 85, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(246, 173, 85, 0); }
+        }
+        
+        .step-info {
+            background: #edf2f7;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 5px solid #667eea;
+        }
+        
+        .calculation-details {
+            background: #f0fff4;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border: 1px solid #9ae6b4;
+        }
+        
+        .formula {
+            font-family: 'Courier New', monospace;
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        
+        .highlight-segment {
+            background: rgba(56, 178, 172, 0.3) !important;
+        }
+        
+        .array-display {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px 0;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+        
+        .array-element {
+            background: #4299e1;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 5px;
+            font-weight: bold;
+            min-width: 30px;
+            text-align: center;
+        }
+        
+        .array-index {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .boundary-element {
+            background: #e53e3e !important;
+        }
+        
+        .original-element {
+            background: #38a169 !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🪚 Cut Stick Dynamic Programming Visualization</h1>
+        
+        <div class="setup-section">
+            <h2>Problem Setup</h2>
+            <p><strong>Original:</strong> n = 7, cuts = [1, 3, 4, 5]</p>
+            
+            <div class="array-display">
+                <div>
+                    <div class="array-element boundary-element">0</div>
+                    <div class="array-index">idx: 0</div>
+                </div>
+                <div>
+                    <div class="array-element original-element">1</div>
+                    <div class="array-index">idx: 1</div>
+                </div>
+                <div>
+                    <div class="array-element original-element">3</div>
+                    <div class="array-index">idx: 2</div>
+                </div>
+                <div>
+                    <div class="array-element original-element">4</div>
+                    <div class="array-index">idx: 3</div>
+                </div>
+                <div>
+                    <div class="array-element original-element">5</div>
+                    <div class="array-index">idx: 4</div>
+                </div>
+                <div>
+                    <div class="array-element boundary-element">7</div>
+                    <div class="array-index">idx: 5</div>
+                </div>
+            </div>
+            
+            <p><strong>Extended cuts:</strong> [0, 1, 3, 4, 5, 7]</p>
+            <p><strong>c (original cuts count):</strong> 4</p>
+            <p><strong>dp[i][j]:</strong> minimum cost to make cuts at positions i through j</p>
+            
+            <div class="stick-visual" id="stickVisual">
+                <span class="boundary">0</span>
+                <div class="stick" style="width: 100px;">
+                    <div class="cut-mark" style="left: 10px;"><div class="cut-label">1</div></div>
+                    <div class="cut-mark" style="left: 30px;"><div class="cut-label">3</div></div>
+                    <div class="cut-mark" style="left: 40px;"><div class="cut-label">4</div></div>
+                    <div class="cut-mark" style="left: 50px;"><div class="cut-label">5</div></div>
+                </div>
+                <span class="boundary">7</span>
+            </div>
+        </div>
+        
+        <div class="controls">
+            <button onclick="prevStep()" id="prevBtn">⬅️ Previous Step</button>
+            <button onclick="nextStep()" id="nextBtn">Next Step ➡️</button>
+            <button onclick="autoPlay()" id="autoBtn">🎮 Auto Play</button>
+            <button onclick="reset()" id="resetBtn">🔄 Reset</button>
+        </div>
+        
+        <div class="step-info" id="stepInfo">
+            <h3>Step 1: Initialize DP Table</h3>
+            <p>Starting with a (c+2) × (c+2) = 6×6 DP table filled with zeros.</p>
+        </div>
+        
+        <table class="dp-table" id="dpTable">
+            <thead>
+                <tr>
+                    <th>dp[i][j]</th>
+                    <th>j=0</th>
+                    <th>j=1</th>
+                    <th>j=2</th>
+                    <th>j=3</th>
+                    <th>j=4</th>
+                    <th>j=5</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+            </tbody>
+        </table>
+        
+        <div class="calculation-details" id="calcDetails" style="display: none;">
+        </div>
+    </div>
+
+    <script>
+        const cuts = [0, 1, 3, 4, 5, 7];
+        const c = 4;
+        let dp = Array(c + 2).fill().map(() => Array(c + 2).fill(0));
+        let currentStep = 0;
+        let autoPlaying = false;
+        
+        const steps = [];
+        
+        // Generate all steps
+        function generateSteps() {
+            steps.push({
+                type: 'init',
+                i: -1, j: -1,
+                description: 'Initialize DP Table',
+                details: 'Starting with a (c+2) × (c+2) = 6×6 DP table filled with zeros.'
+            });
+            
+            for (let i = c; i >= 1; i--) {
+                for (let j = i; j <= c; j++) {
+                    let minCost = Infinity;
+                    let calculations = [];
+                    
+                    for (let idx = i; idx <= j; idx++) {
+                        const leftPartition = dp[i][idx - 1];
+                        const rightPartition = dp[idx + 1][j];
+                        const curCost = cuts[j + 1] - cuts[i - 1];
+                        const totalCost = leftPartition + rightPartition + curCost;
+                        
+                        calculations.push({
+                            idx,
+                            leftPartition,
+                            rightPartition,
+                            curCost,
+                            totalCost,
+                            segment: `[${cuts[i-1]}, ${cuts[j+1]}]`
+                        });
+                        
+                        if (totalCost < minCost) {
+                            minCost = totalCost;
+                        }
+                    }
+                    
+                    dp[i][j] = minCost;
+                    
+                    steps.push({
+                        type: 'compute',
+                        i, j,
+                        description: `Computing dp[${i}][${j}]`,
+                        details: `Finding minimum cost to make cuts at positions ${i} through ${j}`,
+                        calculations,
+                        result: minCost,
+                        segment: `[${cuts[i-1]}, ${cuts[j+1]}]`,
+                        segmentLength: cuts[j + 1] - cuts[i - 1]
+                    });
+                }
+            }
+            
+            steps.push({
+                type: 'final',
+                i: 1, j: c,
+                description: 'Final Result',
+                details: `dp[1][${c}] = ${dp[1][c]} is our answer - the minimum cost to make all cuts.`
+            });
+        }
+        
+        function initTable() {
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = '';
+            
+            for (let i = 0; i < c + 2; i++) {
+                const row = document.createElement('tr');
+                const header = document.createElement('td');
+                header.textContent = `i=${i}`;
+                header.style.fontWeight = 'bold';
+                header.style.background = '#f7fafc';
+                row.appendChild(header);
+                
+                for (let j = 0; j < c + 2; j++) {
+                    const cell = document.createElement('td');
+                    cell.id = `cell-${i}-${j}`;
+                    cell.textContent = '0';
+                    row.appendChild(cell);
+                }
+                tbody.appendChild(row);
+            }
+        }
+        
+        function updateDisplay() {
+            const step = steps[currentStep];
+            const stepInfo = document.getElementById('stepInfo');
+            const calcDetails = document.getElementById('calcDetails');
+            
+            // Clear previous highlights
+            document.querySelectorAll('.current-cell, .computed-cell, .highlight-segment').forEach(cell => {
+                cell.classList.remove('current-cell', 'computed-cell', 'highlight-segment');
+            });
+            
+            stepInfo.innerHTML = `
+                <h3>Step ${currentStep + 1}: ${step.description}</h3>
+                <p>${step.details}</p>
+            `;
+            
+            if (step.type === 'compute') {
+                // Highlight current cell
+                const currentCell = document.getElementById(`cell-${step.i}-${step.j}`);
+                if (currentCell) {
+                    currentCell.classList.add('current-cell');
+                }
+                
+                // Show calculation details
+                let calcHtml = `
+                    <h4>Computing dp[${step.i}][${step.j}] - Cuts at positions ${step.i} through ${step.j}</h4>
+                    <p><strong>Segment:</strong> ${step.segment} (length = ${step.segmentLength})</p>
+                    <p><strong>Cut positions mean:</strong> cuts[${step.i}] through cuts[${step.j}] = ${cuts.slice(step.i, step.j + 1).join(', ')}</p>
+                    <h5>Trying each cut as the LAST cut:</h5>
+                `;
+                
+                step.calculations.forEach(calc => {
+                    const isMin = calc.totalCost === step.result;
+                    calcHtml += `
+                        <div class="formula" style="${isMin ? 'border: 2px solid #38a169;' : ''}">
+                            <strong>Cut at position ${calc.idx} (value ${cuts[calc.idx]}) as LAST:</strong><br>
+                            Cost = segment_length + dp[${step.i}][${calc.idx-1}] + dp[${calc.idx+1}][${step.j}]<br>
+                            Cost = ${calc.curCost} + ${calc.leftPartition} + ${calc.rightPartition} = ${calc.totalCost}
+                            ${isMin ? ' ← MINIMUM' : ''}
+                        </div>
+                    `;
+                });
+                
+                calcHtml += `<p><strong>Result: dp[${step.i}][${step.j}] = ${step.result}</strong></p>`;
+                calcDetails.innerHTML = calcHtml;
+                calcDetails.style.display = 'block';
+                
+                // Update the table with computed value
+                const cell = document.getElementById(`cell-${step.i}-${step.j}`);
+                if (cell) {
+                    cell.textContent = step.result;
+                    cell.classList.add('computed-cell');
+                }
+            } else if (step.type === 'final') {
+                // Highlight final result
+                const finalCell = document.getElementById(`cell-${step.i}-${step.j}`);
+                if (finalCell) {
+                    finalCell.classList.add('current-cell');
+                }
+                calcDetails.style.display = 'none';
+            } else {
+                calcDetails.style.display = 'none';
+            }
+            
+            // Update button states
+            document.getElementById('prevBtn').disabled = currentStep === 0;
+            document.getElementById('nextBtn').disabled = currentStep === steps.length - 1;
+        }
+        
+        function nextStep() {
+            if (currentStep < steps.length - 1) {
+                currentStep++;
+                updateDisplay();
+            }
+        }
+        
+        function prevStep() {
+            if (currentStep > 0) {
+                currentStep--;
+                updateDisplay();
+            }
+        }
+        
+        function reset() {
+            currentStep = 0;
+            autoPlaying = false;
+            document.getElementById('autoBtn').textContent = '🎮 Auto Play';
+            dp = Array(c + 2).fill().map(() => Array(c + 2).fill(0));
+            generateSteps();
+            updateDisplay();
+        }
+        
+        function autoPlay() {
+            const autoBtn = document.getElementById('autoBtn');
+            if (autoPlaying) {
+                autoPlaying = false;
+                autoBtn.textContent = '🎮 Auto Play';
+            } else {
+                autoPlaying = true;
+                autoBtn.textContent = '⏸️ Pause';
+                autoPlayStep();
+            }
+        }
+        
+        function autoPlayStep() {
+            if (!autoPlaying) return;
+            
+            if (currentStep < steps.length - 1) {
+                nextStep();
+                setTimeout(autoPlayStep, 2000);
+            } else {
+                autoPlaying = false;
+                document.getElementById('autoBtn').textContent = '🎮 Auto Play';
+            }
+        }
+        
+        // Initialize
+        generateSteps();
+        initTable();
+        updateDisplay();
+    </script>
+</body>
+</html>
