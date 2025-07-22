@@ -1,6 +1,7 @@
-# Tc and Sc: O(n)
+# Prereq - LC: 84, Largest Rectangle in Histogram
 
 class Solution:
+
     def PSEE(self, arr, n):
         op = [-1] * n
         stack = []
@@ -76,4 +77,36 @@ class Solution:
 
         return max(area)
 
+
+    def prefixSum(self, matrix, m, n):
+        
+        prefix_sum = [[0 for _ in range(n)]for _ in range(m)]
+
+        for j in range(n):
+            prefix_sum[0][j] = int(matrix[0][j])
+
+        for i in range(1, m):
+            for j in range(n):
+                if int(matrix[i][j]) == 0:
+                    continue
+                
+                prefix_sum[i][j] = int(matrix[i][j]) + prefix_sum[i-1][j]
+        
+        return prefix_sum
+
+    def maximalRectangle(self, matrix: List[List[str]]) -> int:
+        m = len(matrix)
+        n = len(matrix[0])
+
+        prefix_sum = self.prefixSum(matrix, m, n)
+
+        max_area = -math.inf
+        for i in range(m):
+            heights = prefix_sum[i]
+
+            cur_area = self.largestRectangleArea(heights)
+
+            max_area = max(max_area, cur_area)
+
+        return max_area
 
