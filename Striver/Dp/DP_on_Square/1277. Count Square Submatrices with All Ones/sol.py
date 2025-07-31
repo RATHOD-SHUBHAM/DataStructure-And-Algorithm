@@ -3,6 +3,9 @@ For a 2x2 square ending at (i, j), the following conditions must be met:
 
     * The cell at (i, j) must be 1.
     * The cells above (i-1, j), to the left (i, j-1), and diagonally (i-1, j-1) must also be 1.
+
+Tc: O(m * n)
+Sc: O(m * n)
 """
 class Solution:
     def countSquares(self, matrix: List[List[int]]) -> int:
