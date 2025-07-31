@@ -105,6 +105,15 @@ class Solution:
             # Reduce one as both include current building also
             width = left_boudary + right_boundary - 1
 
+            """
+            or
+
+            left_smaller_building = psee[i]
+            right_smaller_building = nsee[i]
+            
+            width = (right_smaller_building - left_smaller_building) - 1
+            """
+
             area[i] = length * width
         
         return area
