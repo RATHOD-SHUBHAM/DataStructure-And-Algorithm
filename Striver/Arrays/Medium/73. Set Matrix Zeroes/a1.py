@@ -78,6 +78,9 @@ class Solution:
     
 # ------------------  Better ----------------------------------
 
+# Tc: O(m x n)
+# Sc: O(m + n)
+
 class Solution:
     def setZeroes(self, matrix: List[List[int]]) -> None:
         """
@@ -104,6 +107,9 @@ class Solution:
 
 # ------------------  Optimal Solution ----------------------------------
 
+# Tc: O(m x n)
+# Sc: O(1)
+
 class Solution:
     def setZeroes(self, matrix: List[List[int]]) -> None:
         """
@@ -112,37 +118,40 @@ class Solution:
         m = len(matrix)
         n = len(matrix[0])
 
-        # keep track of zero in every col of first row
-        cellZero = False # Extra row cell for the 0th column
+        # Step 1: Mark the cell
+        # Grab the cell where there is 0
+        col_0 = 1
 
-        # Mark the col and row where there is zero
         for i in range(m):
             for j in range(n):
                 if matrix[i][j] == 0:
-                    
-                    matrix[0][j] = 0 # Mark the column as zero
-                    
-                    # Mark the row as zero
-                    if i == 0:
-                        cellZero = True
+                    if j != 0:
+                        matrix[0][j] = 0 # First row
+                        matrix[i][0] = 0 # First col
                     else:
+                        col_0 = 0
                         matrix[i][0] = 0
-                    
         
-        # except the first row and column - mark the remaing cell zero
+
+        # Step 2: Mark the internal boundary
         for i in range(1, m):
             for j in range(1, n):
-                if matrix[i][0] == 0 or matrix[0][j] == 0:
+                if matrix[0][j] == 0 or matrix[i][0] == 0:
                     matrix[i][j] = 0
-
-        # Fill the first columns all row with zero, if zero is present
-        if matrix[0][0] == 0:
-            for i in range(m):
-                matrix[i][0] = 0
         
-        # Fill the first rows all column with zero
-        if cellZero == True:
-            for j in range(n):
-                matrix[0][j] = 0
+        # print(matrix)
+
+        # Step 3: Mark the boundary
+        # 3.1: First row
+        for j in reversed(range(n)):
+            if matrix[0][j] == 0 or matrix[0][0] == 0:
+                    matrix[0][j] = 0
+            
+        # print(matrix)
+        
+        # 3.2: First col
+        for i in range(m):
+            if matrix[i][0] == 0 or col_0 == 0:
+                    matrix[i][0] = 0
         
         return matrix
