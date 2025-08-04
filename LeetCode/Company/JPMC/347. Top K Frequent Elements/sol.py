@@ -1,18 +1,26 @@
+# Tc and Sc: O(n)
+
 class Solution:
     def topKFrequent(self, nums: List[int], k: int) -> List[int]:
-        # ele : count
-        freq_count = collections.Counter(nums)
+        n = len(nums)
 
-        # List[List]
-        n = max(freq_count.values())
-        freq_table = [[] for _ in range(n+1)]
-        for value, count in freq_count.items():
-            freq_table[count].append(value)
+        # Get the frequency(No of occurance) of each element
+        freq = collections.Counter(nums)
+
+        # Create a bucket to store values
+        m = max(freq.values())
+
+        freq_bucket = [[] for _ in range(m+1)]
+
+        for key, value in freq.items():
+            freq_bucket[value].append(key)
         
-        top_k = []
-        for freq_arr in reversed(freq_table):
-            for ele in freq_arr:
-                top_k.append(ele)
 
-                if len(top_k) == k:
-                    return top_k
+        # Return the K frequent element from bucket
+        op = []
+        for freq_ele in reversed(freq_bucket):
+            for ele in freq_ele:
+                op.append(ele)
+
+                if len(op) == k:
+                    return op

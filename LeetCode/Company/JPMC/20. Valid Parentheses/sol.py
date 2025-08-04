@@ -17,7 +17,7 @@ class Solution:
                 if not self.stack:
                     return False
                 
-                brack = self.dic[ch]
+                brack = self.dic[ch] # Expected opening bracket
                 opening_brack = self.stack.pop()
                 
 
