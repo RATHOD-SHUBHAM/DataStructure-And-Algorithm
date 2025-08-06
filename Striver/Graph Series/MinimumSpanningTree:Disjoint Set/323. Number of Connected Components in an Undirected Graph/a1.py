@@ -1,3 +1,5 @@
+# Tc and Sc : O(n + e), where n is the number of nodes and e is the number of edges
+
 class Solution:
     def countComponents(self, n: int, edges: List[List[int]]) -> int:
         visited = [False] * (n)
