@@ -42,13 +42,14 @@ class Solution:
 
         no_of_island = 0
 
-        visited = [False] * V
+        visited = [False] * V # this will keep track of land cell
 
         directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
 
         for u, v in positions:
             cur_cell_no = u * n + v
 
+            # Check if the current cell is already land
             if visited[cur_cell_no] == True:
                 answer.append(no_of_island)
                 continue
@@ -62,9 +63,13 @@ class Solution:
 
                 nei_cell_no = nei_u * n + nei_v
 
+                # Check if the neighbor cell is within bounds and 
+                # Check if there is land
                 if nei_u < 0 or nei_u >= m or nei_v < 0 or nei_v >= n or visited[nei_cell_no] == False:
                     continue
                 
+                # If there is a land cell and it is not already connected
+                # to the current cell, then we can union them
                 if disjoint_obj.findParent(cur_cell_no) != disjoint_obj.findParent(nei_cell_no):
                     disjoint_obj.union_size(cur_cell_no, nei_cell_no)
                     no_of_island -= 1
