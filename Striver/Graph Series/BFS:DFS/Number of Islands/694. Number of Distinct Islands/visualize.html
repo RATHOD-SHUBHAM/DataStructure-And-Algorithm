@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Number of Distinct Islands – Visualizer (Vanilla JS)</title>
+  <style>
+    :root{
+      --bg:#f8fafc; /* page */
+      --card:#ffffff; /* panels */
+      --muted:#f1f5f9; /* soft gray */
+      --border:#e2e8f0;
+      --text:#0f172a;
+      --text-dim:#475569;
+      --blue-100:#dbeafe;
+      --gray-800:#1f2937;
+      --yellow-300:#fde047;
+      --green-300:#86efac;
+      --red-500:#ef4444;
+      --purple-500:#a855f7;
+      --shadow:0 10px 20px rgba(2, 6, 23, 0.05);
+      --radius:16px;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";color:var(--text);background:var(--bg)}
+    .container{max-width:1100px;margin:40px auto;padding:24px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow)}
+    h1{margin:0 0 18px;text-align:center;font-size:28px}
+    h2{margin:0 0 8px;font-size:18px}
+    .grid-2{display:grid;grid-template-columns:1fr;gap:24px}
+    @media (min-width:1024px){.grid-2{grid-template-columns:1fr 1fr}}
+
+    /* Buttons */
+    .btns{display:flex;gap:10px;flex-wrap:wrap}
+    .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:12px;border:1px solid transparent;background:#3b82f6;color:#fff;font-weight:600;cursor:pointer;box-shadow:var(--shadow);transition:transform .04s ease, filter .15s ease}
+    .btn:hover{filter:brightness(0.95)}
+    .btn:active{transform:translateY(1px)}
+    .btn.secondary{background:#22c55e}
+    .btn.gray{background:#6b7280}
+    .btn:disabled{opacity:.55;cursor:not-allowed}
+
+    /* Cards */
+    .card{background:var(--muted);border:1px solid var(--border);border-radius:12px;padding:14px}
+    .panel{display:flex;flex-direction:column;gap:12px}
+
+    /* Grid */
+    #grid{display:grid;gap:4px;justify-content:center}
+    .cell{width:40px;height:40px;border:1px solid var(--border);border-radius:6px;display:flex;align-items:center;justify-content:center;font-weight:700;cursor:pointer;user-select:none;transition:transform .07s ease}
+    .cell:active{transform:scale(0.98)}
+    .water{background:var(--blue-100)}
+    .land{background:var(--gray-800);color:#fff}
+    .current-island{background:var(--yellow-300);color:#111}
+    .visited{background:var(--green-300);color:#111}
+    .pos{outline:4px solid var(--red-500)}
+    .origin{outline:4px solid var(--purple-500)}
+
+    /* Legend */
+    .legend{display:grid;grid-template-columns:repeat(2, minmax(0,1fr));gap:10px;margin-top:8px}
+    .legend-item{display:flex;align-items:center;gap:8px;color:var(--text-dim);font-size:14px}
+    .swatch{width:16px;height:16px;border:1px solid var(--border);border-radius:4px}
+    .swatch.pos{border:4px solid var(--red-500);background:transparent}
+    .swatch.origin{border:4px solid var(--purple-500);background:transparent}
+
+    /* Mono blocks */
+    .mono{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace}
+
+    /* Lists */
+    ol{padding-left:20px}
+    ol li{margin:6px 0}
+    .scroll{max-height:160px;overflow:auto}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Number of Distinct Islands Visualizer</h1>
+
+    <div class="grid-2">
+      <!-- Left: Grid -->
+      <section class="panel">
+        <h2>Grid Visualization</h2>
+        <div id="grid"></div>
+
+        <div class="legend">
+          <div class="legend-item"><span class="swatch" style="background:var(--blue-100)"></span> Water (0)</div>
+          <div class="legend-item"><span class="swatch" style="background:var(--gray-800)"></span> Unvisited Land (1)</div>
+          <div class="legend-item"><span class="swatch" style="background:var(--yellow-300)"></span> Current Island</div>
+          <div class="legend-item"><span class="swatch" style="background:var(--green-300)"></span> Visited Land</div>
+          <div class="legend-item"><span class="swatch pos"></span> Current Position</div>
+          <div class="legend-item"><span class="swatch origin"></span> Island Origin</div>
+        </div>
+      </section>
+
+      <!-- Right: Controls & Info -->
+      <section class="panel">
+        <div class="btns">
+          <button id="startBtn" class="btn" title="Start / Pause">▶ Start</button>
+          <button id="stepBtn" class="btn secondary" title="Step once">⏭️ Step</button>
+          <button id="resetBtn" class="btn gray" title="Reset">⟳ Reset</button>
+        </div>
+
+        <div class="card">
+          <h2>Status</h2>
+          <p id="status" style="margin:6px 0">Ready to start</p>
+          <p style="margin:4px 0">Step: <span id="step">0</span></p>
+          <p style="margin:4px 0">Distinct Islands Found: <span id="count">0</span></p>
+        </div>
+
+        <div id="currentIslandCard" class="card" style="display:none;background:#fff8db">
+          <h2>Current Island (Normalized)</h2>
+          <div class="mono" id="currentIsland"></div>
+          <p style="margin-top:6px">Origin: (<span id="originI">0</span>, <span id="originJ">0</span>)</p>
+        </div>
+
+        <div id="stackCard" class="card" style="display:none;background:#faf5ff">
+          <h2>DFS Stack (top → bottom)</h2>
+          <div id="stack" class="mono scroll"></div>
+        </div>
+
+        <div id="foundCard" class="card" style="display:none;background:#ecfdf5">
+          <h2>Found Island Shapes</h2>
+          <div id="found" class="scroll"></div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Explanation -->
+    <section class="card" style="margin-top:24px;background:#e0f2fe">
+      <h2>How the Algorithm Works</h2>
+      <ol>
+        <li><strong>Grid Traversal:</strong> Iterate through each cell in the grid.</li>
+        <li><strong>Island Detection:</strong> When an unvisited land cell (1) is found, start a new island.</li>
+        <li><strong>DFS Exploration:</strong> Use DFS to explore all connected land cells.</li>
+        <li><strong>Coordinate Normalization:</strong> Convert absolute coordinates to relative ones using the island's origin.</li>
+        <li><strong>Shape Storage:</strong> Store the normalized coordinates as a tuple representing island shape.</li>
+        <li><strong>Duplicate Detection:</strong> A <code>Set</code> handles duplicate shapes.</li>
+        <li><strong>Result:</strong> The size of the set is the number of distinct island shapes.</li>
+      </ol>
+      <p><strong>Key insight:</strong> Normalization makes identical shapes align regardless of position.</p>
+    </section>
+  </div>
+
+  <script>
+    // ---------------------- Data & State ----------------------
+    const initialGrid = [
+      [1, 1, 0, 0, 0],
+      [1, 1, 0, 0, 0],
+      [0, 0, 0, 1, 1],
+      [0, 0, 0, 1, 1],
+      [1, 0, 1, 0, 0],
+      [0, 0, 1, 1, 0]
+    ];
+
+    let grid = deepClone(initialGrid);
+    let visited = [];
+    let currentIsland = [];
+    let distinctIslands = new Set();
+    let islandShapes = [];
+    let currentPos = { i: 0, j: 0 };
+    let origin = { i: 0, j: 0 };
+    let isRunning = false;
+    let step = 0;
+    let status = 'Ready to start';
+    let dfsStack = [];
+    let timerId = null;
+
+    const directions = [[-1,0],[1,0],[0,-1],[0,1]];
+    const m = () => grid.length;
+    const n = () => grid[0].length;
+
+    // ---------------------- Helpers ----------------------
+    function deepClone(x){return JSON.parse(JSON.stringify(x));}
+    function inBounds(i,j){return i>=0 && j>=0 && i<m() && j<n();}
+    function coordSort(a,b){return a[0]-b[0] || a[1]-b[1];}
+
+    // ---------------------- DOM Refs ----------------------
+    const gridEl = document.getElementById('grid');
+    const statusEl = document.getElementById('status');
+    const stepEl = document.getElementById('step');
+    const countEl = document.getElementById('count');
+
+    const startBtn = document.getElementById('startBtn');
+    const stepBtn = document.getElementById('stepBtn');
+    const resetBtn = document.getElementById('resetBtn');
+
+    const currentIslandCard = document.getElementById('currentIslandCard');
+    const currentIslandEl = document.getElementById('currentIsland');
+    const originIEl = document.getElementById('originI');
+    const originJEl = document.getElementById('originJ');
+
+    const stackCard = document.getElementById('stackCard');
+    const stackEl = document.getElementById('stack');
+
+    const foundCard = document.getElementById('foundCard');
+    const foundEl = document.getElementById('found');
+
+    // ---------------------- Initialization ----------------------
+    function initializeState(){
+      visited = Array(m()).fill(null).map(()=>Array(n()).fill(false));
+      currentIsland = [];
+      distinctIslands = new Set();
+      islandShapes = [];
+      currentPos = {i:0, j:0};
+      origin = {i:0, j:0};
+      isRunning = false;
+      step = 0;
+      status = 'Ready to start';
+      dfsStack = [];
+      if (timerId){clearInterval(timerId); timerId=null;}
+      renderAll();
+    }
+
+    function renderGrid(){
+      gridEl.style.gridTemplateColumns = `repeat(${n()}, 40px)`;
+      gridEl.innerHTML = '';
+      for (let i=0;i<m();i++){
+        for (let j=0;j<n();j++){
+          const d = document.createElement('div');
+          d.className = 'cell ' + getCellClass(i,j);
+          d.textContent = grid[i][j]===1 ? '🏝️' : '🌊';
+          d.title = `(${i}, ${j})`;
+          d.addEventListener('click',()=>toggleCell(i,j));
+          gridEl.appendChild(d);
+        }
+      }
+    }
+
+    function renderStatus(){
+      statusEl.textContent = status;
+      stepEl.textContent = String(step);
+      countEl.textContent = String(distinctIslands.size);
+
+      // Current island panel
+      if (currentIsland.length>0){
+        currentIslandCard.style.display = '';
+        const sorted = deepClone(currentIsland).sort(coordSort);
+        currentIslandEl.textContent = JSON.stringify(sorted);
+        originIEl.textContent = origin.i;
+        originJEl.textContent = origin.j;
+      } else {
+        currentIslandCard.style.display = 'none';
+      }
+
+      // Stack panel
+      if (dfsStack.length>0){
+        stackCard.style.display = '';
+        const list = dfsStack.slice().reverse().map((p,idx)=>`(${p.i}, ${p.j}) ${idx===0?'\u2190 current':''}`).join('\n');
+        stackEl.textContent = list;
+      } else {
+        stackCard.style.display = 'none';
+      }
+
+      // Found panel
+      if (islandShapes.length>0){
+        foundCard.style.display = '';
+        foundEl.innerHTML = islandShapes.map((island,idx)=>{
+          return `<div style="margin:8px 0">
+            <div style="font-weight:700">Island ${idx+1}:</div>
+            <div class="mono" style="font-size:12px">${island.tuple}</div>
+            <div style="font-size:12px;color:var(--text-dim)">Origin: (${island.origin.i}, ${island.origin.j})</div>
+          </div>`;
+        }).join('');
+      } else {
+        foundCard.style.display = 'none';
+      }
+
+      // Buttons
+      if (status.includes('Algorithm complete')){
+        startBtn.disabled = true;
+        stepBtn.disabled = true;
+      } else {
+        startBtn.disabled = false;
+        stepBtn.disabled = isRunning;
+      }
+      startBtn.textContent = isRunning ? '⏸ Pause' : '▶ Start';
+    }
+
+    function renderAll(){
+      renderGrid();
+      renderStatus();
+    }
+
+    // ---------------------- Logic ----------------------
+    function findNextUnvisitedLand(startI, startJ){
+      for (let i=startI;i<m();i++){
+        const jStart = (i===startI ? startJ : 0);
+        for (let j=jStart;j<n();j++){
+          if (grid[i][j]===1 && !visited[i][j]) return {i,j};
+        }
+      }
+      return null;
+    }
+
+    function executeStep(){
+      // guard if already complete
+      if (status.includes('Algorithm complete')) return;
+
+      // If stack empty, look for a new island start
+      if (dfsStack.length===0){
+        const next = findNextUnvisitedLand(currentPos.i, currentPos.j);
+        if (!next){
+          status = `Algorithm complete! Found ${distinctIslands.size} distinct islands`;
+          isRunning = false;
+          if (timerId){clearInterval(timerId); timerId=null;}
+          renderAll();
+          return;
+        }
+        currentPos = { ...next };
+        origin = { ...next };
+        currentIsland = [];
+        dfsStack = [ next ];
+        status = `Starting new island at (${next.i}, ${next.j})`;
+        step++;
+        renderAll();
+        return;
+      }
+
+      // Process DFS stack
+      const current = dfsStack[dfsStack.length-1];
+      const { i, j } = current;
+
+      // If invalid cell, pop and continue
+      if (!inBounds(i,j) || grid[i][j]===0 || visited[i][j]){
+        dfsStack.pop();
+        step++;
+        renderAll();
+        return;
+      }
+
+      // Visit cell
+      visited[i][j] = true;
+      const normalized = [i - origin.i, j - origin.j];
+      currentIsland.push(normalized);
+
+      // Pop current and push neighbors
+      dfsStack.pop();
+      for (const [di,dj] of directions){
+        const ni = i + di; const nj = j + dj;
+        dfsStack.push({i:ni, j:nj});
+      }
+
+      // If stack is empty after pushing neighbors, island done
+      if (dfsStack.length===0){
+        const shapeSorted = deepClone(currentIsland).sort(coordSort);
+        const islandTuple = JSON.stringify(shapeSorted);
+        distinctIslands.add(islandTuple);
+        islandShapes.push({shape: deepClone(currentIsland), origin: {...origin}, tuple: islandTuple});
+
+        // Move current position forward for next scan
+        let nextI = i, nextJ = j+1;
+        if (nextJ>=n()){ nextJ = 0; nextI = i+1; }
+        currentPos = { i: nextI, j: nextJ };
+        status = `Island complete! Shape: ${islandTuple}`;
+      } else {
+        status = `Exploring cell (${i}, ${j}), normalized: (${normalized[0]}, ${normalized[1]})`;
+      }
+
+      step++;
+      renderAll();
+    }
+
+    function runAlgorithm(){
+      if (!isRunning){
+        isRunning = true;
+        startBtn.textContent = '⏸ Pause';
+        timerId = setInterval(executeStep, 800);
+        // Safety: stop after ~50s
+        setTimeout(()=>{
+          if (isRunning){
+            isRunning = false;
+            if (timerId){clearInterval(timerId); timerId=null;}
+            renderAll();
+          }
+        }, 50000);
+      } else {
+        isRunning = false;
+        if (timerId){clearInterval(timerId); timerId=null;}
+      }
+      renderAll();
+    }
+
+    function toggleCell(i,j){
+      if (isRunning) return;
+      grid[i][j] = 1 - grid[i][j];
+      initializeState(); // reset algorithm state when grid changes
+    }
+
+    function getCellClass(i,j){
+      const classes = [];
+      if (grid[i][j]===0) classes.push('water'); else classes.push('land');
+
+      // current island highlighting (normalized match)
+      if (grid[i][j]===1){
+        const ni = i - origin.i, nj = j - origin.j;
+        if (currentIsland.some(([a,b])=>a===ni && b===nj)) classes.push('current-island');
+      }
+
+      if (visited[i][j]) classes.push('visited');
+      if (currentPos.i===i && currentPos.j===j) classes.push('pos');
+      if (dfsStack.length>0 && origin.i===i && origin.j===j) classes.push('origin');
+
+      return classes.join(' ');
+    }
+
+    // ---------------------- Events ----------------------
+    startBtn.addEventListener('click', runAlgorithm);
+    stepBtn.addEventListener('click', executeStep);
+    resetBtn.addEventListener('click', ()=>{ grid = deepClone(initialGrid); initializeState(); });
+
+    // Boot
+    initializeState();
+  </script>
+</body>
+</html>

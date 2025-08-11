@@ -1,56 +1,53 @@
-'''
-    Main idea is the get the cell coordinates
-
-    row_coordinate = i - row_origin
-    col_coordinate = j - col_origin
-
-    # Note: abs difference will give an error
-'''
 class Solution:
     def numDistinctIslands(self, grid: List[List[int]]) -> int:
         m = len(grid)
         n = len(grid[0])
 
-        visited = [[False] * n for _ in range(m)]
+        visited = [[False for _ in range(n)] for _ in range(m)]
 
-        directions = [(-1,0), (1,0), (0,-1), (0,1)] 
+        # Store the normalized coordinates
+        no_of_distinct_island = set()
 
-        no_of_islands = set()
-
-        for i in range(m):
-            for j in range(n):
-
-                if grid[i][j] == 0 or visited[i][j] == True:
+        for row in range(m):
+            for col in range(n):
+                if grid[row][col] == 0 or visited[row][col] == True:
                     continue
+                
+                current_island_coordinates = []
 
-                row_origin = i
-                col_origin = j
+                origin_row = row
+                origin_col = col
 
-                current_island = []
+                self.dfs(row, col, origin_row, origin_col, current_island_coordinates, visited, grid, m, n)
 
-                self.dfs(i , j, row_origin, col_origin, current_island, visited, directions, grid, m, n)
+                print(tuple(current_island_coordinates))
 
-                no_of_islands.add(tuple(current_island))
-        
-        return len(no_of_islands)
+                no_of_distinct_island.add(tuple(current_island_coordinates))
+            
+        return len(no_of_distinct_island)
 
 
-        
-    def dfs(self, i , j, row_origin, col_origin, current_island, visited, directions, grid, m, n):
-        if i < 0 or j < 0 or i >= m or j >= n or grid[i][j] == 0 or visited[i][j] == True:
+    def dfs(self, row, col, origin_row, origin_col, current_island_coordinates, visited, grid, m, n):
+        # check for boundaries
+        if row < 0 or col < 0 or row >= m or col >= n or grid[row][col] == 0 or visited[row][col] == True:
             return
         
-        visited[i][j] = True
+        # mark the cell as visited
+        visited[row][col] = True
 
-        row_coordinate = i - row_origin
-        col_coordinate = j - col_origin
+        # Coordinate Normalization
+        row_no = row - origin_row
+        col_no = col - origin_col
 
-        current_island.append((row_coordinate, col_coordinate))
+        # Append as tuple
+        current_island_coordinates.append((row_no, col_no))
 
-        for adj_row ,adj_col in directions:
-            nei_row = adj_row + i
-            nei_col = adj_col + j
+        # Explore Neighbors
+        neighbors = [[0,-1], [0,1], [-1,0], [1,0]]
+        for nei in neighbors:
+            nei_row = nei[0] + row
+            nei_col = nei[1] + col
 
-            self.dfs(nei_row , nei_col, row_origin, col_origin, current_island, visited, directions, grid, m, n)
-
-        return
+            self.dfs(nei_row, nei_col, origin_row, origin_col, current_island_coordinates, visited, grid, m, n)
+        
+        return current_island_coordinates
