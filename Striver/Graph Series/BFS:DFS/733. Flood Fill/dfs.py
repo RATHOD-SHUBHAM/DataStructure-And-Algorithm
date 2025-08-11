@@ -3,35 +3,32 @@ class Solution:
         m = len(image)
         n = len(image[0])
 
-        directions = [(-1, 0), (1,0), (0,-1), (0,1)]
-        
-        
-        # helper code --------------------------
-        def dfs(row, col, start_color):
+        queue = collections.deque()
 
-            # change the color of current cell to the color they have provided
-            image[row][col] = color
+        neighbors = [[0,1], [0,-1], [1,0], [-1,0]]
 
-            # Move in 4 direction
-            for adj_row, adj_col in directions:
-                nei_row = adj_row + row
-                nei_col = adj_col + col
-
-                # base case
-                if nei_row < 0 or nei_col < 0 or nei_row >= m or nei_col >= n or image[nei_row][nei_col] != start_color:
-                    continue
-
-                dfs(nei_row, nei_col ,start_color)
-
-            return
-        
-        
-        # main code --------------------------
-        start_color = image[sr][sc]
-        
-        if start_color == color:
+        # If the src is already the same as the target color. Therefore, no changes are made to the image.
+        if image[sr][sc] == color:
             return image
         
-        dfs(sr, sc, start_color)
-        
+        # Color the source
+        start_color = image[sr][sc]
+        self.dfs(sr, sc, start_color, neighbors, color, image, m, n)
+
         return image
+    
+    def dfs(self, sr, sc, start_color, neighbors, color, image, m, n):
+        # If neighbors dont shares the same color as the starting pixel.
+        if sr < 0 or sc < 0 or sr >= m or sc >= n or image[sr][sc] != start_color:
+            return
+        
+        # Color the cell
+        image[sr][sc] = color
+
+        for nei in neighbors:
+            nei_i = sr + nei[0]
+            nei_j = sc + nei[1]
+
+            self.dfs(nei_i, nei_j, start_color, neighbors, color, image, m, n)
+        
+        return
