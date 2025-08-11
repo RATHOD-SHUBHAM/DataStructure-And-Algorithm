@@ -1,76 +1,114 @@
+"""
+Keep Track of parent Node because a edge from A -> B and B -> A is not a cycle.
+This is also called a bidirectional edge.
+"""
+
 # --------------- DFS --------------------------------------------------------
+import collections
+
 class Solution:
-    #Function to detect cycle in an undirected graph.
-	def isCycle(self, V: int, adj: List[List[int]]) -> bool:
-		#Code here
-		
-		visited = [False] * V
-		
-		parent = -1
-		
-		for i in range(V):
-			if visited[i] == False:
-				isCyclePresent = self.dfs(i, parent, visited, V, adj)
-				
-				if isCyclePresent:
-					return 1
-
-		return 0
-
-
-	def dfs(self, i, parent, visited, V, adj):
-
-		visited[i] = True
-
-		for child in adj[i]:
-			if visited[child] == False:
-				isCyclePresent = self.dfs(child, i, visited, V, adj)
-				
-				if isCyclePresent:
-					return True
-			else:
-				if child != parent:
-					return True
-					
-		return False
-	
-# --------------- BFS --------------------------------------------------------
-	
-class Solution:
-    #Function to detect cycle in an undirected graph.
-    def isCycle(self, V: int, adj: List[List[int]]) -> bool:
+    def isCycle(self, V, edges):
         #Code here
-
         visited = [False] * V
 
+        # Create an Adjacency list
+        adj_lst = collections.defaultdict(list)
+
+        for u, v in edges:
+            adj_lst[u].append(v)
+            adj_lst[v].append(u)
+
+        # Keep track of bidirectional edge
+        # A - B and B - A is not an cycle
         parent = -1
 
         for i in range(V):
-            if visited[i] == False:
-                cyclePresent = self.checkForCycle(i, parent, visited, V, adj)
+            if visited[i] == True:
+                continue
+            
+            isConnected = self.dfs(i, parent, visited, adj_lst)
+            
+            # If cycle is detected
+            if isConnected == True:
+                return True
                 
-                if cyclePresent:
-                    return 1
+        return False
 
-        return 0
+    def dfs(self, node, parent, visited, adj_lst):
+        # Mark the node as visited
+        visited[node] = True
 
-    def checkForCycle(self, i, parent, visited, V, adj):
-
-        queue = [[i, parent]]
-
-
-        while queue:
-            
-            node, parent_node = queue.pop(0)
-            
-            visited[node] = True
-            
-            for child in adj[node]:
-                if visited[child] == False:
-                    queue.append([child, node])
-                else:
-                    # a node can only be visited before if they have a common parent
-                    if child != parent_node:
+        for nei in adj_lst[node]:
+            # If neighbor is a parent, then this cant be a cycle, its a straight line
+            if nei == parent:
+                continue
+            else:
+                if visited[nei] == False:
+                    isConnected = self.dfs(nei, node, visited, adj_lst)
+                    
+                    # If cycle is detected
+                    if isConnected == True:
                         return True
-                        
+                else:
+                    # If the nei is already visited then there is a cycle
+                    return True
+                    
+        return False
+	
+# --------------- BFS --------------------------------------------------------
+	
+import collections
+
+class Solution:
+    def isCycle(self, V, edges):
+        #Code here
+        visited = [False] * V
+        
+        # Create an Adjacency list
+        adj_lst = collections.defaultdict(list)
+        
+        for u, v in edges:
+            adj_lst[u].append(v)
+            adj_lst[v].append(u)
+        
+        # Keep track of bidirectional edge
+        # A - B and B - A is not an cycle
+        parent = -1
+        
+        for i in range(V):
+            if visited[i] == True:
+                continue
+            
+            isConnected = self.bfs(i, parent, visited, adj_lst)
+            
+            # If cycle is detected
+            if isConnected == True:
+                return True
+                
+        return False
+        
+    def bfs(self, i, parent, visited, adj_lst):
+        
+        queue = collections.deque()
+        queue.append((i, parent))
+        
+        visited[i] = True
+        
+        while queue:
+            node, parent = queue.popleft()
+            
+            for nei in adj_lst[node]:
+                # If neighbor is a parent, then this cant be a cycle, its a straight line
+                if nei == parent:
+                    continue
+                else:
+                    # In BFS cycle detection, it’s safest to mark visited when you enqueue a neighbor. That prevents the same node from being enqueued multiple times and causing false cycle signals.
+                    if visited[nei] == False:
+                        visited[nei] = True
+                        queue.append((nei, node))
+                    
+                    else:
+                        # If the nei is already visited then there is a cycle
+                        return True
+                    
         return False
