@@ -5,45 +5,42 @@ class Solution:
         m = len(mat)
         n = len(mat[0])
 
-        directions = [[-1,0], [1,0], [0,-1], [0,1]]
+        visited = [[False for _ in range(n)] for _ in range(m)]
 
-
-        minDist = [[math.inf] * n for _ in range(m)]
-        visited = [[False] * n for _ in range(m)]
-        queue = []
+        dist = [[math.inf for _ in range(n)] for _ in range(m)]
 
         '''
             1. Cell with value zero - will have dist zero
-            2. Mark the cell with dist 0 as visited
+            2. Mark the cell with value zero as visited
             3. Add them to the  queue
         '''
+        queue = collections.deque()
+
         for i in range(m):
             for j in range(n):
                 if mat[i][j] == 0:
-                    minDist[i][j] = 0
                     visited[i][j] = True
-                    queue.append((0, i, j)) # dist , cell
+                    dist[i][j] = 0
+                    queue.append((0, i, j)) # Dist, Coords
+        
+        # Explore neighbors of cell with value zero
+        directions = [[0,1], [0,-1], [1,0], [-1,0]]
 
-        # BFS
         while queue:
-            dist , row, col = queue.pop(0)
+            dst, i, j = queue.popleft()
 
-            for adj_row, adj_col in directions:
-                nei_row = adj_row + row
-                nei_col = adj_col + col
+            for nei in directions:
+                nei_i = i + nei[0]
+                nei_j = j + nei[1]
 
-                if nei_row < 0 or nei_row >= m or nei_col < 0 or nei_col >= n or visited[nei_row][nei_col] == True:
+                if nei_i < 0 or nei_j < 0 or nei_i >= m or nei_j >= n or mat[nei_i][nei_j] == 0 or visited[nei_i][nei_j] == True:
                     continue
                 
-                # this is a cell with value 1 which hasnt been visited
-                new_dist = dist + 1
-                visited[nei_row][nei_col] = True
+                visited[nei_i][nei_j] = True
 
-                minDist[nei_row][nei_col] = new_dist
+                new_dst = 1 + dst
+                dist[nei_i][nei_j] = new_dst
 
-                queue.append((new_dist, nei_row, nei_col))
-                
+                queue.append((new_dst, nei_i, nei_j)) # Dist, Coords
         
-        return minDist
-                    
-                    
+        return dist
