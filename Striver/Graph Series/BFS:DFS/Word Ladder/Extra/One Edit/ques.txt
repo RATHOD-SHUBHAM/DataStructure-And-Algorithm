@@ -1,0 +1,44 @@
+📝 Problem Statement
+
+Problem: One or Zero Edit Distance
+
+Given two strings s and t, return true if they are at most one edit apart, otherwise return false.
+
+An edit is defined as:
+
+Insert a character into one string.
+
+Delete a character from one string.
+
+Replace a character in one string with another character.
+
+👉 Two strings are considered "at most one edit apart" if you can make zero or one of the above operations to make them equal.
+
+🔹 Example 1
+Input: s = "hit", t = "hot"
+Output: true
+Explanation: Replace 'i' with 'o'
+
+🔹 Example 2
+Input: s = "cat", t = "cat"
+Output: true
+Explanation: They are already equal (0 edits).
+
+🔹 Example 3
+Input: s = "cats", t = "cat"
+Output: true
+Explanation: Delete 's'
+
+🔹 Example 4
+Input: s = "cat", t = "dog"
+Output: false
+Explanation: More than one edit needed
+
+🔹 Constraints
+
+0 <= s.length, t.length <= 10^4
+
+s and t consist of lowercase English letters.
+
+✨ This is the first problem (at most one edit).
+The LeetCode version (#161: One Edit Distance) is the stricter exactly one edit version.

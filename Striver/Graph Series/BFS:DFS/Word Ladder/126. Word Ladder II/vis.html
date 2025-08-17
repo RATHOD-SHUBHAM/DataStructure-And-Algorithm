@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Word Ladder Algorithm Visualizer (Vanilla JS)</title>
+<style>
+  :root{
+    --bg:#ffffff;
+    --muted:#f6f8fb;
+    --ink:#0f172a;
+    --sub:#475569;
+    --border:#e5e7eb;
+    --blue-50:#eff6ff;
+    --blue-100:#dbeafe;
+    --blue-500:#3b82f6;
+    --blue-600:#2563eb;
+    --yellow-50:#fffbeb;
+    --yellow-100:#fef3c7;
+    --yellow-500:#f59e0b;
+    --green-50:#ecfdf5;
+    --green-100:#d1fae5;
+    --green-500:#10b981;
+    --gray-50:#f9fafb;
+    --gray-100:#f3f4f6;
+    --gray-300:#d1d5db;
+    --gray-400:#9ca3af;
+    --gray-600:#4b5563;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; font-family: ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,"Helvetica Neue",Arial;
+    color:var(--ink); background:var(--bg);
+  }
+  .container{max-width:1200px; margin:0 auto; padding:24px;}
+  h1{font-size:24px; font-weight:800; margin:0 0 16px}
+  h3{margin:0 0 12px; font-weight:700}
+
+  /* Inputs & Controls */
+  .grid{display:grid; gap:16px}
+  .grid-3{grid-template-columns:1fr}
+  @media (min-width: 900px){ .grid-3{grid-template-columns:repeat(3,1fr)} }
+  label{font-size:12px; font-weight:700; margin-bottom:6px; display:block}
+  .input{
+    width:100%; padding:10px 12px; border:1px solid var(--border); border-radius:10px;
+    font-family: ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+    background:#fff;
+  }
+  .controls{display:flex; gap:10px; margin:16px 0}
+  .btn{
+    display:inline-flex; align-items:center; gap:8px; padding:10px 14px; border:none; border-radius:10px;
+    color:#fff; cursor:pointer; transition:.15s transform, .15s opacity;
+  }
+  .btn:hover{transform:translateY(-1px)}
+  .btn:active{transform:translateY(0)}
+  .btn-blue{background:var(--blue-500)}
+  .btn-blue:hover{background:var(--blue-600)}
+  .btn-gray{background:#6b7280}
+  .btn-green{background:#16a34a}
+  .stepbox{
+    background:var(--blue-50); border:1px solid var(--blue-100); padding:12px; border-radius:10px; margin-bottom:16px;
+  }
+  .stepbox .title{font-weight:700}
+  .stepbox .meta{font-size:12px; color:var(--sub); margin-top:4px}
+
+  /* Panels */
+  .columns{display:grid; gap:24px}
+  @media (min-width: 1024px){ .columns{grid-template-columns:1fr 1fr} }
+  .panel{
+    background:var(--muted); border:1px solid var(--border); border-radius:12px; padding:16px;
+  }
+
+  .row{display:flex; gap:8px; align-items:center; flex-wrap:wrap}
+  .mono{font-family: ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;}
+  .badge{
+    display:inline-block; padding:4px 8px; border-radius:8px; border:1px solid var(--border); background:#fff; font-size:12px;
+  }
+  .line{display:flex; align-items:center; gap:8px; font-size:14px}
+  .muted{color:var(--sub)}
+  .scroll{max-height:140px; overflow:auto}
+
+  /* Queue & Nodes */
+  .queue-item{font-size:14px}
+  .node{
+    padding:8px 12px; border-radius:10px; border:2px solid var(--gray-300);
+    font-family: ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+    font-size:13px; transition:background .2s, border-color .2s, color .2s;
+    background:#fff;
+  }
+  .node.visited{background:var(--gray-100); border-color:var(--gray-400); color:var(--gray-600)}
+  .node.current{background:var(--blue-100); border-color:var(--blue-500); color:#1d4ed8}
+  .node.inqueue{background:var(--yellow-100); border-color:var(--yellow-500); color:#92400e}
+  .node.result{background:var(--green-100); border-color:var(--green-500); color:#065f46}
+
+  .legend{display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:12px; font-size:12px}
+  .legend .swatch{width:12px; height:12px; border-radius:4px; border:1px solid var(--gray-300)}
+
+  .results .path{
+    font-family: ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+    background:#fff; padding:8px; border:1px solid var(--border); border-radius:8px; font-size:13px;
+  }
+
+  .explain p{margin:0 0 8px; font-size:14px; color:var(--sub)}
+  .status{margin-top:8px; font-size:13px; color:#b45309}
+</style>
+</head>
+<body>
+  <div class="container">
+    <div class="mb-6">
+      <h1>Word Ladder Algorithm Visualizer</h1>
+
+      <!-- Inputs -->
+      <div class="grid grid-3" style="margin-bottom:12px">
+        <div>
+          <label>Begin Word</label>
+          <input id="beginWord" class="input" value="hit" />
+        </div>
+        <div>
+          <label>End Word</label>
+          <input id="endWord" class="input" value="cog" />
+        </div>
+        <div>
+          <label>Word List (comma separated)</label>
+          <input id="wordList" class="input" value="hot, dot, dog, lot, log, cog" />
+        </div>
+      </div>
+
+      <!-- Controls -->
+      <div class="controls">
+        <button id="playBtn" class="btn btn-blue">
+          <!-- Play / Pause icon toggled in JS -->
+          <span class="icon" id="playIcon" aria-hidden="true">
+            <!-- Play -->
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="display:block">
+              <path d="M8 5v14l11-7z"></path>
+            </svg>
+          </span>
+          <span id="playText">Play</span>
+        </button>
+        <button id="resetBtn" class="btn btn-gray">
+          <!-- RotateCcw -->
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 5V2L7 7l5 5V9a5 5 0 1 1-5 5H5a7 7 0 1 0 7-7z"></path>
+          </svg>
+          Reset
+        </button>
+        <button id="nextBtn" class="btn btn-green">
+          <!-- ChevronRight -->
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M9 18l6-6-6-6"></path>
+          </svg>
+          Next Step
+        </button>
+      </div>
+
+      <!-- Step -->
+      <div class="stepbox">
+        <div class="title">Step <span id="stepNum">0</span>: <span id="stepLabel">Initialize: Check if endWord exists in wordList</span></div>
+        <div class="meta">Level: <span id="levelNum">0</span></div>
+        <div id="statusMsg" class="status"></div>
+      </div>
+    </div>
+
+    <!-- Columns -->
+    <div class="columns">
+      <!-- Left column -->
+      <div class="grid" style="gap:16px">
+        <!-- Pattern graph -->
+        <div class="panel" id="patternPanel">
+          <h3>Pattern Graph</h3>
+          <div id="patternList" class="scroll"></div>
+        </div>
+
+        <!-- Queue -->
+        <div class="panel">
+          <h3>BFS Queue (<span id="queueCount">0</span> items)</h3>
+          <div id="queueList" class="scroll"></div>
+        </div>
+      </div>
+
+      <!-- Right column -->
+      <div class="grid" style="gap:16px">
+        <!-- Word status -->
+        <div class="panel">
+          <h3>Word Status</h3>
+          <div id="wordGrid" class="grid" style="grid-template-columns:repeat(3,1fr); gap:8px"></div>
+
+          <!-- Legend -->
+          <div class="legend">
+            <div class="row">
+              <div class="swatch" style="background:var(--gray-100); border-color:var(--gray-400)"></div>
+              <span>Visited</span>
+            </div>
+            <div class="row">
+              <div class="swatch" style="background:var(--blue-100); border-color:var(--blue-500)"></div>
+              <span>Current Level</span>
+            </div>
+            <div class="row">
+              <div class="swatch" style="background:var(--yellow-100); border-color:var(--yellow-500)"></div>
+              <span>In Queue</span>
+            </div>
+            <div class="row">
+              <div class="swatch" style="background:var(--green-100); border-color:var(--green-500)"></div>
+              <span>In Solution</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Results -->
+        <div class="panel results">
+          <h3>Found Paths (<span id="resultsCount">0</span>)</h3>
+          <div id="resultsList" class="scroll"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Explanation -->
+    <div class="panel explain" style="margin-top:24px">
+      <h3>Algorithm Explanation</h3>
+      <p><strong>1. Pattern-based Graph:</strong> Each word creates patterns by replacing one letter with '*'. Words sharing patterns are neighbors.</p>
+      <p><strong>2. BFS for Shortest Path:</strong> We process words level by level to guarantee shortest transformations.</p>
+      <p><strong>3. Level-wise Visited Tracking:</strong> We delay marking visited until the end of a level so siblings can share neighbors.</p>
+      <p><strong>4. Multiple Solutions:</strong> All shortest paths are collected when the end word is reached (no expansion after reaching it in a level).</p>
+    </div>
+  </div>
+
+<script>
+(() => {
+  // ====== State ======
+  const state = {
+    beginWord: 'hit',
+    endWord: 'cog',
+    wordList: ['hot','dot','dog','lot','log','cog'],
+
+    step: 0,
+    isPlaying: false,
+    intervalId: null,
+
+    graph: {},                 // pattern -> [words]
+    queue: [],                 // [ [word, pathArray], ... ]
+    visited: new Set(),        // global visited across levels
+    currentVisited: new Set(), // nodes visited in current level
+    results: [],               // array of paths (array<string>)
+    currentLevel: 0,
+    foundThisLevel: false
+  };
+
+  const steps = [
+    'Initialize: Check if endWord exists in wordList',
+    'Build pattern-based graph',
+    'Initialize BFS queue and visited set',
+    'Process current level in BFS',
+    'Find neighbors using patterns',
+    'Add valid neighbors to queue',
+    'Update visited set',
+    'Check for solutions'
+  ];
+
+  // ====== DOM ======
+  const beginInput = document.getElementById('beginWord');
+  const endInput   = document.getElementById('endWord');
+  const listInput  = document.getElementById('wordList');
+
+  const playBtn  = document.getElementById('playBtn');
+  const resetBtn = document.getElementById('resetBtn');
+  const nextBtn  = document.getElementById('nextBtn');
+
+  const playIcon = document.getElementById('playIcon');
+  const playText = document.getElementById('playText');
+
+  const stepNum   = document.getElementById('stepNum');
+  const stepLabel = document.getElementById('stepLabel');
+  const levelNum  = document.getElementById('levelNum');
+  const statusMsg = document.getElementById('statusMsg');
+
+  const patternList = document.getElementById('patternList');
+  const queueCount  = document.getElementById('queueCount');
+  const queueList   = document.getElementById('queueList');
+
+  const wordGrid     = document.getElementById('wordGrid');
+  const resultsCount = document.getElementById('resultsCount');
+  const resultsList  = document.getElementById('resultsList');
+
+  // ====== Helpers ======
+  const toWords = (s) =>
+    s.split(',').map(w => w.trim().toLowerCase()).filter(Boolean);
+
+  const getPatterns = (w) => {
+    const out = [];
+    for (let i=0;i<w.length;i++){
+      out.push(w.slice(0,i) + '*' + w.slice(i+1));
+    }
+    return out;
+  };
+
+  const buildGraph = (words, beginWord) => {
+    const g = Object.create(null);
+    const all = [...new Set([...words, beginWord])];
+    for (const w of all) {
+      for (let i=0;i<w.length;i++){
+        const p = w.slice(0,i) + '*' + w.slice(i+1);
+        if (!g[p]) g[p] = [];
+        g[p].push(w);
+      }
+    }
+    return g;
+  };
+
+  const renderPatternPanel = () => {
+    const entries = Object.entries(state.graph);
+    const max = 6;
+    patternList.innerHTML = '';
+    if (entries.length === 0){
+      patternList.innerHTML = `<div class="muted">Graph will appear here...</div>`;
+      return;
+    }
+    for (let i=0; i<Math.min(entries.length, max); i++){
+      const [pattern, words] = entries[i];
+      const line = document.createElement('div');
+      line.className = 'line';
+      line.innerHTML = `
+        <span class="badge mono" style="background:var(--blue-100); border-color:var(--blue-500)">${pattern}</span>
+        <span class="muted">→</span>
+        <span class="muted">[${words.join(', ')}]</span>
+      `;
+      patternList.appendChild(line);
+    }
+    if (entries.length > max){
+      const more = document.createElement('div');
+      more.className = 'muted';
+      more.style.fontSize = '12px';
+      more.textContent = `... and ${entries.length - max} more patterns`;
+      patternList.appendChild(more);
+    }
+  };
+
+  const renderQueue = () => {
+    queueCount.textContent = state.queue.length;
+    queueList.innerHTML = '';
+    const max = 5;
+    const items = state.queue.slice(0, max);
+    if (items.length === 0){
+      queueList.innerHTML = `<div class="muted">Queue is empty.</div>`;
+      return;
+    }
+    for (let i=0;i<items.length;i++){
+      const [word, path] = items[i];
+      const row = document.createElement('div');
+      row.className = 'queue-item';
+      row.innerHTML = `
+        <span class="badge mono" style="background:var(--yellow-100); border-color:var(--yellow-500)">${word}</span>
+        <span class="muted">→</span>
+        <span class="muted">[${path.join(' → ')}]</span>
+      `;
+      queueList.appendChild(row);
+    }
+    if (state.queue.length > max){
+      const more = document.createElement('div');
+      more.className = 'muted';
+      more.style.fontSize = '12px';
+      more.textContent = `... and ${state.queue.length - max} more items`;
+      queueList.appendChild(more);
+    }
+  };
+
+  const renderWordGrid = () => {
+    const uniqueWords = [...new Set([state.beginWord, ...state.wordList])];
+    wordGrid.innerHTML = '';
+    for (const w of uniqueWords){
+      const isVisited = state.visited.has(w);
+      const isCurrent = state.currentVisited.has(w);
+      const isInQueue = state.queue.some(([qw]) => qw === w);
+      const isResult  = state.results.some(path => path.includes(w));
+
+      const div = document.createElement('div');
+      div.className = 'node';
+      if (isResult)  div.classList.add('result');
+      else if (isCurrent) div.classList.add('current');
+      else if (isInQueue) div.classList.add('inqueue');
+      else if (isVisited) div.classList.add('visited');
+      div.textContent = w;
+      wordGrid.appendChild(div);
+    }
+  };
+
+  const renderResults = () => {
+    resultsCount.textContent = state.results.length;
+    resultsList.innerHTML = '';
+    if (state.results.length === 0){
+      resultsList.innerHTML = `<div class="muted">No paths found yet...</div>`;
+      return;
+    }
+    for (const path of state.results){
+      const row = document.createElement('div');
+      row.className = 'path';
+      row.textContent = path.join(' → ');
+      resultsList.appendChild(row);
+    }
+  };
+
+  const renderStep = () => {
+    stepNum.textContent = state.step;
+    stepLabel.textContent = steps[Math.min(state.step, steps.length - 1)];
+    levelNum.textContent = state.currentLevel;
+  };
+
+  const renderStatus = (msg='') => {
+    statusMsg.textContent = msg;
+  };
+
+  const renderPlayButton = () => {
+    playText.textContent = state.isPlaying ? 'Pause' : 'Play';
+    // Swap icon between Play (triangle) and Pause (two bars)
+    playIcon.innerHTML = state.isPlaying
+      ? `<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M6 5h4v14H6zM14 5h4v14h-4z"></path></svg>`
+      : `<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg>`;
+  };
+
+  const renderAll = () => {
+    renderPatternPanel();
+    renderQueue();
+    renderWordGrid();
+    renderResults();
+    renderStep();
+  };
+
+  // ====== Core: BFS simulation (level-by-level) ======
+  const simulateBFSLevel = () => {
+    if (state.queue.length === 0) return;
+
+    const newQueue = [];
+    const newVisited = new Set(state.visited);
+    const levelVisited = new Set();
+    let found = false;
+
+    const levelSize = state.queue.length;
+
+    for (let k=0; k<levelSize; k++){
+      const [word, path] = state.queue[k];
+
+      if (word === state.endWord){
+        // collect but do not expand
+        state.results.push(path);
+        found = true;
+        continue;
+      }
+
+      // expand neighbors
+      for (const p of getPatterns(word)){
+        const bucket = state.graph[p] || [];
+        for (const nei of bucket){
+          if (newVisited.has(nei)) continue;
+          newQueue.push([nei, [...path, nei]]);
+          levelVisited.add(nei);
+        }
+      }
+    }
+
+    // After processing whole level
+    for (const w of levelVisited) newVisited.add(w);
+
+    state.queue = newQueue;
+    state.visited = newVisited;
+    state.currentVisited = levelVisited;
+    state.currentLevel += 1;
+    state.foundThisLevel = found;
+
+    // Stop autoplay if found any results this level (we collected all shortest)
+    if (found && state.isPlaying){
+      togglePlay(false);
+    }
+  };
+
+  // ====== Step engine ======
+  const doStep = () => {
+    switch (state.step){
+      case 0: {
+        // Check endWord presence (informational)
+        const present = state.wordList.includes(state.endWord);
+        renderStatus(present ? '' : 'Note: endWord is not in the list; no path will be found.');
+        break;
+      }
+      case 1: {
+        state.graph = buildGraph(state.wordList, state.beginWord);
+        renderStatus('');
+        break;
+      }
+      case 2: {
+        state.queue = [[state.beginWord, [state.beginWord]]];
+        state.visited = new Set([state.beginWord]);
+        state.currentVisited = new Set();
+        state.results = [];
+        state.currentLevel = 0;
+        state.foundThisLevel = false;
+        renderStatus('');
+        break;
+      }
+      default: {
+        // 3+ : run a BFS level
+        simulateBFSLevel();
+        break;
+      }
+    }
+    state.step += 1;
+    renderAll();
+  };
+
+  const reset = () => {
+    // Read inputs
+    state.beginWord = beginInput.value.trim().toLowerCase();
+    state.endWord   = endInput.value.trim().toLowerCase();
+    state.wordList  = toWords(listInput.value);
+
+    // Reset state
+    state.step = 0;
+    state.isPlaying = false;
+    if (state.intervalId) clearInterval(state.intervalId);
+    state.intervalId = null;
+
+    state.graph = {};
+    state.queue = [];
+    state.visited = new Set();
+    state.currentVisited = new Set();
+    state.results = [];
+    state.currentLevel = 0;
+    state.foundThisLevel = false;
+
+    // Initial render
+    renderPlayButton();
+    renderStatus('');
+    renderAll();
+  };
+
+  const togglePlay = (forceValue=null) => {
+    const willPlay = forceValue === null ? !state.isPlaying : forceValue;
+    state.isPlaying = willPlay;
+    renderPlayButton();
+    if (state.intervalId) { clearInterval(state.intervalId); state.intervalId = null; }
+
+    if (willPlay){
+      state.intervalId = setInterval(() => {
+        // Stop if queue empty and we're past initialization
+        if (state.step >= 3 && state.queue.length === 0) {
+          togglePlay(false);
+          return;
+        }
+        doStep();
+      }, 1200);
+    }
+  };
+
+  // ====== Events ======
+  beginInput.addEventListener('input', () => reset());
+  endInput.addEventListener('input', () => reset());
+  listInput.addEventListener('input', () => reset());
+
+  playBtn.addEventListener('click', () => togglePlay());
+  resetBtn.addEventListener('click', () => reset());
+  nextBtn.addEventListener('click', () => {
+    // If autoplay running, pause then step once
+    if (state.isPlaying) togglePlay(false);
+    doStep();
+  });
+
+  // ====== Boot ======
+  reset();
+})();
+</script>
+</body>
+</html>

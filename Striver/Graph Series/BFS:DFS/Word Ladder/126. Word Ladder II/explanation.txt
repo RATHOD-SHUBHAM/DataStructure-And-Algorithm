@@ -1,6 +1,0 @@
-# https://www.youtube.com/watch?v=AD4SFl7tu7I&ab_channel=takeUforward
-
-
-# The optimized solution for this which is needed by leetcode is not required for Interview prep
-
-Note: This approach/code will give TLE when solved on the Leetcode platform due to the strict time constraints being put up there. So, you need to optimize it to a greater extent in order to pass all the test cases for LeetCode.
