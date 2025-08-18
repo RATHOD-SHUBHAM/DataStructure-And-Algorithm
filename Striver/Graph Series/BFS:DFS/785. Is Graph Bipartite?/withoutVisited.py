@@ -2,19 +2,18 @@ class Solution:
     def isBipartite(self, graph: List[List[int]]) -> bool:
         n = len(graph)
 
-        color = [False] * n
-        visited = [False] * n
+        # Color the nodes on the go
+        color = [None] * n
 
         queue = collections.deque()
 
         # Traverse across all the node
         for i in range(n):
-            if visited[i] == True:
+            if color[i] != None:
                 # If the node has already been colored and explored
                 continue
             
             queue.append(i)
-            visited[i] = True
             color[i] = True
 
             
@@ -24,8 +23,7 @@ class Solution:
 
                 for nei in graph[node]:
                     # If the nei is not visited, color the nei with a different color
-                    if visited[nei] == False:
-                        visited[nei] = True
+                    if color[nei] == None:
                         color[nei] = not color[node] # Using a opposite color
                         queue.append(nei)
                     
@@ -35,3 +33,4 @@ class Solution:
                             return False
             
         return True
+    
