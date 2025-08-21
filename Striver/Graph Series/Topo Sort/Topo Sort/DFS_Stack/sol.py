@@ -1,33 +1,40 @@
+import collections
+
 class Solution:
-    def topoSort(self, graph):
-        n = len(graph)
-
-        stack = []
-        visited = [False] * n
-
-        for i in range(n):
-            if not visited[i]:
-                self.dfs(i, visited, stack, graph)
+    
+    def topoSort(self, V, edges):
+        # Build Graph
+        graph = collections.defaultdict(list)
         
-        return stack[::-1]
-
-    def dfs(self, i, visited, stack, graph):
-        if visited[i]:
+        for u, v in edges:
+            graph[u].append(v)
+        
+        # Traverse Graph
+        topo_sort = []
+        visited = [False] * V
+        
+        for i in range(V):
+            if visited[i] == True:
+                continue
+        
+            self.dfs(i, graph, visited, topo_sort)
+        
+        # Reverse the order and return
+        return topo_sort[::-1]
+    
+    def dfs(self, node, graph, visited, topo_sort):
+        if visited[node] == True:
             return
+    
+        # Mark the node as visited
+        visited[node] = True
         
-        visited[i] = True
-
-        for nei in graph[i]:
-            self.dfs(nei, visited, stack, graph)
+        # Visit all the neighbors
+        for nei in graph[node]:
+            self.dfs(nei, graph, visited, topo_sort)
         
-        stack.append(i)
-
+        # All its dependant nodes has been visited
+        topo_sort.append(node)
+        
         return
-
-
-
-if __name__ == '__main__':
-    # ip = [[], [], [3], [1], [0,1], [0,2]]
-    ip = [[], [3], [3], [], [0,1], [0,2]]
-    obj = Solution()
-    print(obj.topoSort(ip))
+        

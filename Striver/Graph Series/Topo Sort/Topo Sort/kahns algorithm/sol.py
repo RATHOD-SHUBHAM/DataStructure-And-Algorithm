@@ -1,50 +1,44 @@
+import collections
+
 class Solution:
-    def topoSort(self, graph):
-        n = len(graph)
-
-        indegree = [0] * n
-
-        # get the indegree count of each node
-        for i in range(n):
-            for nei in graph[i]:
-                indegree[nei] += 1
+    
+    def topoSort(self, V, edges):
+        # Build Graph
+        graph = collections.defaultdict(list)
         
-        # get the node whose indegree count is 0
-        queue = []
-        for i in range(n):
+        for u, v in edges:
+            graph[u].append(v)
+        
+        # Step 1: Get the indegree of the nodes
+        indegree = [0] * V
+        
+        for u, v in edges:
+            indegree[v] += 1
+        
+        # Step 2: Get all the nodes with no pre-req or indegree = 0
+        queue = collections.deque()
+        
+        for i in range(V):
             if indegree[i] == 0:
                 queue.append(i)
-
-        # start reducing the indegree of nei node
-        count = 0
+        
+        # step 3: Iterate over the neighbour and unlock them
+        count = 0 # This is useful to check if there are cycles in the graph
         topo_sort = []
+        
         while queue:
-            node = queue.pop(0)
-
-            # reduce the indegree of nei
+            node = queue.popleft()
+            
             for nei in graph[node]:
+                # Unlock nei
                 indegree[nei] -= 1
-
-                # if the indegree becomes zero add to queue
+                
+                # Check if nei has no prereq left
                 if indegree[nei] == 0:
                     queue.append(nei)
-
+                
             
-            # increment the count 
             count += 1
-
             topo_sort.append(node)
-
-        if count != n:
-            # there is a cycle
-            return 0
-        else:
-            return topo_sort
-
-
-
-if __name__ == '__main__':
-    # ip = [[], [], [3], [1], [0,1], [0,2]]
-    ip = [[], [3], [3], [], [0,1], [0,2]]
-    obj = Solution()
-    print(obj.topoSort(ip))
+        
+        return topo_sort

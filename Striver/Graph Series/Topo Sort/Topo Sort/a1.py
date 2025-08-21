@@ -1,91 +1,91 @@
 # DFS + Stack:
 
+import collections
+
 class Solution:
-    def topoSort(self, graph):
-        n = len(graph)
-
-        stack = []
-        visited = [False] * n
-
-        for i in range(n):
-            if not visited[i]:
-                self.dfs(i, visited, stack, graph)
+    
+    def topoSort(self, V, edges):
+        # Build Graph
+        graph = collections.defaultdict(list)
         
-        return stack[::-1]
-
-    def dfs(self, i, visited, stack, graph):
-        if visited[i]:
+        for u, v in edges:
+            graph[u].append(v)
+        
+        # Traverse Graph
+        topo_sort = []
+        visited = [False] * V
+        
+        for i in range(V):
+            if visited[i] == True:
+                continue
+        
+            self.dfs(i, graph, visited, topo_sort)
+        
+        # Reverse the order and return
+        return topo_sort[::-1]
+    
+    def dfs(self, node, graph, visited, topo_sort):
+        if visited[node] == True:
             return
+    
+        # Mark the node as visited
+        visited[node] = True
         
-        visited[i] = True
-
-        for nei in graph[i]:
-            self.dfs(nei, visited, stack, graph)
+        # Visit all the neighbors
+        for nei in graph[node]:
+            self.dfs(nei, graph, visited, topo_sort)
         
-        stack.append(i)
-
+        # All its dependant nodes has been visited
+        topo_sort.append(node)
+        
         return
-
-
-
-if __name__ == '__main__':
-    # ip = [[], [], [3], [1], [0,1], [0,2]]
-    ip = [[], [3], [3], [], [0,1], [0,2]]
-    obj = Solution()
-    print(obj.topoSort(ip))
 
 
 # ------------------------------------------------------------------------
 
 # Khans Algorithm : Cycle detection
 
+import collections
+
 class Solution:
-    def topoSort(self, graph):
-        n = len(graph)
-
-        indegree = [0] * n
-
-        # get the indegree count of each node
-        for i in range(n):
-            for nei in graph[i]:
-                indegree[nei] += 1
+    
+    def topoSort(self, V, edges):
+        # Build Graph
+        graph = collections.defaultdict(list)
         
-        # get the node whose indegree count is 0
-        queue = []
-        for i in range(n):
+        for u, v in edges:
+            graph[u].append(v)
+        
+        # Step 1: Get the indegree of the nodes
+        indegree = [0] * V
+        
+        for u, v in edges:
+            indegree[v] += 1
+        
+        # Step 2: Get all the nodes with no pre-req or indegree = 0
+        queue = collections.deque()
+        
+        for i in range(V):
             if indegree[i] == 0:
                 queue.append(i)
-
-        # start reducing the indegree of nei node
-        count = 0
+        
+        # step 3: Iterate over the neighbour and unlock them
+        count = 0 # This is useful to check if there are cycles in the graph
         topo_sort = []
+        
         while queue:
-            node = queue.pop(0)
-
-            # reduce the indegree of nei
+            node = queue.popleft()
+            
             for nei in graph[node]:
+                # Unlock nei
                 indegree[nei] -= 1
-
-                # if the indegree becomes zero add to queue
+                
+                # Check if nei has no prereq left
                 if indegree[nei] == 0:
                     queue.append(nei)
-
+                
             
-            # increment the count 
             count += 1
-
             topo_sort.append(node)
-
-        if count != n:
-            # there is a cycle
-            return 0
-        else:
-            return topo_sort
-
-
-
-if __name__ == '__main__':
-    # ip = [[], [], [3], [1], [0,1], [0,2]]
-    ip = [[], [3], [3], [], [0,1], [0,2]]
-    obj = Solution()
-    print(obj.topoSort(ip))
+        
+        return topo_sort

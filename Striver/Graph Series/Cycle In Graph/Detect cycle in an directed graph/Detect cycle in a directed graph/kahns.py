@@ -1,38 +1,52 @@
-# Kahns algorithm
-# Tc: O(v+e) | Sc: O(n)
+# Khans Algorithm : Cycle detection
 
-def cycleInGraph(edges):
-    n = len(edges)
-    
-    indegree = [0] * n
+class Solution:
+    def topoSort(self, graph):
+        n = len(graph)
 
-    # get the indegree of each edge
-    for i in range(n):
-        for nei in edges[i]:
-            indegree[nei] += 1
+        indegree = [0] * n
 
-    # get the node with indegree 0
-    queue = []
-    for i in range(n):
-        if indegree[i] == 0:
-            queue.append(i)
+        # get the indegree count of each node
+        for i in range(n):
+            for nei in graph[i]:
+                indegree[nei] += 1
+        
+        # get the node whose indegree count is 0
+        queue = []
+        for i in range(n):
+            if indegree[i] == 0:
+                queue.append(i)
 
-    # reduce the indegree
-    count = 0
-    topo_sort = []
-    while queue:
-        node = queue.pop(0)
+        # start reducing the indegree of nei node
+        count = 0
+        topo_sort = []
+        while queue:
+            node = queue.pop(0)
 
-        for nei in edges[node]:
-            indegree[nei] -= 1
+            # reduce the indegree of nei
+            for nei in graph[node]:
+                indegree[nei] -= 1
 
-            if indegree[nei] == 0:
-                queue.append(nei)
+                # if the indegree becomes zero add to queue
+                if indegree[nei] == 0:
+                    queue.append(nei)
 
-        count += 1
-        topo_sort.append(node)
+            
+            # increment the count 
+            count += 1
 
-    if count != n:
-        return True
-    else:
-        return False
+            topo_sort.append(node)
+
+        if count != n:
+            # there is a cycle
+            return 0
+        else:
+            return topo_sort
+
+
+
+if __name__ == '__main__':
+    # ip = [[], [], [3], [1], [0,1], [0,2]]
+    ip = [[], [3], [3], [], [0,1], [0,2]]
+    obj = Solution()
+    print(obj.topoSort(ip))
