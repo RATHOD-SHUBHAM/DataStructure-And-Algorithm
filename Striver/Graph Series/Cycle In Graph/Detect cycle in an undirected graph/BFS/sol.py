@@ -1,40 +1,45 @@
-from typing import List
+import collections
+
 class Solution:
-    #Function to detect cycle in an undirected graph.
-    def isCycle(self, V: int, adj: List[List[int]]) -> bool:
-        #Code here
-
+    def isCycle(self, V, edges):
+        graph = collections.defaultdict(list)
+        
+        for u, v in edges:
+            graph[u].append(v)
+            graph[v].append(u)
+        
         visited = [False] * V
-
-        parent = -1
-
+        
         for i in range(V):
-            if visited[i] == False:
-                cyclePresent = self.checkForCycle(i, parent, visited, V, adj)
-                
-                if cyclePresent:
-                    return 1
-
-        return 0
-
-    def checkForCycle(self, i, parent, visited, V, adj):
-
-        queue = [[i, parent]]
-
-
-        while queue:
+            if visited[i] == True:
+                continue
             
-            node, parent_node = queue.pop(0)
+            parent = -1
+            cyclePresent = self.bfs(i, parent, visited, graph)
             
-            visited[node] = True
-            
-            for child in adj[node]:
-                if child == parent_node:
-                    continue
-                
-                if visited[child] == True:
-                    return True
-                
-                queue.append((child, node))
-                        
+            if cyclePresent == True:
+                return True
+        
         return False
+
+    def bfs(self, i, parent, visited, graph):
+        queue = collections.deque()
+        queue.append((i, parent))
+        
+        visited[i] = True
+        
+        while queue:
+            node, par = queue.popleft()
+            
+            for nei in graph[node]:
+                if visited[nei] == True:
+                    if nei == par:
+                        continue
+                    else:
+                        return True
+                else:
+                    visited[nei] = True
+                    queue.append((nei, node))
+        
+        return False
+                    

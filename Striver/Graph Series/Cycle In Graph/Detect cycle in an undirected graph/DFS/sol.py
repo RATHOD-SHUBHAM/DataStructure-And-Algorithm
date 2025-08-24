@@ -1,35 +1,42 @@
-from typing import List
+import collections
+
 class Solution:
-    #Function to detect cycle in an undirected graph.
-	def isCycle(self, V: int, adj: List[List[int]]) -> bool:
-		#Code here
+	def isCycle(self, V, edges):
+		graph = collections.defaultdict(list)
+		
+		for u, v in edges:
+			graph[u].append(v)
+			graph[v].append(u)
 		
 		visited = [False] * V
-
-		parent = -1
-
+		
 		for i in range(V):
-			if visited[i] == False:
-				isCyclePresent = self.dfs(i, parent, visited, V, adj)
+			if visited[i] == True:
+				continue
+			
+			parent = -1
+			cyclePresent = self.dfs(i, parent, visited, graph)
+			
+			if cyclePresent == True:
+				return True
+		
+		return False
 
-				if isCyclePresent:
-					return 1
-
-		return 0
-        
-        
-	def dfs(self, i, parent, visited, V, adj):
-
-		visited[i] = True
-
-		for child in adj[i]:
-			if visited[child] == False:
-				isCyclePresent = self.dfs(child, i, visited, V, adj)
-				
-				if isCyclePresent:
+	def dfs(self, node, parent, visited, graph):
+		
+		visited[node] = True
+		
+		for nei in graph[node]:
+			if visited[nei] == True:
+				if nei == parent:
+					continue
+				else:
 					return True
 			else:
-				if child != parent:
+				cyclePresent = self.dfs(nei, node, visited, graph)
+			
+				if cyclePresent == True:
 					return True
-					
+		
 		return False
+				
