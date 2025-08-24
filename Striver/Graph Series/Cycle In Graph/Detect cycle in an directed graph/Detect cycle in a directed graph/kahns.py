@@ -1,52 +1,41 @@
-# Khans Algorithm : Cycle detection
+import collections
 
 class Solution:
-    def topoSort(self, graph):
-        n = len(graph)
-
-        indegree = [0] * n
-
-        # get the indegree count of each node
-        for i in range(n):
-            for nei in graph[i]:
-                indegree[nei] += 1
+    def isCycle(self, V, edges):
+        # Build Adj List
+        graph = collections.defaultdict(list)
         
-        # get the node whose indegree count is 0
-        queue = []
-        for i in range(n):
+        for u, v in edges:
+            graph[u].append(v)
+            
+        # Step 1: Get the indegree of the nodes
+        indegree = [0] * V
+        for u, v in edges:
+            indegree[v] += 1
+        
+        # Step 2: Get all the nodes with no preq
+        queue = collections.deque()
+        for i in range(V):
             if indegree[i] == 0:
                 queue.append(i)
-
-        # start reducing the indegree of nei node
+        
+        # Iterate over the neighbors and unlock them
         count = 0
         topo_sort = []
+        
         while queue:
-            node = queue.pop(0)
-
-            # reduce the indegree of nei
+            node = queue.popleft()
+            
             for nei in graph[node]:
                 indegree[nei] -= 1
-
-                # if the indegree becomes zero add to queue
+                
                 if indegree[nei] == 0:
                     queue.append(nei)
-
             
-            # increment the count 
             count += 1
-
             topo_sort.append(node)
-
-        if count != n:
-            # there is a cycle
-            return 0
+        
+        if count == V:
+            return False # No Cycle found
         else:
-            return topo_sort
-
-
-
-if __name__ == '__main__':
-    # ip = [[], [], [3], [1], [0,1], [0,2]]
-    ip = [[], [3], [3], [], [0,1], [0,2]]
-    obj = Solution()
-    print(obj.topoSort(ip))
+            return True # Cycle Found

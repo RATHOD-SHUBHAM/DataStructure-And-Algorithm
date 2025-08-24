@@ -1,83 +1,94 @@
-#  ------ ------ Track Path algorithm ------ ------ ------ ------
+#  ------ ------ Ancestor algorithm ------ ------ ------ ------
 
 # TC: O(V + E) | SC : O(V)
-def cycleInGraph(edges):
-    n = len(edges)
+import collections
 
-    visited = [False] * n
-    # keep track of current nodes ancestor
-    track_path = [False] * n
-
-    for node in range(len(edges)):
-        # check if the node has been explored before
-        if visited[node]:
-            continue
-
-        cyclePresent = detectCycle(node, edges, visited,  track_path)
-
-        if cyclePresent:
-            return True
-
-    return False
+class Solution:
+    def isCycle(self, V, edges):
+        visited = [False] * V
+        ancestor = [False] * V
         
-
-def detectCycle(node, edges, visited, track_path):
-    # mark the node as visited
-    visited[node] = True
-    # Node is being explored in current path
-    track_path[node] = True
-
-    for child in edges[node]:
-        # if child is not visited
-        if not visited[child]:
-            cyclePresent = detectCycle(child, edges, visited, track_path)
-
-            if cyclePresent:
+        # Build Adj List
+        graph = collections.defaultdict(list)
+        
+        for u, v in edges:
+            graph[u].append(v)
+            
+        
+        for i in range(V):
+            if visited[i] == True:
+                continue
+            
+            cyclePresent = self.dfs(i, visited, ancestor, graph)
+            
+            if cyclePresent == True:
                 return True
-        # if child is visited - check if the child was vivisted in same path
-        elif track_path[child]:
-            return True
-
-    # remove node from path
-    track_path[node] = False
-    return False
-
+        
+        return False
+    
+    def dfs(self, node, visited, ancestor, graph):
+        # Mark the node as visited
+        visited[node] = True
+        # Make it as a ancestor for its neighbors
+        ancestor[node] = True
+        
+        # Explore its neighbors
+        for nei in graph[node]:
+            if visited[nei] == False:
+                # If nei is not visited , then explore
+                cyclePresent = self.dfs(nei, visited, ancestor, graph)
+            
+                if cyclePresent == True:
+                    return True
+            else:
+                if ancestor[nei] == True:
+                    return True
+        
+        ancestor[node] = False
+        return False
+                
 
 #  ------ ------ Kahns algorithm ------ ------ ------ ------
 # Tc: O(v+e) | Sc: O(n)
 
-def cycleInGraph(edges):
-    n = len(edges)
-    
-    indegree = [0] * n
+import collections
 
-    # get the indegree of each edge
-    for i in range(n):
-        for nei in edges[i]:
-            indegree[nei] += 1
-
-    # get the node with indegree 0
-    queue = []
-    for i in range(n):
-        if indegree[i] == 0:
-            queue.append(i)
-
-    # reduce the indegree
-    count = 0
-    topo_sort = []
-    while queue:
-        node = queue.pop(0)
-
-        for nei in edges[node]:
-            indegree[nei] -= 1
-
-            if indegree[nei] == 0:
-                queue.append(nei)
-
-        count += 1
-        topo_sort.append(node)
-
-    if count != n:
-        return True
-    else:
-        return False
+class Solution:
+    def isCycle(self, V, edges):
+        # Build Adj List
+        graph = collections.defaultdict(list)
+        
+        for u, v in edges:
+            graph[u].append(v)
+            
+        # Step 1: Get the indegree of the nodes
+        indegree = [0] * V
+        for u, v in edges:
+            indegree[v] += 1
+        
+        # Step 2: Get all the nodes with no preq
+        queue = collections.deque()
+        for i in range(V):
+            if indegree[i] == 0:
+                queue.append(i)
+        
+        # Iterate over the neighbors and unlock them
+        count = 0
+        topo_sort = []
+        
+        while queue:
+            node = queue.popleft()
+            
+            for nei in graph[node]:
+                indegree[nei] -= 1
+                
+                if indegree[nei] == 0:
+                    queue.append(nei)
+            
+            count += 1
+            topo_sort.append(node)
+        
+        if count == V:
+            return False # No Cycle found
+        else:
+            return True # Cycle Found
