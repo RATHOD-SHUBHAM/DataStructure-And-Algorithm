@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shortest Cycle Visualization</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        button {
+            padding: 12px 24px;
+            font-size: 16px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px 0 rgba(238, 90, 36, 0.3);
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px 0 rgba(238, 90, 36, 0.4);
+        }
+        
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .main-content {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .graph-container {
+            flex: 2;
+            min-width: 400px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+        }
+        
+        #graph {
+            width: 100%;
+            height: 500px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.1);
+        }
+        
+        .info-panel {
+            flex: 1;
+            min-width: 300px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+        }
+        
+        .status {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .queue-display, .distances-display {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .queue-item {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 5px 10px;
+            border-radius: 5px;
+            margin: 2px;
+            font-family: monospace;
+        }
+        
+        .cycle-found {
+            background: rgba(46, 213, 115, 0.3) !important;
+            border: 2px solid #2ed573;
+            animation: pulse 1s ease-in-out;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔍 Shortest Cycle Algorithm</h1>
+            <p>Interactive visualization of finding the shortest cycle in an undirected graph</p>
+        </div>
+        
+        <div class="controls">
+            <button onclick="startVisualization()">▶️ Start Visualization</button>
+            <button onclick="stepForward()" id="stepBtn" disabled>⏭️ Next Step</button>
+            <button onclick="reset()">🔄 Reset</button>
+            <button onclick="runFull()">⚡ Run Complete</button>
+        </div>
+        
+        <div class="main-content">
+            <div class="graph-container">
+                <canvas id="graph"></canvas>
+            </div>
+            
+            <div class="info-panel">
+                <div class="status" id="status">
+                    Ready to start! Click "Start Visualization" to begin.
+                </div>
+                
+                <div class="queue-display">
+                    <h3>🚶 BFS Queue:</h3>
+                    <div id="queue"></div>
+                </div>
+                
+                <div class="distances-display">
+                    <h3>📏 Distances:</h3>
+                    <div id="distances"></div>
+                </div>
+                
+                <div class="queue-display">
+                    <h3>🔄 Results:</h3>
+                    <div id="results">
+                        <div>Current Start Node: <span id="currentNode">-</span></div>
+                        <div>Shortest Cycle from this node: <span id="currentCycle">∞</span></div>
+                        <div>Global Shortest: <span id="globalShortest">∞</span></div>
+                    </div>
+                </div>
+                
+                <div class="legend">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #3498db;"></div>
+                        <span>Unvisited</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #f39c12;"></div>
+                        <span>Current</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #2ecc71;"></div>
+                        <span>Visited</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #e74c3c;"></div>
+                        <span>Cycle Edge</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Graph data
+        const edges = [[0,1],[1,2],[2,0],[2,4],[3,4],[4,5],[5,6],[6,3]];
+        const n = 7;
+        
+        // Build adjacency list
+        const graph = {};
+        for (let i = 0; i < n; i++) {
+            graph[i] = [];
+        }
+        for (const [u, v] of edges) {
+            graph[u].push(v);
+            graph[v].push(u);
+        }
+        
+        // Canvas and drawing
+        const canvas = document.getElementById('graph');
+        const ctx = canvas.getContext('2d');
+        
+        // Node positions (manually positioned for better visualization)
+        const nodePositions = {
+            0: {x: 150, y: 100},
+            1: {x: 300, y: 100},
+            2: {x: 225, y: 200},
+            3: {x: 400, y: 350},
+            4: {x: 300, y: 300},
+            5: {x: 200, y: 400},
+            6: {x: 300, y: 450}
+        };
+        
+        // Animation state
+        let currentStartNode = 0;
+        let queue = [];
+        let distances = [];
+        let visited = [];
+        let currentNode = -1;
+        let parent = [];
+        let step = 0;
+        let globalShortestCycle = Infinity;
+        let currentShortestCycle = Infinity;
+        let isRunning = false;
+        let cycleEdges = new Set();
+        let foundCycles = [];
+        
+        function initCanvas() {
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width * 2; // High DPI
+            canvas.height = rect.height * 2;
+            ctx.scale(2, 2);
+        }
+        
+        function drawGraph() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw edges
+            ctx.strokeStyle = '#ecf0f1';
+            ctx.lineWidth = 2;
+            for (const [u, v] of edges) {
+                const edgeKey1 = `${u}-${v}`;
+                const edgeKey2 = `${v}-${u}`;
+                
+                if (cycleEdges.has(edgeKey1) || cycleEdges.has(edgeKey2)) {
+                    ctx.strokeStyle = '#e74c3c';
+                    ctx.lineWidth = 4;
+                } else {
+                    ctx.strokeStyle = '#ecf0f1';
+                    ctx.lineWidth = 2;
+                }
+                
+                ctx.beginPath();
+                ctx.moveTo(nodePositions[u].x, nodePositions[u].y);
+                ctx.lineTo(nodePositions[v].x, nodePositions[v].y);
+                ctx.stroke();
+            }
+            
+            // Draw nodes
+            for (let i = 0; i < n; i++) {
+                const pos = nodePositions[i];
+                
+                // Node color based on state
+                let color = '#3498db'; // Default blue
+                if (i === currentNode) {
+                    color = '#f39c12'; // Orange for current
+                } else if (distances[i] !== Infinity) {
+                    color = '#2ecc71'; // Green for visited
+                }
+                
+                // Draw node
+                ctx.fillStyle = color;
+                ctx.beginPath();
+                ctx.arc(pos.x, pos.y, 25, 0, 2 * Math.PI);
+                ctx.fill();
+                
+                // Draw node border
+                ctx.strokeStyle = '#2c3e50';
+                ctx.lineWidth = 3;
+                ctx.stroke();
+                
+                // Draw node label
+                ctx.fillStyle = 'white';
+                ctx.font = 'bold 16px Arial';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(i.toString(), pos.x, pos.y);
+                
+                // Draw distance label
+                if (distances[i] !== Infinity) {
+                    ctx.fillStyle = '#2c3e50';
+                    ctx.font = '12px Arial';
+                    ctx.fillText(`d:${distances[i]}`, pos.x, pos.y + 40);
+                }
+            }
+        }
+        
+        function reset() {
+            currentStartNode = 0;
+            queue = [];
+            distances = Array(n).fill(Infinity);
+            visited = Array(n).fill(false);
+            parent = Array(n).fill(-1);
+            currentNode = -1;
+            step = 0;
+            globalShortestCycle = Infinity;
+            currentShortestCycle = Infinity;
+            isRunning = false;
+            cycleEdges.clear();
+            foundCycles = [];
+            
+            updateDisplay();
+            drawGraph();
+            
+            document.getElementById('stepBtn').disabled = true;
+        }
+        
+        function startVisualization() {
+            reset();
+            isRunning = true;
+            currentStartNode = 0;
+            initializeBFS(currentStartNode);
+            document.getElementById('stepBtn').disabled = false;
+        }
+        
+        function initializeBFS(startNode) {
+            distances = Array(n).fill(Infinity);
+            parent = Array(n).fill(-1);
+            queue = [{node: startNode, par: -1}];
+            distances[startNode] = 0;
+            currentShortestCycle = Infinity;
+            cycleEdges.clear();
+            step = 0;
+            
+            updateDisplay();
+        }
+        
+        function stepForward() {
+            if (!isRunning) return;
+            
+            if (queue.length === 0) {
+                // Current BFS finished, move to next start node
+                globalShortestCycle = Math.min(globalShortestCycle, currentShortestCycle);
+                currentStartNode++;
+                
+                if (currentStartNode >= n) {
+                    // All nodes processed
+                    isRunning = false;
+                    document.getElementById('stepBtn').disabled = true;
+                    document.getElementById('status').innerHTML = `
+                        <strong>🎉 Algorithm Complete!</strong><br>
+                        Shortest cycle length: ${globalShortestCycle === Infinity ? -1 : globalShortestCycle}
+                    `;
+                    return;
+                }
+                
+                initializeBFS(currentStartNode);
+                return;
+            }
+            
+            // Process next item in queue
+            const {node, par} = queue.shift();
+            currentNode = node;
+            
+            // Check all neighbors
+            for (const neighbor of graph[node]) {
+                if (distances[neighbor] === Infinity) {
+                    // Unvisited neighbor
+                    distances[neighbor] = distances[node] + 1;
+                    parent[neighbor] = node;
+                    queue.push({node: neighbor, par: node});
+                } else if (neighbor !== par) {
+                    // Found a cycle!
+                    const cycleLength = distances[node] + distances[neighbor] + 1;
+                    if (cycleLength < currentShortestCycle) {
+                        currentShortestCycle = cycleLength;
+                        
+                        // Highlight the cycle edge
+                        cycleEdges.clear();
+                        cycleEdges.add(`${node}-${neighbor}`);
+                        cycleEdges.add(`${neighbor}-${node}`);
+                    }
+                }
+            }
+            
+            step++;
+            updateDisplay();
+            drawGraph();
+        }
+        
+        function runFull() {
+            reset();
+            isRunning = true;
+            
+            // Run complete algorithm
+            for (let startNode = 0; startNode < n; startNode++) {
+                const cycleLength = bfsFindCycle(startNode);
+                globalShortestCycle = Math.min(globalShortestCycle, cycleLength);
+            }
+            
+            isRunning = false;
+            document.getElementById('stepBtn').disabled = true;
+            document.getElementById('status').innerHTML = `
+                <strong>🎉 Algorithm Complete!</strong><br>
+                Shortest cycle length: ${globalShortestCycle === Infinity ? -1 : globalShortestCycle}
+            `;
+            updateDisplay();
+        }
+        
+        function bfsFindCycle(startNode) {
+            const dist = Array(n).fill(Infinity);
+            const q = [{node: startNode, par: -1}];
+            dist[startNode] = 0;
+            let shortestCycle = Infinity;
+            
+            while (q.length > 0) {
+                const {node, par} = q.shift();
+                
+                for (const neighbor of graph[node]) {
+                    if (dist[neighbor] === Infinity) {
+                        dist[neighbor] = dist[node] + 1;
+                        q.push({node: neighbor, par: node});
+                    } else if (neighbor !== par) {
+                        const cycleLength = dist[node] + dist[neighbor] + 1;
+                        shortestCycle = Math.min(shortestCycle, cycleLength);
+                    }
+                }
+            }
+            
+            return shortestCycle;
+        }
+        
+        function updateDisplay() {
+            // Update status
+            document.getElementById('status').innerHTML = `
+                <strong>Step ${step}</strong> - BFS from node ${currentStartNode}<br>
+                Current node: ${currentNode >= 0 ? currentNode : 'None'}
+            `;
+            
+            // Update queue display
+            const queueDiv = document.getElementById('queue');
+            if (queue.length === 0) {
+                queueDiv.innerHTML = '<em>Queue is empty</em>';
+            } else {
+                queueDiv.innerHTML = queue.map(item => 
+                    `<span class="queue-item">(${item.node}, p:${item.par})</span>`
+                ).join('');
+            }
+            
+            // Update distances
+            const distDiv = document.getElementById('distances');
+            distDiv.innerHTML = distances.map((dist, i) => 
+                `Node ${i}: ${dist === Infinity ? '∞' : dist}`
+            ).join('<br>');
+            
+            // Update results
+            document.getElementById('currentNode').textContent = currentStartNode;
+            document.getElementById('currentCycle').textContent = 
+                currentShortestCycle === Infinity ? '∞' : currentShortestCycle;
+            document.getElementById('globalShortest').textContent = 
+                globalShortestCycle === Infinity ? '∞' : globalShortestCycle;
+        }
+        
+        // Initialize
+        window.onload = function() {
+            initCanvas();
+            reset();
+            drawGraph();
+        };
+        
+        window.onresize = function() {
+            initCanvas();
+            drawGraph();
+        };
+    </script>
+</body>
+</html>
