@@ -11,8 +11,8 @@ class Solution:
             
             isSafe = self.dfs(i, visited, safeNode, graph)
 
-            if isSafe == False:
-                safeNode[i] = False
+            if isSafe == True:
+                safeNode[i] = True
         
         safe_states = []
         for i in range(n):
@@ -32,13 +32,13 @@ class Solution:
                 isSafe = self.dfs(nei, visited, safeNode, graph)
 
                 if isSafe == False:
-                    safeNode[node] = False
+                    safeNode[node] = False # we can comment this line, just for understading
                     return False # we dont have to explore further
             
             else:
                 # if neighbor was previously visited and is not a safe node
                 if safeNode[nei] == False:
-                    safeNode[node] = False
+                    safeNode[node] = False # we can comment this line, just for understading
                     return False # we dont have to explore further
         
         # If we reach here, all neighbors are safe or no neighbors exist
