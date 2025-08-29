@@ -1,43 +1,48 @@
 from typing import List
-from collections import defaultdict
+import collections
+import math
 import heapq
 
 class Solution:
-    def shortestPath(self, n : int, m : int, edges : List[List[int]]) -> List[int]:
-        graph = defaultdict(list)
 
-        # Create a graph with weights and child nodes
+    def shortestPath(self, V: int, E: int,
+                     edges: List[List[int]]) -> List[int]:
+        # Build Graph
+        graph = collections.defaultdict(list)
         for edge in edges:
-            parent, child, dist = edge
-            graph[parent].append([dist, child])
-
+            node, nei, wt = edge
+            graph[node].append((nei, wt))
         
-        distance = [-1] * n
-    
-        visited = [False] * n
         
         minHeap = []
         heapq.heapify(minHeap)
         
-        # distance , src
-        heapq.heappush(minHeap, (0, 0))
-    
+        heapq.heappush(minHeap, (0,0)) # dist, node
+        
+        dist = [math.inf] * V
+        visited = [False] * V
+        
         while minHeap:
-            dist, node = heapq.heappop(minHeap)
+            dst, node = heapq.heappop(minHeap)
             
-            # if the node is already visited - then shortest path is already explored
             if visited[node] == True:
                 continue
-            
-            # Update the nodes distance and mark it as visited        
-            distance[node] = dist
+        
+            # Mark the node as visited
             visited[node] = True
-    
+            dist[node] = dst
+            
             # Explore its neighbors
-            for nei in graph[node]:
-                wt , child = nei
-    
-                new_dist = dist + wt
-                heapq.heappush(minHeap, (new_dist, child))
-    
-        return distance
+            for neighbors in graph[node]:
+                nei, wt = neighbors
+                
+                nei_dst = dist[node] + wt
+                
+                heapq.heappush(minHeap, (nei_dst, nei)) # dist, node
+                
+        
+        for i in range(V):
+            if dist[i] == math.inf:
+                dist[i] = -1
+        
+        return dist

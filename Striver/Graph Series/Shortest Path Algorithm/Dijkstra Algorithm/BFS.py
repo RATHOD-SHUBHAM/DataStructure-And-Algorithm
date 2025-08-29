@@ -1,7 +1,7 @@
+
 from typing import List
 import collections
 import math
-import heapq
 
 class Solution:
 
@@ -13,30 +13,25 @@ class Solution:
             node, nei, wt = edge
             graph[node].append((nei, wt))
         
-        
-        minHeap = []
-        heapq.heapify(minHeap)
-        
-        heapq.heappush(minHeap, (0,0)) # dist, node
-        
         dist = [math.inf] * V
-        dist[0] = 0
+        dist[0] = 0 # Start node
         
-        while minHeap:
-            dst, node = heapq.heappop(minHeap)
+        queue = collections.deque()
+        queue.append(0)
+        
+        # BFS
+        while queue:
+            node = queue.popleft()
             
-            # Explore its neighbors
             for neighbors in graph[node]:
                 nei, wt = neighbors
                 
                 nei_dst = dist[node] + wt
                 
+                # IF nei can be reached at much shorter dist, update the nei distance
                 if nei_dst < dist[nei]:
-                
+                    queue.append(nei)
                     dist[nei] = nei_dst
-                        
-                    heapq.heappush(minHeap, (nei_dst, nei)) # dist, node
-                
         
         for i in range(V):
             if dist[i] == math.inf:

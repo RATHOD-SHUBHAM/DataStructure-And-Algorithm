@@ -1,35 +1,48 @@
-# Time and Sc = O(ElogV) | O(V)
-
-import heapq
+from typing import List
+import collections
 import math
+import heapq
 
 class Solution:
 
-    #Function to find the shortest distance of all the vertices
-    #from the source vertex S.
-    def dijkstra(self, V, adj, S):
+    def shortestPath(self, V: int, E: int,
+                     edges: List[List[int]]) -> List[int]:
+        # Build Graph
+        graph = collections.defaultdict(list)
+        for edge in edges:
+            node, nei, wt = edge
+            graph[node].append((nei, wt))
         
-        distance = [math.inf] * V
-        distance[S] = 0
         
         minHeap = []
         heapq.heapify(minHeap)
         
-        heapq.heappush(minHeap, (0,S)) # distance , node
+        heapq.heappush(minHeap, (0,0)) # dist, node
+        
+        dist = [math.inf] * V
+        visited = [False] * V
         
         while minHeap:
-            dist , node = heapq.heappop(minHeap)
+            dst, node = heapq.heappop(minHeap)
             
-            neighbor = adj[node]
+            if visited[node] == True:
+                continue
+        
+            # Mark the node as visited
+            visited[node] = True
+            dist[node] = dst
             
-            for nei in neighbor:
-                adj_nei , weight = nei
+            # Explore its neighbors
+            for neighbors in graph[node]:
+                nei, wt = neighbors
                 
-                update_dist = weight + dist
+                nei_dst = dist[node] + wt
                 
-                if update_dist < distance[adj_nei] :
-                    distance[adj_nei] = update_dist
-                    heapq.heappush(minHeap , (update_dist , adj_nei))
+                heapq.heappush(minHeap, (nei_dst, nei)) # dist, node
+                
         
+        for i in range(V):
+            if dist[i] == math.inf:
+                dist[i] = -1
         
-        return distance
+        return dist

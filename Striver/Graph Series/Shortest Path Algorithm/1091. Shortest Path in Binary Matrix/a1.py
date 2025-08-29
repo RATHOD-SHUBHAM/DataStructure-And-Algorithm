@@ -8,83 +8,141 @@ is almost always done using BFSclass Solution
 # Unit Weight method
 class Solution:
     def shortestPathBinaryMatrix(self, grid: List[List[int]]) -> int:
-        n = len(grid)
+        m = len(grid)
+        n = len(grid[0])
 
-        if grid[0][0] == 1 or grid[n-1][n-1] == 1:
+        if grid[0][0] != 0:
             return -1
 
-        visited = [[False] * n for _ in range(n)]
-        visited[0][0] = True
+        queue = collections.deque()
+        queue.append((0,0))
 
-        directions = [[-1, -1], [-1, 0], [-1, 1], [0, -1], [0,0], [0,1], [1,-1], [1,0],[1,1]]
+        dist = [[math.inf for _ in range(n)] for _ in range(m)]
 
-        queue = [[1, 0, 0]] # wt, row, col
+        dist[0][0] = 1
+
+        directions = [(0,1), (0,-1), (1,0), (-1, 0), (1,1), (-1,1), (1,-1), (-1,-1)]
 
         while queue:
-            dist , row, col = queue.pop(0)
-
-            if row == n-1 and col == n-1:
-                return dist
+            row, col = queue.popleft()
             
-            for direction in directions:
-                adj_row, adj_col = direction
+            # If we have reached the destination
+            if row == m - 1 and col == n - 1:
+                return dist[row][col]
 
-                nei_row = adj_row + row
-                nei_col = adj_col + col
+            for u,v in directions:
+                nei_r = row + u
+                nei_c = col + v
 
-                if nei_row < 0 or nei_row >= n or nei_col < 0 or nei_col >= n or grid[nei_row][nei_col] == 1 or visited[nei_row][nei_col] == True:
+                # if nei is out of bound or cant be visited
+                if nei_r < 0 or nei_c < 0 or nei_r >= m or nei_c >= n or grid[nei_r][nei_c] != 0:
                     continue
                 
-                new_dist = 1 + dist
-                visited[nei_row][nei_col] = True
-                queue.append([new_dist, nei_row, nei_col])
+                
+                nei_dst = dist[row][col] + 1
+
+                if nei_dst < dist[nei_r][nei_c]:
+                    queue.append((nei_r, nei_c))
+                    dist[nei_r][nei_c] = nei_dst
         
-        # If the last cell can be reached
         return -1
 
 
-# ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# -------------------------------------- Heap   ------------------------------------------------------------------
+import heapq
+import math
+import collections
+from typing import List
 
-# Heap - Dijkstras
 
-# Unit Weight method
 class Solution:
     def shortestPathBinaryMatrix(self, grid: List[List[int]]) -> int:
-        n = len(grid)
+        m = len(grid)
+        n = len(grid[0])
 
-        if grid[0][0] == 1 or grid[n-1][n-1] == 1:
+        if grid[0][0] != 0:
             return -1
-
-        visited = [[False] * n for _ in range(n)]
-        visited[0][0] = True
-
-        directions = [[-1, -1], [-1, 0], [-1, 1], [0, -1], [0,0], [0,1], [1,-1], [1,0],[1,1]]
 
         minHeap = []
         heapq.heapify(minHeap)
 
-        heapq.heappush(minHeap, [1, 0, 0]) # wt, row, col
+        heapq.heappush(minHeap, (1, 0, 0)) # Dist, row , col
+
+        dist = [[math.inf for _ in range(n)] for _ in range(m)]
+        visited = [[False for _ in range(n)] for _ in range(m)]
+
+        directions = [(0,1), (0,-1), (1,0), (-1, 0), (1,1), (-1,1), (1,-1), (-1,-1)]
 
         while minHeap:
-            dist , row, col = heapq.heappop(minHeap)
-
-            if row == n-1 and col == n-1:
-                return dist
+            dst , row, col = heapq.heappop(minHeap)
             
-            for direction in directions:
-                adj_row, adj_col = direction
+            if visited[row][col] == True:
+                continue
+            
 
-                nei_row = adj_row + row
-                nei_col = adj_col + col
+            visited[row][col] = True
+            dist[row][col] = dst
 
-                if nei_row < 0 or nei_row >= n or nei_col < 0 or nei_col >= n or grid[nei_row][nei_col] == 1 or visited[nei_row][nei_col] == True:
+            # If we have reached the destination
+            if row == m-1 and col == n-1:
+                return dist[row][col]
+
+            for u,v in directions:
+                nei_r = row + u
+                nei_c = col + v
+
+                # if nei is out of bound or cant be visited
+                if nei_r < 0 or nei_c < 0 or nei_r >= m or nei_c >= n or grid[nei_r][nei_c] != 0 or visited[nei_r][nei_c] == True:
                     continue
                 
-                new_dist = 1 + dist
-                visited[nei_row][nei_col] = True
-                heapq.heappush(minHeap, [new_dist, nei_row, nei_col])
-        
-        # If the last cell can be reached
-        return -1
+                
+                nei_dst = dst + 1
+                heapq.heappush(minHeap, (nei_dst, nei_r, nei_c)) # Dist, row , col
 
+                
         
+        return -1
+        
+# ------------------------------- Dijkstra's ------------------------------------------------------------------
+class Solution:
+    def shortestPathBinaryMatrix(self, grid: List[List[int]]) -> int:
+        m = len(grid)
+        n = len(grid[0])
+
+        if grid[0][0] != 0:
+            return -1
+
+        minHeap = []
+        heapq.heapify(minHeap)
+
+        heapq.heappush(minHeap, (1, 0, 0)) # Dist, row , col
+
+        dist = [[math.inf for _ in range(n)] for _ in range(m)]
+        dist[0][0] = 1
+
+        directions = [(0,1), (0,-1), (1,0), (-1, 0), (1,1), (-1,1), (1,-1), (-1,-1)]
+
+        while minHeap:
+            dst , row, col = heapq.heappop(minHeap)
+
+            # If we have reached the destination
+            if row == m-1 and col == n-1:
+                return dist[row][col]
+
+            for u,v in directions:
+                nei_r = row + u
+                nei_c = col + v
+
+                # if nei is out of bound or cant be visited
+                if nei_r < 0 or nei_c < 0 or nei_r >= m or nei_c >= n or grid[nei_r][nei_c] != 0 or dist[nei_r][nei_c] != math.inf:
+                    continue
+                
+                
+                nei_dst = dst + 1
+
+                if nei_dst < dist[nei_r][nei_c]:
+                    dist[nei_r][nei_c] = nei_dst
+                    heapq.heappush(minHeap, (nei_dst, nei_r, nei_c)) # Dist, row , col
+     
+        
+        return -1

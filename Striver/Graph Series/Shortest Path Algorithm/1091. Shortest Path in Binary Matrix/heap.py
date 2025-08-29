@@ -1,49 +1,47 @@
-# Dijstra algorithm
-
-import heapq
-
 class Solution:
     def shortestPathBinaryMatrix(self, grid: List[List[int]]) -> int:
-        n = len(grid)
-        
-        minHeap = []
-        heapq.heapify(minHeap)
-        
-        visited = set()
-        
-        src = (0,0)
-        dest = (n-1, n-1)
-        
+        m = len(grid)
+        n = len(grid[0])
+
         if grid[0][0] != 0:
             return -1
-        
-        heapq.heappush(minHeap, (1 , src))
-        visited.add(src)
 
-        
-        # 8 directions
-        neighbors = [(-1,-1), (-1,0), (-1, 1), (0,-1), (0,1), (1,-1), (1,0), (1,1)]
-        
+        minHeap = []
+        heapq.heapify(minHeap)
+
+        heapq.heappush(minHeap, (1, 0, 0)) # Dist, row , col
+
+        dist = [[math.inf for _ in range(n)] for _ in range(m)]
+        visited = [[False for _ in range(n)] for _ in range(m)]
+
+        directions = [(0,1), (0,-1), (1,0), (-1, 0), (1,1), (-1,1), (1,-1), (-1,-1)]
+
         while minHeap:
-            dist , node = heapq.heappop(minHeap)
-            s_row , s_col = node
+            dst , row, col = heapq.heappop(minHeap)
             
-            if node == dest:
-                return dist
+            if visited[row][col] == True:
+                continue
             
-            for neighbor in neighbors:
-                adj_row , adj_col = neighbor
-                
-                nei_row = s_row + adj_row
-                nei_col = s_col + adj_col
-                
-                if nei_row < 0 or nei_col < 0 or nei_row >= n or nei_col >= n or grid[nei_row][nei_col] == 1 or (nei_row, nei_col) in visited:
+
+            visited[row][col] = True
+            dist[row][col] = dst
+
+            # If we have reached the destination
+            if row == m-1 and col == n-1:
+                return dist[row][col]
+
+            for u,v in directions:
+                nei_r = row + u
+                nei_c = col + v
+
+                # if nei is out of bound or cant be visited
+                if nei_r < 0 or nei_c < 0 or nei_r >= m or nei_c >= n or grid[nei_r][nei_c] != 0 or visited[nei_r][nei_c] == True:
                     continue
                 
-                new_dist = 1 + dist
                 
-                heapq.heappush(minHeap, (new_dist , (nei_row, nei_col)))
-                visited.add((nei_row, nei_col))
+                nei_dst = dst + 1
+                heapq.heappush(minHeap, (nei_dst, nei_r, nei_c)) # Dist, row , col
+
                 
-        return -1
         
+        return -1
