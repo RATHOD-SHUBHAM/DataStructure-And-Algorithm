@@ -1,5 +1,4 @@
-'''
-1976. Number of Ways to Arrive at Destination
+1976. Number of Ways to Arrive at Destination or Number of ways to reach at destination in shortest time or Number of shortest paths
 
 You are in a city that consists of n intersections numbered from 0 to n - 1 with bi-directional roads between some intersections. The inputs are generated such that you can reach any intersection from any other intersection and that there is at most one road between any two intersections.
 
@@ -37,6 +36,3 @@ roads[i].length == 3
 ui != vi
 There is at most one road connecting any two intersections.
 You can reach any intersection from any other intersection.
-
-
-'''
