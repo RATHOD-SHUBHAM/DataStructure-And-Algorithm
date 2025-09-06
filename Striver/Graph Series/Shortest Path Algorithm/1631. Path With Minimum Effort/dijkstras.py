@@ -1,5 +1,3 @@
-# Calculate the minimum effort required for each cell and slowly move toward destination
-
 class Solution:
     def minimumEffortPath(self, heights: List[List[int]]) -> int:
         m = len(heights)
@@ -9,7 +7,6 @@ class Solution:
         min_effort = [[math.inf] * n for _ in range(m)]
         min_effort[0][0] = 0
 
-        visited = [[False] * n for _ in range(m)]
 
         '''
         Logic:
@@ -32,7 +29,6 @@ class Solution:
                 return max_path_effort # this will be the minimum effort to reach the destination
             
             cur_height = heights[row][col]
-            visited[row][col] = True
 
             for direction in directions:
                 adj_row , adj_col = direction
@@ -40,7 +36,7 @@ class Solution:
                 nei_row = adj_row + row
                 nei_col = adj_col + col
 
-                if nei_row < 0 or nei_row >= m or nei_col < 0 or nei_col >= n or visited[nei_row][nei_col] == True:
+                if nei_row < 0 or nei_row >= m or nei_col < 0 or nei_col >= n:
                     continue
                 
 

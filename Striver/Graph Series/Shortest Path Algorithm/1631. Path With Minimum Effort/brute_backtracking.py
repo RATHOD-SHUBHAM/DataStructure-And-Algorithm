@@ -177,7 +177,8 @@ class Solution:
         directions = [[0, 1], [1, 0], [0, -1], [-1, 0]]
 
         # row, col, maximum absolute difference
-        return self.backTrack_dfs(0,0,0, directions, m, n, heights)
+        self.backTrack_dfs(0,0,0, directions, m, n, heights)
+        return self.minimum_effort
 
     def backTrack_dfs(self, row, col, max_difference,  directions, m, n, heights):
         # check if we have reached the destination cell
@@ -187,14 +188,12 @@ class Solution:
             '''
                 minimum route effort = min(route effort) = min(maximum absolute difference)
             '''
-            return max_difference
+            return
 
 
         # mark the cell in current route - mark the cells by making them as 0
         current_height = heights[row][col]
         heights[row][col] = 0 # marking
-
-        min_effort = math.inf
 
         for direction in directions:
             adj_row , adj_col = direction
@@ -222,10 +221,10 @@ class Solution:
             '''
 
             if max_cur_difference < self.minimum_effort:
-                previous_effort = self.backTrack_dfs(nei_row, nei_col, max_cur_difference, directions, m, n, heights)
-                min_effort = min(min_effort, previous_effort)
+                self.backTrack_dfs(nei_row, nei_col, max_cur_difference, directions, m, n, heights)
+               
             
         # Backtrack
         # unmark the current cell
         heights[row][col] = current_height
-        return min_effort
+        return

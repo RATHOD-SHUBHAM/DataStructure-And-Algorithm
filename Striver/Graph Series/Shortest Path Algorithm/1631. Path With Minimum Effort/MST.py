@@ -63,7 +63,7 @@ class Solution:
         # Building edge list
         for row in range(m):
             for col in range(n):
-                cell_no = row * n + col
+                cell_no = row * n + col # getting cell number
 
                 # Look up
                 if row > 0:
