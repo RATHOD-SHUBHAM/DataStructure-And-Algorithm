@@ -4,9 +4,17 @@ and those should propagate forward. In other words, you need to know, for every 
 how many shortest paths reach it, not just for dst
 
 """
+import math
+import heapq
+import collections
+from typing import List
 
 class Solution:
     def countPaths(self, n: int, roads: List[List[int]]) -> int:
+        MOD = (10 ** 9) + 7
+        src = 0
+        dst = n-1
+
         # build Graph
         graph = collections.defaultdict(list)
         # bi-directional roads -> bi-directional edges
@@ -15,11 +23,7 @@ class Solution:
             graph[u].append((v, tme))
             graph[v].append((u, tme))
 
-        
-        MOD = (10 ** 9) + 7
-        src = 0
-        dst = n-1
-
+        # Explore Shortest Path using Dijkstra
         minHeap = []
         heapq.heapify(minHeap)
 
