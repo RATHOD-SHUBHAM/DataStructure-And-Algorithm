@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bellman-Ford Algorithm Visualization</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+        }
+        .step {
+            background: rgba(255, 255, 255, 0.15);
+            margin: 20px 0;
+            padding: 20px;
+            border-radius: 15px;
+            border-left: 5px solid #ff6b6b;
+        }
+        .graph-container {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        .node {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #00d4ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+            color: #333;
+            position: absolute;
+            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+        .node.source {
+            background: #ff6b6b;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.5);
+        }
+        .edge {
+            position: absolute;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.8);
+            transform-origin: left center;
+            transition: all 0.3s ease;
+        }
+        .edge.relaxing {
+            background: #ffd93d;
+            height: 5px;
+            box-shadow: 0 0 10px #ffd93d;
+        }
+        .edge-label {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .distances {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        .distance-box {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 12px 15px;
+            border-radius: 10px;
+            text-align: center;
+            min-width: 80px;
+            transition: all 0.3s ease;
+        }
+        .distance-box.updated {
+            background: #4ecdc4;
+            animation: pulse 0.8s;
+            transform: scale(1.05);
+        }
+        @keyframes pulse {
+            0% { transform: scale(1.05); }
+            50% { transform: scale(1.15); }
+            100% { transform: scale(1.05); }
+        }
+        .controls {
+            text-align: center;
+            margin: 20px 0;
+        }
+        button {
+            background: #ff6b6b;
+            border: none;
+            color: white;
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 25px;
+            cursor: pointer;
+            margin: 0 10px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        button:hover {
+            background: #ff5252;
+            transform: translateY(-2px);
+        }
+        button:disabled {
+            background: #666;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .algorithm-info {
+            background: rgba(255, 107, 107, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border: 1px solid #ff6b6b;
+        }
+        .iteration-info {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+        .edge-relaxation {
+            background: rgba(255, 217, 61, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 5px 0;
+            border-left: 3px solid #ffd93d;
+        }
+        .no-change {
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔥 Bellman-Ford Algorithm Visualization</h1>
+        <div class="algorithm-info">
+            <h3>Algorithm: Bellman-Ford (Works with Negative Weights & Cycles)</h3>
+            <p><strong>Input:</strong> V=5, edges=[[1,3,2], [4,3,-1], [2,4,1], [1,2,1], [0,1,5]], src=0</p>
+            <p><strong>Expected Output:</strong> [0, 5, 6, 6, 7]</p>
+            <p><strong>Key:</strong> Relax all edges V-1 = 4 times, then check for negative cycles</p>
+        </div>
+        
+        <div class="step">
+            <h3>Graph Visualization</h3>
+            <div id="graph" class="graph-container" style="position: relative; height: 300px;">
+                <!-- Graph will be drawn here -->
+            </div>
+            <div class="iteration-info">
+                <strong>Edges to process:</strong> [1→3: 2], [4→3: -1], [2→4: 1], [1→2: 1], [0→1: 5]
+            </div>
+        </div>
+
+        <div class="step">
+            <h3>Current Distances</h3>
+            <div class="distances" id="currentDistances">
+                <div class="distance-box">Node 0: 0</div>
+                <div class="distance-box">Node 1: ∞</div>
+                <div class="distance-box">Node 2: ∞</div>
+                <div class="distance-box">Node 3: ∞</div>
+                <div class="distance-box">Node 4: ∞</div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button onclick="startBellmanFord()">Start Bellman-Ford</button>
+            <button onclick="nextIteration()" id="nextBtn" disabled>Next Iteration</button>
+            <button onclick="nextEdge()" id="edgeBtn" disabled>Next Edge</button>
+            <button onclick="reset()">Reset</button>
+        </div>
+
+        <div id="currentIteration" class="step" style="display: none;">
+            <h3 id="iterationTitle">Iteration 1 of 4</h3>
+            <div id="iterationContent"></div>
+        </div>
+
+        <div id="finalCheck" class="step" style="display: none;">
+            <h3>Final Step: Negative Cycle Detection</h3>
+            <div id="finalContent"></div>
+        </div>
+    </div>
+
+    <script>
+        // Graph data
+        const edges = [[1, 3, 2], [4, 3, -1], [2, 4, 1], [1, 2, 1], [0, 1, 5]];
+        const V = 5;
+        const src = 0;
+        
+        // Node positions for visualization
+        const nodePositions = {
+            0: { x: 100, y: 150 },
+            1: { x: 300, y: 100 },
+            2: { x: 500, y: 100 },
+            3: { x: 500, y: 200 },
+            4: { x: 700, y: 150 }
+        };
+
+        let currentIteration = 0;
+        let currentEdgeIndex = 0;
+        let distances = [];
+        let iterationStarted = false;
+        let relaxationHistory = [];
+
+        function initializeBellmanFord() {
+            distances = new Array(V).fill(Infinity);
+            distances[src] = 0;
+            currentIteration = 1;
+            currentEdgeIndex = 0;
+            iterationStarted = false;
+            relaxationHistory = [];
+        }
+
+        function drawGraph(highlightEdge = -1) {
+            const container = document.getElementById('graph');
+            container.innerHTML = '';
+            
+            // Draw edges first
+            for (let i = 0; i < edges.length; i++) {
+                let [u, v, w] = edges[i];
+                let startPos = nodePositions[u];
+                let endPos = nodePositions[v];
+                
+                let dx = endPos.x - startPos.x;
+                let dy = endPos.y - startPos.y;
+                let length = Math.sqrt(dx * dx + dy * dy) - 50;
+                let angle = Math.atan2(dy, dx) * 180 / Math.PI;
+                
+                let edgeDiv = document.createElement('div');
+                edgeDiv.className = 'edge';
+                if (i === highlightEdge) edgeDiv.classList.add('relaxing');
+                edgeDiv.style.left = (startPos.x + 25) + 'px';
+                edgeDiv.style.top = (startPos.y + 25) + 'px';
+                edgeDiv.style.width = length + 'px';
+                edgeDiv.style.transform = `rotate(${angle}deg)`;
+                container.appendChild(edgeDiv);
+                
+                // Edge label
+                let labelDiv = document.createElement('div');
+                labelDiv.className = 'edge-label';
+                labelDiv.textContent = w;
+                labelDiv.style.left = (startPos.x + dx/2 + 10) + 'px';
+                labelDiv.style.top = (startPos.y + dy/2 - 10) + 'px';
+                container.appendChild(labelDiv);
+            }
+            
+            // Draw nodes
+            for (let i = 0; i < V; i++) {
+                let nodeDiv = document.createElement('div');
+                nodeDiv.className = 'node';
+                if (i === src) nodeDiv.classList.add('source');
+                
+                nodeDiv.textContent = i;
+                nodeDiv.style.left = nodePositions[i].x + 'px';
+                nodeDiv.style.top = nodePositions[i].y + 'px';
+                container.appendChild(nodeDiv);
+            }
+        }
+
+        function updateDistanceDisplay() {
+            const container = document.getElementById('currentDistances');
+            container.innerHTML = '';
+            
+            for (let i = 0; i < V; i++) {
+                let div = document.createElement('div');
+                div.className = 'distance-box';
+                div.innerHTML = `Node ${i}: ${distances[i] === Infinity ? '∞' : distances[i]}`;
+                container.appendChild(div);
+            }
+        }
+
+        function startBellmanFord() {
+            initializeBellmanFord();
+            updateDistanceDisplay();
+            document.getElementById('nextBtn').disabled = false;
+            document.getElementById('currentIteration').style.display = 'block';
+            nextIteration();
+        }
+
+        function nextIteration() {
+            if (currentIteration > V - 1) {
+                // Start negative cycle detection
+                document.getElementById('nextBtn').disabled = true;
+                document.getElementById('edgeBtn').disabled = true;
+                document.getElementById('finalCheck').style.display = 'block';
+                
+                let hasNegativeCycle = false;
+                let cycleInfo = '<p>Checking for negative cycles by trying to relax edges one more time:</p>';
+                
+                for (let i = 0; i < edges.length; i++) {
+                    let [u, v, w] = edges[i];
+                    if (distances[u] !== Infinity && distances[u] + w < distances[v]) {
+                        hasNegativeCycle = true;
+                        cycleInfo += `<p style="color: #ff6b6b;">❌ Edge ${u}→${v} can still be relaxed! Negative cycle detected.</p>`;
+                    } else {
+                        cycleInfo += `<p style="color: #4ecdc4;">✅ Edge ${u}→${v}: No further relaxation possible.</p>`;
+                    }
+                }
+                
+                if (hasNegativeCycle) {
+                    cycleInfo += '<p><strong>Result: [-1] (Negative cycle exists)</strong></p>';
+                } else {
+                    cycleInfo += `<p><strong>Result: [${distances.map(d => d === Infinity ? '∞' : d).join(', ')}]</strong></p>`;
+                }
+                
+                document.getElementById('finalContent').innerHTML = cycleInfo;
+                return;
+            }
+            
+            currentEdgeIndex = 0;
+            iterationStarted = true;
+            document.getElementById('iterationTitle').textContent = `Iteration ${currentIteration} of ${V-1}`;
+            document.getElementById('edgeBtn').disabled = false;
+            
+            let content = `<p>Processing all edges in this iteration. Relax edges if possible:</p>`;
+            content += `<div class="iteration-info"><strong>Current distances:</strong> [${distances.map(d => d === Infinity ? '∞' : d).join(', ')}]</div>`;
+            
+            document.getElementById('iterationContent').innerHTML = content;
+            nextEdge();
+        }
+
+        function nextEdge() {
+            if (currentEdgeIndex >= edges.length) {
+                // End of current iteration
+                currentIteration++;
+                document.getElementById('edgeBtn').disabled = true;
+                
+                let content = document.getElementById('iterationContent').innerHTML;
+                content += `<div class="iteration-info"><strong>After Iteration ${currentIteration-1}:</strong> [${distances.map(d => d === Infinity ? '∞' : d).join(', ')}]</div>`;
+                document.getElementById('iterationContent').innerHTML = content;
+                
+                if (currentIteration <= V - 1) {
+                    document.getElementById('nextBtn').disabled = false;
+                } else {
+                    nextIteration(); // Go to negative cycle check
+                }
+                
+                drawGraph(-1);
+                return;
+            }
+            
+            let [u, v, w] = edges[currentEdgeIndex];
+            let relaxed = false;
+            let oldDist = distances[v];
+            
+            drawGraph(currentEdgeIndex);
+            
+            if (distances[u] !== Infinity && distances[u] + w < distances[v]) {
+                distances[v] = distances[u] + w;
+                relaxed = true;
+            }
+            
+            let content = document.getElementById('iterationContent').innerHTML;
+            let relaxationDiv = document.createElement('div');
+            relaxationDiv.className = relaxed ? 'edge-relaxation' : 'edge-relaxation no-change';
+            
+            if (relaxed) {
+                relaxationDiv.innerHTML = `<strong>Edge ${u}→${v} (weight: ${w}):</strong> ${oldDist === Infinity ? '∞' : oldDist} → ${distances[v]} ✨ RELAXED!`;
+                
+                // Update distance display with animation
+                setTimeout(() => {
+                    let distanceBoxes = document.querySelectorAll('.distance-box');
+                    if (distanceBoxes[v]) {
+                        distanceBoxes[v].classList.add('updated');
+                        distanceBoxes[v].innerHTML = `Node ${v}: ${distances[v]}`;
+                    }
+                }, 100);
+            } else {
+                let reason = distances[u] === Infinity ? `source ${u} unreachable` : `${distances[u]} + ${w} = ${distances[u] + w} ≥ ${distances[v]}`;
+                relaxationDiv.innerHTML = `<strong>Edge ${u}→${v} (weight: ${w}):</strong> No change (${reason})`;
+            }
+            
+            document.getElementById('iterationContent').appendChild(relaxationDiv);
+            
+            currentEdgeIndex++;
+            
+            if (currentEdgeIndex >= edges.length) {
+                document.getElementById('edgeBtn').textContent = 'Finish Iteration';
+            }
+        }
+
+        function reset() {
+            currentIteration = 0;
+            currentEdgeIndex = 0;
+            iterationStarted = false;
+            distances = new Array(V).fill(Infinity);
+            distances[src] = 0;
+            
+            document.getElementById('currentIteration').style.display = 'none';
+            document.getElementById('finalCheck').style.display = 'none';
+            document.getElementById('nextBtn').disabled = true;
+            document.getElementById('edgeBtn').disabled = true;
+            document.getElementById('edgeBtn').textContent = 'Next Edge';
+            
+            updateDistanceDisplay();
+            drawGraph(-1);
+        }
+
+        // Initialize
+        initializeBellmanFord();
+        drawGraph();
+        updateDistanceDisplay();
+    </script>
+</body>
+</html>

@@ -1,6 +1,6 @@
 # Node Relaxation Means
 
-if Distance taken to reach u + distance to reach from u to v is less than distance to reach V.
+If Distance taken to reach u + distance to reach from u to v is less than distance to reach V.
 then we update distace to reach node v as Distance taken to reach u + distance to reach from u to v.
 
 ie. 
