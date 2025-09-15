@@ -19,6 +19,7 @@ class Solution:
         for k in range(n):
             for i in range(n):
                 for j in range(n):
+                    # dist form i -> j : From i to k and from k to j
                     cur_dist = dist[i][k] + dist[k][j]
                     dist[i][j] = min(dist[i][j], cur_dist)
 

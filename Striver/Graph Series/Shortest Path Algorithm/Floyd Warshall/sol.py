@@ -24,6 +24,7 @@ class Solution:
         for k in range(n):
             for i in range(n):
                 for j in range(n):
+                    # dist form i -> j : From i to k and from k to j
                     cur_cost = matrix[i][k] + matrix[k][j]
                     matrix[i][j] = min(matrix[i][j], cur_cost)
 
