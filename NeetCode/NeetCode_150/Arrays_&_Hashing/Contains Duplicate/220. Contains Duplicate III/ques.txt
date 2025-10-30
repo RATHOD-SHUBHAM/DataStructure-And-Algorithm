@@ -1,4 +1,4 @@
-'''
+
 220. Contains Duplicate III
 
 You are given an integer array nums and two integers indexDiff and valueDiff.
@@ -34,5 +34,3 @@ Constraints:
 -109 <= nums[i] <= 109
 1 <= indexDiff <= nums.length
 0 <= valueDiff <= 109
-
-'''
