@@ -1,0 +1,68 @@
+# Tc: O(n) | Sc: O(1)
+
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def removeNthFromEnd(self, head: Optional[ListNode], n: int) -> Optional[ListNode]:
+        prev = None
+
+        dummy = ListNode(-1)
+        dummy.next = head
+
+        navNode = curNode = dummy
+
+        # Create a distance of n - nodes
+        for _ in range(n):
+            navNode = navNode.next
+        
+        while navNode:
+            navNode = navNode.next
+
+            prev = curNode
+            curNode = curNode.next
+        
+        # Delete the nth node from back
+        prev.next = curNode.next
+        del(curNode)
+
+        return dummy.next
+    
+
+# --------------------------------------------------------------------------------------------------
+
+# Pointer
+
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def removeNthFromEnd(self, head: Optional[ListNode], n: int) -> Optional[ListNode]:
+        dummy = left = right = ListNode(-1)
+        dummy.next = head
+
+        # move the right pointer by n position
+        while n > 0:
+            right = right.next
+            n -= 1
+        
+        # move both pointer at same pace
+        while right.next:
+            right = right.next
+            left = left.next
+
+        # Grab the node
+        nxtNode = left.next.next
+
+        # delete node
+        left.next.next = None
+        left.next = None
+
+        # link the node
+        left.next = nxtNode
+
+        return dummy.next
