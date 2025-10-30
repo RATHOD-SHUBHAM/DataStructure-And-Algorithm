@@ -40,6 +40,24 @@ class Solution:
                 second_largest = num
         
         return second_largest
+
+# --------- Same Solution Different Way ----------------------  
+class Solution:
+    def getSecondLargest(self, arr):
+        # Code Here
+        n = len(arr)
+        
+        largest = arr[0]
+        second = -1
+        
+        for i in range(1, n):
+            if arr[i] > largest:
+                second = largest
+                largest = arr[i]
+            elif arr[i] < largest and arr[i] > second:
+                second = arr[i]
+        
+        return second
     
 # --------- Follow up to Largest Element ----------------------
 
