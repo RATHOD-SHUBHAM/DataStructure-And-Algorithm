@@ -1,24 +1,26 @@
 class Solution:
-    def thirdLargest(self,arr, n):
+    def thirdLargest(self,arr):
         # code here
-        largest = -1
-        second = -1
-        third = -1
+        n = len(arr)
         
-        for i in range(n):
-            cur_ele = arr[i]
-            
-            if cur_ele > largest:
+        first = second = third = float("-inf")
+        
+        for x in arr:
+            # Largest Element
+            if x > first:
                 third = second
-                second = largest
-                largest = cur_ele
+                second = first
+                first = x
             
-            elif cur_ele < largest and cur_ele > second:
+            # Second Largest
+            elif x >= second:
                 third = second
-                second = cur_ele
+                second = x
             
-            elif cur_ele < second and cur_ele > third:
-                third = cur_ele
+            # Third Largest 
+            elif x > third: # This can also be >=
+                third = x
         
-        
-        return third
+        return third if third != float("-inf") else -1
+                
+                
