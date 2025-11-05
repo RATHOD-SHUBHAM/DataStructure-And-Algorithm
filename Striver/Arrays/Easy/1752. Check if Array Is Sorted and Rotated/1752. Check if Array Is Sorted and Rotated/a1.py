@@ -95,11 +95,13 @@ class Solution:
         count = 0
 
         for i in range(n):
+            # previous index in circular sense
             prev_idx = (i-1) % n
 
             if nums[prev_idx] > nums[i]:
                 count += 1
             
+            # Ensure that there is only one inflation point
             if count > 1:
                 return False
         
