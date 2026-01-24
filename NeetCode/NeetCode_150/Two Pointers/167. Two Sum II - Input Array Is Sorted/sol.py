@@ -1,3 +1,4 @@
+# O(n) | O(1)
 class Solution:
     def twoSum(self, numbers: List[int], target: int) -> List[int]:
         n = len(numbers)
