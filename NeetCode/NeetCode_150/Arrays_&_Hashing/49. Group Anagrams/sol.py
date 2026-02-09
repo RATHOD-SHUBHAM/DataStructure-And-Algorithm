@@ -1,19 +1,47 @@
-# Tc and Sc: O(nk) -> n is the len of strs and k is max len of a character ch
+# Tc: O(NKlogK) , N is the len of strs, and K is max length of each string
+# Sc: O(NK)
+
 class Solution:
     def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
+        n = len(strs)
+
         dic = collections.defaultdict(list)
 
-        for ch in strs: # O(n)
-            char = [0] * 26
+        for ch in strs: # n
+            key = sorted(ch) # KlogK
 
-            for i in range(len(ch)): # O(k)
-                ltr = ord(ch[i]) - ord('a')
-                char[ltr] += 1
-            
-            dic[tuple(char)].append((ch))
-
-        op = []
-        for key, value in dic.items():
-            op.append(value)
+            dic[tuple(key)].append(ch)
         
-        return op
+        op = []
+        for key, val in dic.items():
+            op.append(val)
+        
+        return op   
+
+# ========================================================================================s
+
+# Tc: O(NK), n is len of string, K is max len of each string
+# Sc: O(N)
+
+class Solution:
+    def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
+        n = len(strs)
+
+        dic = collections.defaultdict(list)
+
+        for sts in strs: # n
+            count = [0] * 26
+
+            for ch in sts: # k
+                val = ord(ch) - ord('a')
+
+                count[val] += 1
+            
+            # dictionary (hash table) keys need to be hashable for comparison. An array of items is hashable if it is immutable, i.e. once it's set, it cannot be changed.
+            dic[tuple(count)].append(sts)
+        
+        op = []
+        for key, val in dic.items():
+            op.append(val)
+        
+        return op   
