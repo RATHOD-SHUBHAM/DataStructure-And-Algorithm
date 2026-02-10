@@ -1,46 +1,43 @@
+# Tc: O(n)
+# Sc: O(k) , We don't count the output as part of the space complexity, but for each word, we are using some space for the escape character and delimiter.
+
 class Codec:
     def encode(self, strs: List[str]) -> str:
         """Encodes a list of strings to a single string.
         """
-        n = len(strs)
+        encoded_str = ""
 
-        new_str = ""
-
-        for s in strs:
-            s_len = len(s)
-            new_str += str(s_len) + '$' + s
+        for ch in strs:
+            len_of_str = len(ch)
+            encoded_str += str(len_of_str) + '$' + ch # We don't count the output as part of the space complexity, but for each word, we are using some space for the escape character and delimiter.
         
-        return new_str
-        
+        return encoded_str
 
     def decode(self, s: str) -> List[str]:
         """Decodes a single string to a list of strings.
         """
         n = len(s)
 
-        strs = []
-
         i = 0
 
+        decoded_str = []
+
         while i < n:
+
             j = i
 
             while s[j] != '$':
                 j += 1
-                
-
-            s_len = int(s[i : j])
-
-            new_str = s[j+1 : j + 1 + s_len]
-
-            strs.append(new_str)
-
-            i = j + 1 + s_len
-        
-        
-        return strs
             
+            len_of_str = int(s[i : j])
 
+            char = s[j+1 : j+1+len_of_str]
+
+            decoded_str.append(char)
+
+            i = j + 1 +len_of_str
+        
+        return decoded_str
 
         
 
