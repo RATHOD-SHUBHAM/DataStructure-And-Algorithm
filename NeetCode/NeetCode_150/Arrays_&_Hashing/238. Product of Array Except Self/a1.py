@@ -1,105 +1,46 @@
 # Formula: Product of all element on left * Product of all element on right
 
-# Running sum: Left and Right combined in single array
-# Tc and Sc: O(N)
+# Using 2 array for - running prod
+# Tc & Sc: O(n) | O(n)
 class Solution:
     def productExceptSelf(self, nums: List[int]) -> List[int]:
         n = len(nums)
 
-        left_arr = [1] * n
-        nxtProd = nums[0]
+        # Left Running Sum
+        left_prod = [1] * n
         for i in range(1, n):
-            left_arr[i] = nxtProd
-            nxtProd = left_arr[i] * nums[i]
+            left_prod[i] = left_prod[i - 1] * nums[i-1]
         
-
-        right_arr = [1] * n
-        nxtProd = nums[-1]
+        # Right Running Sum
+        right_prod = [1] * n
         for i in reversed(range(n-1)):
-            right_arr[i] = nxtProd
-            nxtProd = right_arr[i] * nums[i]
+            right_prod[i] = right_prod[i+1] * nums[i+1]
 
-
-        prod = [1] * n
+        op = [1] * n
         for i in range(n):
-            prod[i] = left_arr[i] * right_arr[i]
+            op[i] = left_prod[i] * right_prod[i]
         
-        return prod
+
+        return op
 
 # ----------- Single Array ------------------------------------ ----------------- -----------------     
 
-# Formula: Product of all element on left * Product of all element on right
-# Tc: O(N) and Sc: O(1)if we dont consider prod array that is to be returned else O(N)
+# Using 1 array for - running prod
+# Tc & Sc: O(n) | O(1) # The problem statement mentions that using the answer array doesn't add to the space complexity.
 class Solution:
     def productExceptSelf(self, nums: List[int]) -> List[int]:
         n = len(nums)
 
+        # Left Running Sum
         prod = [1] * n
-        nxtProd = nums[0]
         for i in range(1, n):
-            prod[i] = nxtProd
-            nxtProd = prod[i] * nums[i]
+            prod[i] = prod[i - 1] * nums[i-1]
         
-
-        nxtProd = nums[-1]
+        # Right Running Sum
+        right_prod = 1
         for i in reversed(range(n-1)):
-            curProd = nxtProd
-            prod[i] *= nxtProd
-            nxtProd = curProd * nums[i]
+            right_prod = right_prod * nums[i+1]
+            prod[i] = prod[i] * right_prod
         
-        return prod
-    
-# ----------- ------------------------------------ ----------------- -----------------
-"""
-Product of sum except self -> what this means is, 
-    * Get me the product of all left side array.
-    * Get me the product of all right side array.
-    * Combine them together and that is the product of entire array except self.
 
-For array 1, 2, 3, 4
-
-Product of all array from left to 3, excluding 3 is 2
---------
-1, 1, 2,| 4
---------
-
-Product of all array from right to 3, excluding 3 is 4
-        --------
-24, 12, | 4, 1
-        --------
-
-
-Now combine left and right 2 * 4 = 8, this is product of array 3 except self
-
-Visual
---------
-1, 1, 2,| 4
---------
-        --------
-24,12,  |4, 1
-        --------
-==============
-_ , _ , 8, _ 
-==============
-"""
-
-class Solution:
-    def productExceptSelf(self, nums: List[int]) -> List[int]:
-        n = len(nums)
-
-        # Left running product
-        prod = [1] * n
-
-        running_prod = 1
-        for i in range(n):
-            prod[i] = running_prod
-            # Now grab the prod
-            running_prod *= nums[i]
-        
-        running_prod = 1
-        for i in reversed(range(n)):
-            prod[i] = running_prod * prod[i]
-            # Now grab the prod
-            running_prod *= nums[i]
-        
         return prod
