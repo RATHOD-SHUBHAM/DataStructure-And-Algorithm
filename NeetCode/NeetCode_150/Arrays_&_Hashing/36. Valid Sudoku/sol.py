@@ -1,32 +1,33 @@
-from collections import defaultdict
+"""
+Formula to get
+1. Sub Cell No : (row // sub_row_size) , (col // sub_row_col)
+2. Cell No : (row * No of Col) + col
+
+Formula of row-major-order: 
+row-major-order is used to convert 2D into 1D array:
+    Cell No : (row * No of Col) + col
+"""
+
+# Tc: O(N^2) | Sc: O(N)
 
 class Solution:
     def isValidSudoku(self, board: List[List[str]]) -> bool:
-        row_set = defaultdict(set)
-        col_set = defaultdict(set)
-        cell_set = defaultdict(set)
+        row_set = collections.defaultdict(set)
+        col_set = collections.defaultdict(set)
+        cell_set = collections.defaultdict(set)
 
-        for row in range(9):
-            for col in range(9):
-                # get the value at each cell
-                val = board[row][col]
+        for r in range(9):
+            for c in range(9):
+                val = board[r][c]
 
-                # check if it is empty
                 if val == '.':
                     continue
                 
-                # check if this val is duplicate
-                if(
-                    val in row_set[row] or
-                    val in col_set[col] or
-                    val in cell_set[(row // 3, col // 3)]
-                ):
-                    return False
-
-                row_set[row].add(val)
-                col_set[col].add(val)
-                cell_set[(row // 3, col // 3)].add(val)
+                if (val in row_set[r]) or (val in col_set[c]) or val in cell_set[(r // 3, c // 3)]:
+                    return  False
+                
+                row_set[r].add(val)
+                col_set[c].add(val)
+                cell_set[(r // 3, c // 3)].add(val)
         
         return True
-
-        
