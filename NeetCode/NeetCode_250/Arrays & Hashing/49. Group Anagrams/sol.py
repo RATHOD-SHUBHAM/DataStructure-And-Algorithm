@@ -12,6 +12,8 @@ class Solution:
 
             dic[tuple(key)].append(ch)
         
+        # return list(dic.values())
+    
         op = []
         for key, val in dic.items():
             op.append(val)
@@ -40,8 +42,10 @@ class Solution:
             # dictionary (hash table) keys need to be hashable for comparison. An array of items is hashable if it is immutable, i.e. once it's set, it cannot be changed.
             dic[tuple(count)].append(sts)
         
-        op = []
-        for key, val in dic.items():
-            op.append(val)
+        return list(dic.values())
+    
+        # op = []
+        # for key, val in dic.items():
+        #     op.append(val)
         
-        return op   
+        # return op   
