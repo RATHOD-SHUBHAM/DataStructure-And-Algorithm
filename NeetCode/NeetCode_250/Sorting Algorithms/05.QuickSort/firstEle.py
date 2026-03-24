@@ -1,3 +1,18 @@
+"""
+Why This Solution Gives TLE?
+The issue is pivot selection — always choosing the first element as pivot.
+When the array is already sorted (or nearly sorted), this creates worst-case O(n²) behavior:
+[1, 2, 3, 4, 5]
+pivot=1 → left=[], right=[2,3,4,5]   # unbalanced!
+pivot=2 → left=[], right=[3,4,5]      # unbalanced again!
+pivot=3 → left=[], right=[4,5]        # every single time...
+Instead of O(n log n) splits, you get O(n) levels → O(n²) total.
+
+Your "smaller side first" optimization doesn't help here because the imbalance itself is the problem — 
+you can't optimize around a pivot that's always wrong.
+
+"""
+
 class Solution:
     def sortArray(self, nums: List[int]) -> List[int]:
         n = len(nums)
