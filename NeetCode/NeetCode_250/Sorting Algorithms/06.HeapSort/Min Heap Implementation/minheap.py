@@ -66,7 +66,7 @@ class MinHeap:
 			
             childTwoIdx = (currentIdx * 2) + 2
             if childTwoIdx > endIdx:
-                childTwoIdx -= 1
+                childTwoIdx = -1
 				
 			# check if child two is smaller than child one and parent
 			
@@ -81,16 +81,15 @@ class MinHeap:
                 currentIdx = childToSwap
                 childOneIdx = (currentIdx * 2) + 1
             else:
-                # if there are no more elements to swap --> just break
+                # if there are no elements to swap --> just break
                 break
 
-    def siftUp(self,currentIdx,heap):
+    def siftUp(self,currentIdx):
 		# Find the parent element Index
         parentIdx = (currentIdx - 1) // 2
-		# check if we are in the indexLimit and not the root element
-		# check if the current node is smaller than parent node
-        while parentIdx > 0 and heap[currentIdx] < heap[parentIdx]:
-            self.swap(parentIdx, currentIdx,heap)
+		# check if we are in the indexLimit and not the root element and if the current element is smaller than the parent element then we swap
+        while parentIdx >= 0 and self.heap[currentIdx] < self.heap[parentIdx]:
+            self.swap(parentIdx, currentIdx,self.heap)
             currentIdx = parentIdx
             parentIdx = (currentIdx - 1) // 2 # once we reach the root or our elements are heapified then we break out of the loop 
 
@@ -98,18 +97,25 @@ class MinHeap:
         return self.heap[0]
 
     def remove(self):
-        self.swap(0,len(self.heap)-1,self.heap)
+        # Swap the root with last element
+        firstIdx = 0
+        endIdx = len(self.heap) - 1
+        self.swap(firstIdx, endIdx, self.heap)
+        
+        # Pop out the last element
         valToRemove = self.heap.pop()
-		# shift down from the top until last element 
-        self.siftDown(0,len(self.heap)-1,self.heap)
+		
+        # shift down from the top until last element
+        endIdx = len(self.heap) - 1
+        self.siftDown(0,endIdx,self.heap)
         return valToRemove
 
     def insert(self, value):
+        # Append the value to the end of heap
         self.heap.append(value)
-		# pass the index of element that needs to shift up and the heap
-		# ie the last value we just appended
-        self.siftUp(len(self.heap) - 1, self.heap)
-		
+        # Shift the value up to its right place
+        endIdx = len(self.heap) - 1
+        self.siftUp(endIdx)
 		
     def swap(self,i,j,heap):
         heap[i] , heap[j] = heap[j] , heap[i]
