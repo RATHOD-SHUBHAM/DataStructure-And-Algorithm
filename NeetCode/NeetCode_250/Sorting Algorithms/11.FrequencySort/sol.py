@@ -16,6 +16,8 @@ result = [1,1,1,2,2,3]
 
 TC: O(n)
 SC: O(n)
+
+After understanding this algorithm, try solving : 347. Top K Frequent Elements
 """
 
 class Solution:
