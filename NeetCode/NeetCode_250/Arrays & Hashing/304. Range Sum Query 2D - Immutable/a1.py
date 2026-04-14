@@ -104,3 +104,53 @@ class NumMatrix:
 # Your NumMatrix object will be instantiated and called as such:
 # obj = NumMatrix(matrix)
 # param_1 = obj.sumRegion(row1,col1,row2,col2)
+
+
+
+
+# ----------------------------------  Single Loop ------------------ ------------------- ------------------ -
+
+#
+# TC: O(m*n) precomputation, O(1) per query
+# SC: O(1) extra space (modifies matrix in-place)
+class NumMatrix:
+
+    def __init__(self, matrix: List[List[int]]):
+        self.mat = matrix
+
+        m = len(self.mat)
+        n = len(self.mat[0])
+
+        for row in range(m):
+            for col in range(n):
+                left = self.mat[row][col-1] if col > 0 else 0
+                top  = self.mat[row-1][col] if row > 0 else 0
+                intersection = self.mat[row-1][col-1] if (row > 0 and col > 0) else 0
+
+                self.mat[row][col] = self.mat[row][col] + left + top - intersection
+
+        
+
+    def sumRegion(self, row1: int, col1: int, row2: int, col2: int) -> int:
+        # Full rectangle sum from (0,0) to (row2, col2)
+        total = self.mat[row2][col2]
+
+        # Rectangle to the left of target region — from (0,0) to (row2, col1-1)
+        left_region = self.mat[row2][col1 - 1] if col1 > 0 else 0
+
+        # Rectangle above the target region — from (0,0) to (row1-1, col2)
+        top_region = self.mat[row1 - 1][col2] if row1 > 0 else 0
+
+        # Top-left corner overlap — subtracted twice above, so add back once
+        # Rectangle from (0,0) to (row1-1, col1-1)
+        intersection = self.mat[row1 - 1][col1 - 1] if (row1 > 0 and col1 > 0) else 0
+
+        # Inclusion - Exclusion
+        return total - (left_region + top_region) + intersection
+        
+        
+
+
+# Your NumMatrix object will be instantiated and called as such:
+# obj = NumMatrix(matrix)
+# param_1 = obj.sumRegion(row1,col1,row2,col2)
