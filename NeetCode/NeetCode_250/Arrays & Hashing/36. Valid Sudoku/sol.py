@@ -8,8 +8,34 @@ row-major-order is used to convert 2D into 1D array:
     Cell No : (row * No of Col) + col
 """
 
-# Tc: O(N^2) | Sc: O(N)
+class Solution:
+    def isValidSudoku(self, board: List[List[str]]) -> bool:
+        m = len(board)
+        n = len(board[0])
 
+        row_dict = collections.defaultdict(list)
+        col_dict = collections.defaultdict(list)
+        cell_dict = collections.defaultdict(list)
+
+        for row in range(m):
+            for col in range(n):
+                cell_val = board[row][col]
+
+                if cell_val == '.':
+                    continue
+                
+                if (cell_val in row_dict[row]) or (cell_val in col_dict[col]) or (cell_val in cell_dict[row // 3, col // 3]):
+                    return False
+                
+                row_dict[row].append(cell_val)
+                col_dict[col].append(cell_val)
+                cell_dict[row // 3, col // 3].append(cell_val)
+        
+        return True
+
+# ------------------------------------ Using set ------------------------------------
+
+# Tc: O(N^2) | Sc: O(N)
 class Solution:
     def isValidSudoku(self, board: List[List[str]]) -> bool:
         row_set = collections.defaultdict(set)
