@@ -24,28 +24,33 @@ Total: 5 outer iterations + 5 while operations = 10 operations for 5 elements = 
 The while loop doesn't run N times per iteration — it runs N times in total across all iterations!
 """
 
-# Sc: O(N)
+# Tc and Sc: O(N)
 class Solution:
     def longestConsecutive(self, nums: List[int]) -> int:
         n = len(nums)
+        max_count = 0
 
-        max_seq = 0
+        # Convert list to set for O(1) average-time lookups
+        # Also removes duplicate values automatically
+        num_set = set(nums)
 
-        nums_set = set(nums) # Prevents duplicate from looking for consequtive seq again
+        # Iterate over the SET instead of the original list
+        # to avoid processing duplicate numbers unnecessarily
+        for num in num_set:
+            prev_num = num - 1
 
-        for val in nums_set:
-
-            # If there is already an element before this, that will contribute for more length and will include this element, so there is no need to count again
-            if val - 1 in nums_set:
+            # Only start counting from the BEGINNING of a sequence
+            # If (num - 1) exists, then `num` is not a sequence start → skip
+            if prev_num in num_set:
                 continue
             
+            # `num` is a sequence start, so count forward
             count = 1
-            while val + 1 in nums_set:
+            while num + 1 in num_set:
                 count += 1
-                val += 1
+                num += 1  # move to next consecutive number
             
-
-            max_seq = max(max_seq, count)
+            # Update the global maximum
+            max_count = max(max_count, count)
         
-
-        return max_seq
+        return max_count
