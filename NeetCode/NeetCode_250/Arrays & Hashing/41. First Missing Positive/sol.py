@@ -14,13 +14,17 @@ class Solution:
     def firstMissingPositive(self, nums: List[int]) -> int:
         n = len(nums)
 
-        max_range = n+1
+        max_range = n+1 # Elements will always be in range [1, n], in an array of size n.
 
         num_set = set(nums) # O(n)
 
-        for x in range(1, max_range+1): # max_range + 1 because if n = 3, we need to traverse 3 as well.
+        for x in range(1, max_range):
             if x not in num_set:
-                return x 
+                return x
+        
+        # --- Fallback ---
+        # All numbers 1..n are present, so the answer is n+1.
+        return n + 1  # all 1..n present, answer is n+1
             
 # If a value is not at its corresponding index, then that is the missing element
 
@@ -50,7 +54,7 @@ class Solution:
                 nums[idx] *= -1 # mark visited: flip to negative
 
             elif nums[idx] == 0:
-                nums[idx] = -(n + 1) # special sentinel for zero slots:
+                nums[idx] = -(n + 1) # Ideal Value: special sentinel for zero slots:
                                     # negative (= visited) but abs() gives n+1, which is out of bounds and safely
                                     # ignored in this loop if seen again
 
@@ -75,7 +79,9 @@ class Solution:
 
         # Step 1: Cycle sort to place elemnent in correct position
         while i < n:
+            # Keep looping until we find an element that is at its correct position.
             correct_idx = nums[i] - 1 # elements correct position in array
+
             if 0 < nums[i] <= n and nums[i] != nums[correct_idx]:
                 # if element is not in its place, then place it at its correct idx
                 nums[i], nums[correct_idx] = nums[correct_idx], nums[i]
