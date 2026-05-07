@@ -2,36 +2,17 @@
 
 class Solution:
     def containsNearbyDuplicate(self, nums: List[int], k: int) -> bool:
-        dic = collections.defaultdict(int)
+        n = len(nums)
 
-        for i in range(len(nums)):
-            if nums[i] in dic:
-                j = dic[nums[i]]
-                diff = abs(i - j)
+        dic = {}
 
-                if diff <= k:
-                    return True
-                else:
-                    dic[nums[i]] = i
-            else:
-                dic[nums[i]] = i
-        
-        return False
-    
-# -------------------------------- Clean Code --------------------------------
-# Tc and Sc: O(n)
-class Solution:
-    def containsNearbyDuplicate(self, nums: List[int], k: int) -> bool:
-        dic = collections.defaultdict(int)
+        for i in range(n):
 
-        for i in range(len(nums)):
-            if nums[i] in dic:
-                j = dic[nums[i]]
-                diff = abs(i - j)
-
-                if diff <= k:
-                    return True
+            # If the current element is alredy in dictionary : Duplicate 
+            # Check the difference of their index
+            if nums[i] in dic and abs(i - dic[nums[i]]) <= k:
+                return True
             
-            dic[nums[i]] = i # Replace the number's index with the latest index
+            dic[nums[i]] = i # Store along with the index
         
         return False
