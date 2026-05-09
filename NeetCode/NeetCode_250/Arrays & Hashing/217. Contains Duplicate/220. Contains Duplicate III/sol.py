@@ -1,30 +1,33 @@
+# Index constraint  → guaranteed by notepad size (eviction keeps it honest)
+# Value constraint  → checked by bisect_left + range check
+
+
 from bisect import bisect_left
 from sortedcontainers import SortedSet
 
-"""
-https://www.youtube.com/watch?v=HVh6u2Rf4P4
-bisect_left module performs a binary search on a sorted list to find an insertion point on left.
-"""
 class Solution:
     def containsNearbyAlmostDuplicate(self, nums: List[int], indexDiff: int, valueDiff: int) -> bool:
-        window = SortedSet()
+        n = len(nums)
 
-        left = 0
-        
+        notepad = SortedSet() # notepad will ONLY contains numbers from the last indexDiff steps.
+
+        left = 0 # keep track of element in nums
+
         for num in nums:
-            # Find potential candidate near num
-            pos = window.bisect_left(num - valueDiff)
+            range = [num - valueDiff, num + valueDiff] # "Range check if:  ANY number sitting between num - valueDiff and num + valueDiff in my notepad?"
+            # bisect_left(num - valueDiff) jumps to the first number that could "possibly" be in range.
+            pos = notepad.bisect_left(range[0])
 
-            # Check if number in window within [num - valueDiff, num + valueDiff]
-            if pos < len(window) and abs(window[pos] - num) <= valueDiff:
+            if pos < len(notepad) and abs(num - notepad[pos]) <= valueDiff: # Check if this possible value falls in range of valueDiff
                 return True
             
-            # Add current number to window
-            window.add(num)
 
-            # Maintain window size <= indexDiff
-            if len(window) > indexDiff:
-                window.remove(nums[left])
-                left += 1
+            # The eviction logic guarantees notepad has element in range of indexDiff
+            notepad.add(num)
+
+            if len(notepad) > indexDiff:
+                notepad.remove(nums[left]) # remove OLDEST number from nums
+                left += 1 # slide left forward
         
         return False
+ 
