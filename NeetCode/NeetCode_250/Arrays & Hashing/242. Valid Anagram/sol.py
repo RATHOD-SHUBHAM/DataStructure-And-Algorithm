@@ -19,6 +19,7 @@ class Solution:
 # ---------------------------------------- Using Fixed size List ----------------------------------------
 
 # Tc and Sc: O(1)
+# Note: This wont work for unicode characters.
 
 class Solution:
     def isAnagram(self, s: str, t: str) -> bool:
