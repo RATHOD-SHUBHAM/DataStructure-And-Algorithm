@@ -31,3 +31,11 @@ class Solution:
         
         return False
  
+
+# try solving on paper
+"""
+1. nums = [1,5,9,1,5,9], indexDiff = 2, valueDiff = 3 -> False
+2. nums = [4,1,6,3], indexDiff = 2, valueDiff = 2 -> True
+3. nums = [1, 7, 3, 1, 9], indexDiff = 2, valueDiff = 1 -> False
+4. nums = [1, 7, 3, 2, 9], indexDiff = 2, valueDiff = 1 -> True
+"""
