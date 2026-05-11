@@ -1,14 +1,20 @@
 # ---------------------------------------- Using Dictionary ----------------------------------------
 
-# Tc and Sc: O(n)
+"""
+Follow up: What if the inputs contain Unicode characters? How would you adapt your solution to such a case?
 
-import collections
+The below solution works perfectly for the follow up
+"""
+
+# Tc & Sc: O(m+n)
+
 class Solution:
     def isAnagram(self, s: str, t: str) -> bool:
-        counter_s = collections.Counter(s)
-        counter_t = collections.Counter(t)
+        count_s = collections.Counter(s)
+        
+        count_t = collections.Counter(t)
 
-        return counter_s == counter_t
+        return count_s == count_t
     
 # ---------------------------------------- Using Fixed size List ----------------------------------------
 
