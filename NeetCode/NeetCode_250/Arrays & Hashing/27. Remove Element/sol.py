@@ -1,22 +1,26 @@
-# Tc: O(n), n is the number of elements in nums
-# Sc: O(1)
+# Tc: O(n) | Sc: O(1)
 
-# Two Pointer
 class Solution:
     def removeElement(self, nums: List[int], val: int) -> int:
         n = len(nums)
 
-        ptr = 0
-        end = n - 1
+        i = 0
+        j = n - 1
 
-        while ptr <= end:
-            if nums[ptr] == val:
-                # Swap the values
-                nums[ptr], nums[end] = nums[end], nums[ptr]
-                end -= 1 # Decrement the end, as we know for sure that is a val
+        while i <= j:
+            if nums[i] == val:
+                self.swap(i, j, nums)
+                j -= 1
             else:
-                ptr += 1
-                # This is a number that is not a val
+                i += 1
+            
+            print(nums)
         
-        return ptr
+        return i
+    
+    def swap(self, i, j, nums):
+        nums[i], nums[j] = nums[j], nums[i]
 
+"""
+nums = [2, 1], val = 2
+"""
