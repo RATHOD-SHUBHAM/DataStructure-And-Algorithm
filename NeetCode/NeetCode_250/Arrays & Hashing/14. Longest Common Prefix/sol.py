@@ -1,6 +1,9 @@
-# Tc :O(n x m) , where n is len of strs and m is len of shortest string, 
-# we say len of shortest string because we stop the iteration of for i in range(len(prefix)), when i == len(s) where s can be shortest string
-# Sc: O(m), where m is len of shortest string.
+# Time Complexity: O(S) where S = total number of characters across all strings
+# Space Complexity: O(M) where M = length of the shortest string
+
+
+#  Note: A prefix must start from the beginning of each string. 
+
 class Solution:
     def longestCommonPrefix(self, strs: List[str]) -> str:
 
