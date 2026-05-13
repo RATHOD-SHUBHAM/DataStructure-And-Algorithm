@@ -36,3 +36,47 @@ class Solution:
                     count -= 1 # if they are different : decrease count
         
         return maj_ele
+
+
+
+# ---------------------------------------------------------------------------------------
+"""
+Can you answer this:
+
+Why does this algorithm only work because the majority element is guaranteed to appear more than n/2 times?
+What would happen if there was no majority element?
+
+This is a common follow-up interview question — worth thinking about! 🤔
+
+"""
+# Tc: O(n) | Sc: O(1)
+
+class Solution:
+    def majorityElement(self, nums: List[int]) -> int:
+        n = len(nums)
+
+        count = 0 # polling
+        maj_ele = -math.inf
+
+        for i in range(n):
+            if count == 0:
+                maj_ele = nums[i]
+                count += 1
+            
+            else:
+                if nums[i] == maj_ele:
+                    count += 1
+                else:
+                    count -= 1
+        
+        # return maj_ele
+        
+        # The second pass is a verification step — if no majority element exists, you return None implicitly instead of a wrong answer.
+        counter = 0
+        for num in nums:
+            if maj_ele == num:
+                counter += 1
+        
+        if counter > (n/2):
+            return maj_ele 
+        
