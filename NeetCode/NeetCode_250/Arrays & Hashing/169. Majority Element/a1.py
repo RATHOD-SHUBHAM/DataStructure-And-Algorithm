@@ -131,3 +131,29 @@ class Solution:
         
         if counter > (n/2):
             return maj_ele 
+        
+## Same as above but with a different implementation of the second pass
+# Tc: O(n) | Sc: O(1)
+class Solution:
+    def majorityElement(self, nums: List[int]) -> int:
+        n = len(nums)
+
+        count = 0 # polling
+        maj_ele = nums[0]
+
+        for num in nums:
+            if count == 0:
+                maj_ele = num
+                
+            # Voting
+            if num == maj_ele:
+                count += 1
+            else:
+                count -= 1
+        
+        # The second pass is a verification step — if no majority element exists, you return None implicitly instead of a wrong answer.
+        cnt_maj_ele = nums.count(maj_ele)
+
+        if cnt_maj_ele > (n/2):
+            return maj_ele
+            
