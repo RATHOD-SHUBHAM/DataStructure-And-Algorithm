@@ -154,3 +154,44 @@ class NumMatrix:
 # Your NumMatrix object will be instantiated and called as such:
 # obj = NumMatrix(matrix)
 # param_1 = obj.sumRegion(row1,col1,row2,col2)
+
+# ---------------------------------- Same Single Loop ------------------ ------------------- ------------------ -
+class NumMatrix:
+
+    def __init__(self, matrix: List[List[int]]):
+        m = len(matrix)
+        n = len(matrix[0])
+
+        self.matrix = matrix
+
+        for i in range(m):
+            for j in range(n):
+                # First cell
+                if i == 0 and j == 0:
+                    continue
+                
+                # First row
+                if i == 0:
+                    self.matrix[i][j] = self.matrix[i][j-1] + self.matrix[i][j]
+                
+                # First col
+                elif j == 0:
+                    self.matrix[i][j] = self.matrix[i-1][j] + self.matrix[i][j]
+                
+                else:
+                    self.matrix[i][j] = self.matrix[i][j] + ((self.matrix[i-1][j] + self.matrix[i][j-1]) - self.matrix[i-1][j-1])
+        
+
+
+    def sumRegion(self, row1: int, col1: int, row2: int, col2: int) -> int:
+
+        sum_of_ele = self.matrix[row2][col2] 
+        
+        left_region = self.matrix[row2][col1 - 1] if col1-1 >=0 else 0
+        
+        upper_region = self.matrix[row1 - 1][col2] if row1-1 >= 0 else 0 
+
+        diagonal = self.matrix[row1 - 1][col1 - 1] if (row1-1 >=0 and col1-1 >= 0) else 0
+        
+        return sum_of_ele - (left_region + upper_region) + diagonal
+        
