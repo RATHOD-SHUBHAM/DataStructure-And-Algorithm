@@ -41,3 +41,11 @@ class Solution:
             output[i] = right_prod * output[i]
         
         return output
+    
+
+"""
+The Key Differentiating Factor
+Method 1: Uses 3 separate arrays → O(n) extra space
+Method 2: Uses 1 array + 1 variable → O(1) extra space (if the output array doesn't count)
+
+"""

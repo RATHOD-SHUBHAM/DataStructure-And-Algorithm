@@ -31,7 +31,7 @@ class Solution:
         return profit
     
 
-# ------------------------------------ Using 1 pass ------------------------------------
+# ------------------------------------ Compounding ------------------------------------
 
 """
 Total Profit=∑_i(height(peak_i)−height(valley_i​)
@@ -52,6 +52,6 @@ class Solution:
 
         for i in range(1, n):
             if prices[i] > prices[i-1]:
-                profit += prices[i] - prices[i-1]
+                profit += prices[i] - prices[i-1] # Compunding the profit
         
         return profit
