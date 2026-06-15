@@ -20,4 +20,31 @@ class Solution:
                 nums[i] = nums[j] # place it right after last unique
             
         return i + 1
+    
+
+# ========================== above solution is more intuitive ==========================
+
+class Solution:
+    def removeDuplicates(self, nums: List[int]) -> int:
+        n = len(nums)
+
+        p = 0 # last confirmed unique position
+
+        i = p + 1
+
+        while i < n:
+            # Identify duplicates
+            while i < n and nums[i] == nums[p]:
+                i += 1
+            
+            # found a new unique element
+            
+            if i == n: break # Check if we reached the end of the array
+            
+            p += 1 # place the element in its right place
+            nums[i], nums[p] = nums[p], nums[i] # Swap
+
+            i += 1
+        
+        return p + 1
         
