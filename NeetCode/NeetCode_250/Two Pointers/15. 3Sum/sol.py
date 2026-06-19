@@ -3,6 +3,12 @@ Hashmap solution is salvageable but you'll fight duplicates the whole way.
 In an interview, if you go down this path you'll spend more time on dedup logic than the actual problem.
 """
 
+# Tc: O(n^2) | Sc: O(n)
+"""
+twoSum is O(n), and we call it n times.
+
+Sorting the array takes O(nlogn), so overall complexity is O(nlogn + n^2). This is asymptotically equivalent to O(n^2).
+"""
 class Solution:
     def __init__(self):
         self.op = []
