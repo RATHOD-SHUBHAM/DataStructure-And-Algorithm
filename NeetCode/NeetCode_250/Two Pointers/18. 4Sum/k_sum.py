@@ -37,8 +37,7 @@ class Solution:
         for i in range(start, n - k + 1):
 
             # Skip duplicate values at this position to avoid duplicate tuples.
-            # Only compare within the current window (i > start), since
-            # values before `start` were already used by an outer call.
+            # When i == start → this is the first number we're trying at this position. There's nothing to compare against (within this call), so we never skip it.
             if i > start and nums[i] == nums[i - 1]:
                 continue
 
