@@ -12,18 +12,22 @@ class Solution:
     def sortArray(self, nums: List[int]) -> List[int]:
         n = len(nums)
 
-        i = 0
-
-        while i < n:
+        for i in range(n):
             min_idx = i
 
+            # Find the index of the minimum element in the unsorted part
             for j in range(i, n):
                 if nums[j] < nums[min_idx]:
                     min_idx = j
             
-            # swap
+            
+            # Swap the found minimum element with the first element of the unsorted part
             nums[i], nums[min_idx] = nums[min_idx], nums[i]
-
-            i += 1
+            
+            """
+            # You could also do this
+            if i != min_idx:
+                nums[i], nums[min_idx] = nums[min_idx], nums[i]
+            """
         
         return nums
