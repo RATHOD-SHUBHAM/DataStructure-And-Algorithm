@@ -37,3 +37,43 @@ class Solution:
             return merge(left, right)
         
         return mergeSort(nums)
+    
+# ------------------------- -------------------------
+class Solution:
+    def sortArray(self, nums: List[int]) -> List[int]:
+        return self.mergesort(nums)
+    
+    def mergesort(self, nums):
+        if len(nums) <= 1:
+            return nums
+        
+        mid = len(nums) // 2
+
+        # Divide
+        left = self.mergesort(nums[ : mid])
+        right = self.mergesort(nums[mid : ])
+
+        return self.merge(left, right)
+    
+    def merge(self, left, right):
+        result = []
+
+        i = j = 0
+
+        # Conqure
+        while i < len(left) and j < len(right):
+            if left[i] < right[j]:
+                result.append(left[i])
+                i += 1
+            else:
+                result.append(right[j])
+                j += 1
+            
+        # Add the remaining element of the array - which ever is remaining 
+        result.extend(left[i : ])
+        result.extend(right[j : ])
+        
+        return result
+
+
+
