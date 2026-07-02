@@ -59,10 +59,10 @@ class Solution:
                                     # ignored in this loop if seen again
 
         # Step 3: find first unvisited index
-        for x in range(1, n + 1):
-            idx = x - 1
-            if nums[idx] >= 0:  # 0 or positive = not visited
-                return x
+        for x in range(n):
+            val = nums[x]
+            if val >= 0:  # 0 or positive = not visited
+                return x + 1
 
         # --- Step 4: Fallback ---
         # All numbers 1..n are present, so the answer is n+1.
@@ -71,6 +71,9 @@ class Solution:
 # ------------------------- Cycle Sort Approach -------------------------
 
 # Cycle sort in range
+# Remeber array looks like : 
+# Index: [0, 1, 2.....n-1]
+# Array: [1, 2, 3.... n]
 class Solution:
     def firstMissingPositive(self, nums: List[int]) -> int:
         n = len(nums)
