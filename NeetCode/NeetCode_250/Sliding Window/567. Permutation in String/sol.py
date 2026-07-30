@@ -28,33 +28,42 @@ class Solution:
 
 class Solution:
     def checkInclusion(self, s1: str, s2: str) -> bool:
-        n1 = len(s1)
-        n2 = len(s2)
+        m = len(s1)
+        n = len(s2)
 
-        if n1 > n2:
+        if m > n:
             return False
         
-        s1_count = [0] * 26
-        s2_count = [0] * 26
+        counter_1 = [0] * 26 # fixed target profile (letter counts needed from s1)
+        counter_2 = [0] * 26 # letter counts of the CURRENT window in s2 (size m, slides over s2)
 
-        for i in range(n1):
-            idx1 = ord(s1[i]) - ord('a')
-            idx2 = ord(s2[i]) - ord('a')
+        # Build initial window: first m characters of s1 and s2
+        for i in range(m):
+            idx_1 = ord(s1[i]) - ord('a')
+            idx_2 = ord(s2[i]) - ord('a')
 
-            s1_count[idx1] += 1
-            s2_count[idx2] += 1
+            counter_1[idx_1] += 1
+            counter_2[idx_2] += 1
         
-        if s1_count == s2_count:
+        if counter_1 == counter_2: # Check if the very first window already matches
             return True
         
-        for i in range(n1,  n2):
-            left_idx = ord(s2[i - n1]) - ord('a')
-            s2_count[left_idx] -= 1
+        # Slide the window one character at a time across the rest of s2.
+        for i in range(m, n):
+            # remove the left element
+            left_idx = ord(s2[i - m]) - ord('a')
+            counter_2[left_idx] -= 1
 
+            # add the right element
             right_idx = ord(s2[i]) - ord('a')
-            s2_count[right_idx] += 1
+            counter_2[right_idx] += 1
 
-            if s1_count == s2_count:
+            # compare current window's letter-count profile to s1's
+            if counter_1 == counter_2:
                 return True
-
+        
         return False
+
+
+
+
