@@ -39,3 +39,39 @@ class Solution:
 3. nums = [1, 7, 3, 1, 9], indexDiff = 2, valueDiff = 1 -> False
 4. nums = [1, 7, 3, 2, 9], indexDiff = 2, valueDiff = 1 -> True
 """
+
+# ======================================== In simple terms ============================================
+# Study Equation before solving
+
+class Solution:
+    def containsNearbyAlmostDuplicate(self, nums: List[int], indexDiff: int, valueDiff: int) -> bool:
+        window = SortedSet() # Keep track of current number in window
+        # Sort it because, Sorted lets us jump straight to the right spot, like we know every number to left is smaller and to right is bigger, atleast this gives us an idea
+
+
+        ptr = 0 # this will help is shrink the window
+        # this will point to element of nums and not window
+
+
+        for num in nums:
+            range = [num - valueDiff, num + valueDiff] # this we got from the equation we solved
+            # so our range is num - valueDiff -------- x -------- num + valueDiff
+                                # (low)                                (high)
+
+            # lets choose the low
+            pos = window.bisect_left(range[0]) # so this will tell us that, for sure that any number at or to the right of pos in window will be >= nums - valueDiff (low)
+
+            # now we need to check if number is <= high
+            if pos < len(window) and abs(num - window[pos]) <= valueDiff:
+                return True
+
+            # Add to window
+            window.add(num)
+
+            # Shrink window if needed
+            if len(window) > indexDiff:
+                window.remove(nums[ptr])
+                ptr += 1
+        
+        return False
+
