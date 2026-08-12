@@ -20,3 +20,22 @@ class Solution:
             lcp += prefix[i]
         
         return lcp
+
+
+# ========================== ========================== ========================== ==========================
+
+class Solution:
+    def longestCommonPrefix(self, strs: List[str]) -> str:
+        m = len(strs)
+
+        ref = strs[0] # reference string
+        n = len(ref)
+
+        for x in range(n):
+            for st in strs:
+                # Check if reference string is bigger than current string
+                # Check if the character of string are different
+                if x >= len(st) or ref[x] != st[x]:
+                    return ref[ : x]
+        
+        return ref

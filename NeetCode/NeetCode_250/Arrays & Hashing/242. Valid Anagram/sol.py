@@ -11,7 +11,7 @@ class Solution:
 
         return dic_s == dic_t
 
-        
+        s
 """
 Follow up: What if the inputs contain Unicode characters? How would you adapt your solution to such a case?
 
