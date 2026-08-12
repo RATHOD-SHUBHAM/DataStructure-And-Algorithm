@@ -43,6 +43,14 @@ class Solution:
 # ======================================== In simple terms ============================================
 # Study Equation before solving
 
+
+# Window will always hold elements that are with in the range of indexDiff
+# From this Window , we need to select element that are with in range of valueDiff
+# From deriving abs(nums[i] - nums[j]) <= valueDiff, we know that (num - x) <= valueDiff -> num - valueDiff -------- x -------- num + valueDiff
+                                                                                            # (low)                                (high)
+# if we do binary search on low, we will get a value(x), where all the element to right of it is > low
+# So this value(x) will always be >= low
+# Next we need to check if this abs(num - value(x)) <= valueDIff
 class Solution:
     def containsNearbyAlmostDuplicate(self, nums: List[int], indexDiff: int, valueDiff: int) -> bool:
         window = SortedSet() # Keep track of current number in window

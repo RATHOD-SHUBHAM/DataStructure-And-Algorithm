@@ -1,5 +1,17 @@
 # ---------------------------------------- Using Dictionary ----------------------------------------
+class Solution:
+    def isAnagram(self, s: str, t: str) -> bool:
+        dic_s = collections.defaultdict(int)
+        for x in s:
+            dic_s[x] += 1
 
+        dic_t = collections.defaultdict(int)
+        for x in t:
+            dic_t[x] += 1
+
+        return dic_s == dic_t
+
+        
 """
 Follow up: What if the inputs contain Unicode characters? How would you adapt your solution to such a case?
 
@@ -15,7 +27,8 @@ class Solution:
         count_t = collections.Counter(t)
 
         return count_s == count_t
-    
+
+
 # ---------------------------------------- Using Fixed size List ----------------------------------------
 
 # Tc and Sc: O(1)
