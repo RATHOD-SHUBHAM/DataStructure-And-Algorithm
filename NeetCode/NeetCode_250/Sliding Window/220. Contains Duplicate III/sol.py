@@ -31,6 +31,8 @@ class Solution:
             pos = notepad.bisect_left(range[0])
             
             # If even this closest candidate fails the check abs(num - notepad[pos]) <= valueDiff, no other element could possibly pass either (everything else is farther away).
+            # biscet will help us find the corect position in sorted number
+            # window[pos] maybe the closest to num
             if pos < len(notepad) and abs(num - notepad[pos]) <= valueDiff:
                 return True
             

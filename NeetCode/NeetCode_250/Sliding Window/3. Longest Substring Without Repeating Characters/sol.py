@@ -48,7 +48,7 @@ class Solution:
         while right < n:
 
             # Check if dic[s[right]] is part of current window and if new left is after the old left, because we cannot be going back
-            # eg: "tmmzuxt"
+            # eg: "tmmzuxt" , "ccbbcc"
             if s[right] in dic and dic[s[right]] >= left: # Check if there are duplicate in current window
                 left = dic[s[right]] + 1
             
