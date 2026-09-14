@@ -27,7 +27,7 @@ class Solution:
                     if cur_window < min_window_len:
                         min_window_len = cur_window
                         min_str = s[i: j+1]
-                        break
+                    break
                 
                 # reduce the count: mark it as seen
                 dic[s[j]] -= 1

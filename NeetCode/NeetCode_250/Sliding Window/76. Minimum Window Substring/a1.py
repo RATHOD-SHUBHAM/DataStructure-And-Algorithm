@@ -27,7 +27,7 @@ class Solution:
                     if cur_window < min_window_len:
                         min_window_len = cur_window
                         min_str = s[i: j+1]
-                        break
+                    break
                 
                 # reduce the count
                 dic[s[j]] -= 1
@@ -56,7 +56,7 @@ class Solution:
         count = 0
 
         while right < m:
-            # First check if the element exist in t
+            # First check if the element exist in t 
             if dic[s[right]] > 0:
                 count += 1 # if there is a occurance then increase count by one
 
@@ -70,10 +70,9 @@ class Solution:
                     min_str = s[left : right + 1]
                 
                 # Shrink the window
-                dic[s[left]] += 1 # mark this as unseen
-                if dic[s[left]] > 0:
-                    count -= 1
-                
+                dic[s[left]] += 1 # mark this as unseen : remove from current window
+                if dic[s[left]] > 0: # reset the counter
+                    count -= 1           
                 left += 1
 
             

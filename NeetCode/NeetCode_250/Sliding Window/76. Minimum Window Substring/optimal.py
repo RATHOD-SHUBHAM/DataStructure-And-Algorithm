@@ -32,10 +32,9 @@ class Solution:
                     min_str = s[left : right + 1]
                 
                 # Shrink the window
-                dic[s[left]] += 1 # mark this as unseen
-                if dic[s[left]] > 0:
-                    count -= 1
-                
+                dic[s[left]] += 1 # mark this as unseen : remove from current window
+                if dic[s[left]] > 0: # reset the counter
+                    count -= 1           
                 left += 1
 
             
