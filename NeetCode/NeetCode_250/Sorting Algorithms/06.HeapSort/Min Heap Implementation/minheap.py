@@ -120,6 +120,10 @@ class MinHeap:
     def swap(self,i,j,heap):
         heap[i] , heap[j] = heap[j] , heap[i]
 
+    def printHeap(self):
+        for i in range(len(self.heap)):
+            print(self.heap[i])
+
 
 if __name__ == "__main__":
     	# Test cases
