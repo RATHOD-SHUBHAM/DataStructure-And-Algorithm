@@ -1,5 +1,5 @@
 """
-Frequency Sort using HashMap + Bucket Sort:
+Frequency Sort using HashMap + Count Sort:
 Core Idea:
 1. Count frequency of each element using a HashMap
 2. Create buckets where index = frequency
@@ -42,6 +42,6 @@ class Solution:
         output = []
         for freq in reversed(range(n + 1)):
             for num in buckets[freq]:
-                output.extend([num] * freq)  # add element freq times
+                output.extend([num] * freq)  # add element freq times = num * no of times it appeared
         
         return output
