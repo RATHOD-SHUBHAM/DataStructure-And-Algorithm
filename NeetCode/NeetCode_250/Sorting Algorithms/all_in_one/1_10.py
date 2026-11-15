@@ -557,7 +557,7 @@ class CycleSort:
         return arr
 
 # ================================= NON RANGE CYCLE SORT =====================================
-
+# Works with negative number: because it only ever compares values (arr[i] < item) and never uses a value as an index.
 class CycleSort:
     def sort(self, arr):
         n = len(arr)
