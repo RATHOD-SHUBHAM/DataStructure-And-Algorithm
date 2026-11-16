@@ -122,3 +122,22 @@ def searchRange(nums, target):
     if first == len(nums) or nums[first] != target:
         return [-1, -1]
     return [first, last]
+
+
+# 3. ============================================ 374. Guess Number Higher or Lower ============================================================================
+class Solution:
+    def guessNumber(self, n: int) -> int:
+        left = 1
+        right = n
+
+        while left <= right:
+            mid = left + (right - left) // 2
+
+            pick = guess(mid) # call the api
+
+            if pick == -1:
+                right = mid - 1
+            elif pick == 1:
+                left = mid + 1
+            else:
+                return mid

@@ -1,3 +1,22 @@
+"""
+* bisect_left(nums, t) returns the first index i where nums[i] >= t.
+
+* bisect_right(nums, t) returns the first index i where nums[i] > t. 
+
+Its important to check bound guard for both, because sometime i can be greater than len(nums)
+
+# Left
+# bounds guard
+        if idx >= len(nums):
+            return -1
+
+            
+# Right
+# bounds guard
+        if idx - 1 < 0:
+            return -1
+"""
+
 class Solution:
     def bisect_left(self, nums, target):
         left = 0
