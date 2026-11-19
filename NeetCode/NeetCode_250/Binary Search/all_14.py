@@ -176,9 +176,9 @@ class Solution:
             mid = left + (right - left) // 2
 
             if mid * mid <= x:
-                left = mid + 1
+                left = mid + 1 # “mid is good, so the first bad one is after mid.”
             else:
-                right = mid
+                right = mid # mid is bad, so the first bad one is at mid or earlier.”
         
         #  Bisect right returns the first index where the value is strictly greater than the target, and the last valid element is one position before that
         return left - 1

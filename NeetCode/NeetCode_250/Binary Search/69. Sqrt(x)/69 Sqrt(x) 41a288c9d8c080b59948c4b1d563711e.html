@@ -1,0 +1,831 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>69. Sqrt(x)</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+/* Override strong tags inside headings to maintain consistent weight */
+h1 strong,
+h2 strong,
+h3 strong {
+	font-weight: 600;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+	/* Paint a complete callout box on every PDF page fragment. */
+	-webkit-box-decoration-break: clone;
+	box-decoration-break: clone;
+}
+
+/* For default-background callouts, render the border outline. */
+.callout.block-color-default_background {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+/*
+ * Toggles and callouts hold arbitrary content, so they can easily be taller
+ * than a page. They must stay breakable: avoiding breaks inside them makes
+ * Chromium push the whole block onto the next page, which leaves the previous
+ * page mostly empty before every long toggle.
+ */
+details,
+aside {
+	margin: 1.25em 0;
+}
+
+/* Keep a toggle's title on the same page as the start of its content. */
+summary {
+	page-break-after: avoid;
+	break-after: avoid;
+}
+
+/*
+ * Toggle headings render as <h1/h2/h3 style="display:inline-block"> inside
+ * <summary>. Without this reset, the heading's margin-top pushes it below the
+ * ::marker (▼), so the triangle and the title appear on separate lines.
+ */
+summary h1,
+summary h2,
+summary h3,
+summary h4 {
+	margin-top: 0;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+
+	table.collection-content {
+		width: 100%;
+		table-layout: fixed;
+	}
+
+	table.collection-content th,
+	table.collection-content td {
+		overflow-wrap: anywhere;
+	}
+
+	table.collection-content td > .user,
+	table.collection-content td > time {
+		white-space: pre-wrap;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content-wrapper {
+	overflow-x: auto;
+}
+
+@media only print {
+	.collection-content-wrapper {
+		overflow-x: visible;
+	}
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	gap: 46px;
+}
+
+.column {
+	min-width: 0;
+	overflow: hidden;
+}
+
+.column > *:first-child {
+	margin-top: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding-inline: 0.125rem;
+	padding-block: 0.375rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+table {
+	border-collapse: collapse;
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol.numbered-list.numbered-list-digits-2 {
+	padding-inline-start: 2em;
+}
+
+ol.numbered-list.numbered-list-digits-3plus {
+	padding-inline-start: 2.4em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+/*
+ * Render emoji icons using a ::before pseudo-element to keep the glyph
+ * out of the DOM textContent traversal. This avoids double-rendering icons
+ * in callouts and page titles.
+ * NOTE(slim/html-export-pseudo-icons): I can't tagref this because it will
+ * flag as a duplicate tag after codegen.
+ */
+.icon[data-emoji]::before {
+	content: attr(data-emoji);
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	margin-right: 0.4em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.tab {
+	margin: 1.25em 0;
+	padding-inline: 1rem;
+	border: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 124, 215, 0.094);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(229, 242, 252, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 118, 217, 0.203); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style><style>@import url('https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex-swap.min.css')</style></head><body><article id="41a288c9-d8c0-80b5-9948-c4b1d563711e" class="page sans"><header><h1 class="page-title" dir="auto"><strong>69. Sqrt(x)</strong></h1><p class="page-description" dir="auto"></p><table class="properties"><tbody><tr class="property-row property-row-text"><th><span class="icon property-icon"><img src="https://app.notion.com/icons/description_gray.svg" style="width:14px;height:14px;display:block"/></span>Notes</th><td>I have my solution on leetcode</td></tr><tr class="property-row property-row-number"><th><span class="icon property-icon"><img src="https://app.notion.com/icons/hashtag_gray.svg" style="width:14px;height:14px;display:block"/></span>Number</th><td>4</td></tr><tr class="property-row property-row-text"><th><span class="icon property-icon"><img src="https://app.notion.com/icons/description_gray.svg" style="width:14px;height:14px;display:block"/></span>Pattern</th><td>Binary Search</td></tr></tbody></table></header><div class="page-body"><h3 id="41c288c9-d8c0-806a-bfa3-e00332fd5a4e" class="" dir="auto">What does “square root rounded down” means.</h3><h3 id="41c288c9-d8c0-8023-bdf9-eb1814aee922" class="" dir="auto">Step 1: What is the square root?</h3><p id="41c288c9-d8c0-80b5-bc83-e873ec1d1025" class="" dir="auto">The square root of <code>x</code> is the number that, multiplied by itself, gives <code>x</code>.</p><ul id="41c288c9-d8c0-802b-af8e-da2870802fcd" class="bulleted-list" dir="auto"><li style="list-style-type:disc">√4 = 2, because 2 × 2 = 4</li></ul><ul id="41c288c9-d8c0-804e-9064-f008bd2b92aa" class="bulleted-list" dir="auto"><li style="list-style-type:disc">√9 = 3, because 3 × 3 = 9</li></ul><h3 id="41c288c9-d8c0-8061-afa6-fdf5cca793be" class="" dir="auto">Step 2: What does “rounded down” mean?</h3><p id="41c288c9-d8c0-8074-a7a8-c94c649ff09c" class="" dir="auto">For <code>x = 8</code>, the real square root is 2.828..., and we need the whole number just below it, which is 2.</p><p id="41c288c9-d8c0-8062-8288-e42e31bef55d" class="" dir="auto">Ask what that “whole number just below” means in terms of multiplication:</p><ul id="41c288c9-d8c0-80b2-90c9-d629a837d47e" class="bulleted-list" dir="auto"><li style="list-style-type:disc">2 × 2 = 4, which is at most 8, so 2 is okay.</li></ul><ul id="41c288c9-d8c0-80a8-9ba2-dfd23f9b012d" class="bulleted-list" dir="auto"><li style="list-style-type:disc">3 × 3 = 9, which is more than 8, so 3 is too big.</li></ul><p id="41c288c9-d8c0-80e7-8f3d-e6a3ca747ac0" class="" dir="auto">So the answer is the <strong>biggest whole number whose square doesn’t go over </strong><code><strong>x</strong></code>.</p><h3 id="41c288c9-d8c0-8026-be1a-c2d16ab51a4a" class="" dir="auto">Step 3: Write that as math</h3><p id="41c288c9-d8c0-80e3-bb92-cbb99b2defe4" class="" dir="auto">“Whose square doesn’t go over <code>x</code>” means <code>k * k &lt;= x</code>.</p><p id="41c288c9-d8c0-80d5-b654-e4d081d51df6" class="" dir="auto">So <code>k*k &lt;= x</code> isn’t a trick, it’s just the definition said with symbols: “the biggest <code>k</code> where <code>k</code> times <code>k</code> is still not more than <code>x</code>.”</p><h3 id="41c288c9-d8c0-8011-b986-dd50d0708eac" class="" dir="auto">Step 4: Why is this useful?</h3><p id="41c288c9-d8c0-8058-847f-dbeab803f3b5" class="" dir="auto">It lets us test any guess <strong>without computing a square root</strong>. Try guesses for <code>x = 8</code>:</p><table id="41c288c9-d8c0-8091-9245-f34ba84a9f4e" class="simple-table" dir="ltr"><thead class="simple-table-header"><tr id="41c288c9-d8c0-8033-b029-d37331cf3d30" dir="ltr"><th id="dIwj" class="simple-table-header-color simple-table-header">k</th><th id="[bF?" class="simple-table-header-color simple-table-header">k*k</th><th id="se]Y" class="simple-table-header-color simple-table-header">k*k &lt;= 8 ?</th></tr></thead><tbody><tr id="41c288c9-d8c0-800d-89ff-f98e1271edff" dir="ltr"><td id="dIwj" class="">1</td><td id="[bF?" class="">1</td><td id="se]Y" class="">yes</td></tr><tr id="41c288c9-d8c0-8066-ab94-e2b763daeef6" dir="ltr"><td id="dIwj" class="">2</td><td id="[bF?" class="">4</td><td id="se]Y" class="">yes</td></tr><tr id="41c288c9-d8c0-802a-9db4-d84f418cb030" dir="ltr"><td id="dIwj" class="">3</td><td id="[bF?" class="">9</td><td id="se]Y" class="">no</td></tr><tr id="41c288c9-d8c0-80f5-9919-de9a1af55590" dir="ltr"><td id="dIwj" class="">4</td><td id="[bF?" class="">16</td><td id="se]Y" class="">no</td></tr></tbody></table><p id="41c288c9-d8c0-80f5-a154-f301f73bf13e" class="" dir="auto">The yes answers come first, then the no answers, and they never switch back. Because the pattern is yes, yes, no, no, we can binary search it, and the answer is the last “yes”.</p><hr id="41c288c9-d8c0-807a-bb5b-d3eb40791c1e" dir="auto"/><h2 id="41c288c9-d8c0-8097-b9e7-e67a3bd602df" class="" dir="auto">Sqrt(x): how to approach it in an interview</h2><h3 id="41c288c9-d8c0-8031-bfa1-ec94bdd826cf" class="" dir="auto">1. Clarify first (30 seconds)</h3><ul id="41c288c9-d8c0-802c-9f3b-f7794d07334f" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Is <code>x</code> always non-negative? Yes: <code>0 &lt;= x &lt;= 2^31 - 1</code>.</li></ul><ul id="41c288c9-d8c0-8097-9d3f-f8be6d1d0090" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Do we round down (floor)? Yes.</li></ul><ul id="41c288c9-d8c0-8070-8977-e8afc0ccb0c4" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Can I use <code>*</code> or <code>math.sqrt</code>? No.</li></ul><p id="41c288c9-d8c0-80b8-af16-eaa83ad524b2" class="" dir="auto">Asking these shows you read the constraints, and the answer to the second one tells you the problem is really “find the largest integer <code>k</code> with <code>k*k &lt;= x</code>”.</p><h3 id="41c288c9-d8c0-80b1-a9b6-c5274fcb682c" class="" dir="auto">2. Brute force (say it out loud, then move on)</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js" integrity="sha512-AKaNmg8COK0zEbjTdMHJAPJ0z6VeNqvRvH4/d5M4sHJbQQUToMBtodq4HaV4fa+WV2UTfoperElm66c9/8cKmQ==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><pre id="41c288c9-d8c0-801b-b28d-e8eaf5c8771b" class="code code-wrap" data-notion-code-syntax="python"><code class="language-python" style="white-space:pre-wrap;word-break:break-all">k = 0
+while (k + 1) * (k + 1) &lt;= x:    
+	k += 1
+return k</code></pre><p id="41c288c9-d8c0-804f-924e-deb63fa61a62" class="" dir="auto">This is O(√x) time. For x near 2³¹ that’s about 46,000 steps, which is fine, but the interviewer will want better.</p><h3 id="41c288c9-d8c0-8025-8bae-f90fc4f0be03" class="" dir="auto">Why <code>(k + 1)</code></h3><p id="41c288c9-d8c0-80bf-99fa-c60770d805aa" class="" dir="auto">In that loop, <code>k</code> always holds a number that is <strong>already known to work</strong> (<code>k*k &lt;= x</code>). Before moving up, we ask: “would the <em>next</em> number, <code>k + 1</code>, also work?”</p><ul id="41c288c9-d8c0-80d3-9d5b-ffcf58303bd1" class="bulleted-list" dir="auto"><li style="list-style-type:disc">If yes, move to it (<code>k += 1</code>).</li></ul><ul id="41c288c9-d8c0-80b3-abf7-fa259ca35ab9" class="bulleted-list" dir="auto"><li style="list-style-type:disc">If no, stop. <code>k</code> is the biggest one that works.</li></ul><p id="41c288c9-d8c0-8061-92fd-d2c4d6651c5e" class="" dir="auto">So the loop peeks one step ahead, and when it ends, <code>k</code> is the answer with nothing to adjust.</p><p id="41c288c9-d8c0-800e-bb2c-c6940f9f6c51" class="" dir="auto">Trace for <code>x = 8</code>:</p><table id="41c288c9-d8c0-80e9-a33f-d3d2ffc23f5a" class="simple-table" dir="ltr"><thead class="simple-table-header"><tr id="41c288c9-d8c0-80b6-b1e8-c3f983742efc" dir="ltr"><th id="&gt;VF\" class="simple-table-header-color simple-table-header">k</th><th id="ftJz" class="simple-table-header-color simple-table-header">(k+1)²</th><th id="Olp}" class="simple-table-header-color simple-table-header">(k+1)² &lt;= 8 ?</th><th id="w&lt;zp" class="simple-table-header-color simple-table-header">action</th></tr></thead><tbody><tr id="41c288c9-d8c0-8011-a2b1-f506098b3a95" dir="ltr"><td id="&gt;VF\" class="">0</td><td id="ftJz" class="">1</td><td id="Olp}" class="">yes</td><td id="w&lt;zp" class="">k = 1</td></tr><tr id="41c288c9-d8c0-80b9-a805-cbd72d347e78" dir="ltr"><td id="&gt;VF\" class="">1</td><td id="ftJz" class="">4</td><td id="Olp}" class="">yes</td><td id="w&lt;zp" class="">k = 2</td></tr><tr id="41c288c9-d8c0-8060-890e-ec99fac59b9a" dir="ltr"><td id="&gt;VF\" class="">2</td><td id="ftJz" class="">9</td><td id="Olp}" class="">no</td><td id="w&lt;zp" class="">stop, return 2</td></tr></tbody></table><h3 id="41c288c9-d8c0-80db-8df3-eabfc0ed595b" class="" dir="auto">3. The key observation</h3><p id="41c288c9-d8c0-8016-8342-d49757dc7e49" class="" dir="auto">Look at <code>k*k &lt;= x</code> for k = 0, 1, 2, 3, ... with x = 8:</p><pre id="41c288c9-d8c0-80ed-97e5-d32ee20321e3" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">k:        0     1     2     3     4     5 ...
+k*k&lt;=8:  True  True  True  False False False</code></pre><p id="41c288c9-d8c0-80c0-9529-c21dd7b438c2" class="" dir="auto">The answer is the last <code>True</code>. The results go <code>True...True False...False</code>, so the sequence is <strong>monotonic</strong>, and monotonic means binary search. This is the same two-zone idea from Search Insert Position, just flipped:</p><ul id="41c288c9-d8c0-8003-b214-c2464a57cf11" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Search space: <code>k</code> from 0 to <code>x</code>. You’re searching over candidate answers, not over an array.</li></ul><ul id="41c288c9-d8c0-807d-9883-d2cda18d5c2b" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Predicate: <code>k*k &lt;= x</code>.</li></ul><aside class="block-color-gray_background callout" data-notion-callout="" data-notion-callout-icon="💡" data-notion-callout-background="gray_background" style="white-space:pre-wrap;display:flex" id="41c288c9-d8c0-80db-a7f4-f9ac5b69fa01" dir="ltr"><div style="font-size:1.5em"><span class="icon" data-emoji="💡"></span></div><div style="width:100%"><blockquote id="41c288c9-d8c0-8000-a27a-f9cf63c11deb" class="" dir="auto">Saying “the predicate is monotonic, so I can binary search on the answer” is the line interviewers listen for.</blockquote></div></aside><h3 id="41c288c9-d8c0-80b3-b522-cb30f5b83fb2" class="" dir="auto">4. Solution A: bisect style (the template you already know)</h3><p id="41c288c9-d8c0-80f8-b0f3-ec38aa9e17e3" class="" dir="auto">Find the first <code>k</code> where <code>k*k &gt; x</code>. The answer is one less than that.</p><p id="41c288c9-d8c0-8012-ac46-e00b87153a7d" class="" dir="auto">The values <code>k*k &lt;= x</code> form a block of “good” numbers, followed by a block of “bad” numbers (<code>k*k &gt; x</code>). The first bad <code>k</code> sits right at the border, so the last good one is the element immediately to its left, which is <code>k - 1</code>.</p><p id="41c288c9-d8c0-803b-b3f8-ded8cb5aceeb" class="" dir="auto">This is also why <code>bisect_right</code> fits. It returns the first index where the value is strictly greater than the target, and the last valid element is one position before that</p><pre id="41c288c9-d8c0-800b-b267-f97a9ac32954" class="code code-wrap" data-notion-code-syntax="python"><code class="language-python" style="white-space:pre-wrap;word-break:break-all">def mySqrt(x):
+    left, right = 0, x + 1        # right = x+1 so &quot;none found&quot; is representable, eg ip: x = 1
+    while left &lt; right:
+        mid = (left + right) // 2
+        if mid * mid &lt;= x:
+            left = mid + 1        # mid still works, look right
+        else:
+            right = mid           # mid too big, keep as candidate for &quot;first too big&quot;
+    return left - 1</code></pre><p id="41c288c9-d8c0-8060-b291-f94f4fe9364d" class="" dir="auto">This is the <code>bisect_right</code> shape (<code>&lt;=</code> goes right) applied to the squares.</p><p id="41c288c9-d8c0-8002-8eb4-c8b675948374" class="" dir="auto">Trace for x = 8:</p><table id="41c288c9-d8c0-806d-9cfd-e08e5fe411f0" class="simple-table" dir="ltr"><thead class="simple-table-header"><tr id="41c288c9-d8c0-807b-9d8e-f4646da83760" dir="ltr"><th id="dPAs" class="simple-table-header-color simple-table-header">left</th><th id="bKAD" class="simple-table-header-color simple-table-header">right</th><th id="bB&lt;{" class="simple-table-header-color simple-table-header">mid</th><th id="hHWx" class="simple-table-header-color simple-table-header">mid²</th><th id="ucrm" class="simple-table-header-color simple-table-header">action</th></tr></thead><tbody><tr id="41c288c9-d8c0-80e7-bfb9-db1641d9b16f" dir="ltr"><td id="dPAs" class="">0</td><td id="bKAD" class="">9</td><td id="bB&lt;{" class="">4</td><td id="hHWx" class="">16</td><td id="ucrm" class="">16 &gt; 8, so right = 4</td></tr><tr id="41c288c9-d8c0-80fc-bee1-ef2b369e5891" dir="ltr"><td id="dPAs" class="">0</td><td id="bKAD" class="">4</td><td id="bB&lt;{" class="">2</td><td id="hHWx" class="">4</td><td id="ucrm" class="">4 &lt;= 8, so left = 3</td></tr><tr id="41c288c9-d8c0-80c6-9ff0-ec7f0b70293f" dir="ltr"><td id="dPAs" class="">3</td><td id="bKAD" class="">4</td><td id="bB&lt;{" class="">3</td><td id="hHWx" class="">9</td><td id="ucrm" class="">9 &gt; 8, so right = 3</td></tr><tr id="41c288c9-d8c0-8055-86b4-d77c3642184d" dir="ltr"><td id="dPAs" class="">3</td><td id="bKAD" class="">3</td><td id="bB&lt;{" class=""></td><td id="hHWx" class=""></td><td id="ucrm" class="">stop, return 3 - 1 = 2</td></tr></tbody></table><h3 id="41c288c9-d8c0-80a2-983e-f70d7859b2d1" class="" dir="auto">5. Solution B: track the answer (often easier to explain)</h3><p id="41c288c9-d8c0-806a-acc4-e626f291f14f" class="" dir="auto">Find the last good <code>k, where k * k &lt;= x</code></p><pre id="41c288c9-d8c0-807e-b6b7-f2590a423dae" class="code code-wrap" data-notion-code-syntax="python"><code class="language-python" style="white-space:pre-wrap;word-break:break-all">def mySqrt(x):
+    left, right = 0, x
+    ans = 0
+    while left &lt;= right:
+        mid = (left + right) // 2
+        if mid * mid &lt;= x:
+            ans = mid             # valid, save it and try bigger
+            left = mid + 1
+        else:
+            right = mid - 1
+    return ans</code></pre><p id="41c288c9-d8c0-802d-8e68-ff42d9fb8f80" class="" dir="auto">Same logic, but the “keep mid as a candidate” step is an explicit <code>ans = mid</code>. Pick whichever you can explain without hesitating. Many people find B more intuitive under pressure.</p><p id="41c288c9-d8c0-80dc-b3be-dcd10d07d2ae" class="" dir="auto">Trace for <code>x = 8</code>:</p><table id="41c288c9-d8c0-805b-b95d-ea1ad9fcd7df" class="simple-table" dir="ltr"><thead class="simple-table-header"><tr id="41c288c9-d8c0-806d-9e32-f663f35ddd7d" dir="ltr"><th id="}}Mg" class="simple-table-header-color simple-table-header">left</th><th id="mPfp" class="simple-table-header-color simple-table-header">right</th><th id="PUaS" class="simple-table-header-color simple-table-header">mid</th><th id="=T~T" class="simple-table-header-color simple-table-header">mid²</th><th id="yR\P" class="simple-table-header-color simple-table-header">action</th></tr></thead><tbody><tr id="41c288c9-d8c0-8061-acdc-f7d191ab3b30" dir="ltr"><td id="}}Mg" class="">0</td><td id="mPfp" class="">8</td><td id="PUaS" class="">4</td><td id="=T~T" class="">16</td><td id="yR\P" class="">bad, so right = 3</td></tr><tr id="41c288c9-d8c0-8055-9388-de99017d01c1" dir="ltr"><td id="}}Mg" class="">0</td><td id="mPfp" class="">3</td><td id="PUaS" class="">2</td><td id="=T~T" class="">4</td><td id="yR\P" class="">good, so left = 2</td></tr><tr id="41c288c9-d8c0-8064-b5e0-e5affc02fa5b" dir="ltr"><td id="}}Mg" class="">2</td><td id="mPfp" class="">3</td><td id="PUaS" class="">3</td><td id="=T~T" class="">9</td><td id="yR\P" class="">bad, so right = 2</td></tr><tr id="41c288c9-d8c0-809b-a39f-fb4c3d6cdc42" dir="ltr"><td id="}}Mg" class="">2</td><td id="mPfp" class="">2</td><td id="PUaS" class=""></td><td id="=T~T" class=""></td><td id="yR\P" class="">stop, return 2</td></tr></tbody></table><h3 id="41c288c9-d8c0-80e6-85ae-d4b1e03fe9ef" class="" dir="auto">6. Edge cases to mention</h3><ul id="41c288c9-d8c0-807b-8670-d77a24dbe232" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><code>x = 0</code>: returns 0. <code>x = 1</code>: returns 1. Both work with the code above, but say that you checked them.</li></ul><ul id="41c288c9-d8c0-8050-b45d-c4a3ffeb3838" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Perfect squares (<code>x = 4</code>): <code>mid*mid == x</code> falls into the <code>&lt;=</code> branch, and the search continues right and settles on 2.</li></ul><ul id="41c288c9-d8c0-8070-81e1-e7fb1e20a770" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Large <code>x</code> (2³¹ - 1): Python integers don’t overflow. In Java or C++, <code>mid * mid</code> can overflow <code>int</code>, so use <code>long</code> or compare <code>mid &lt;= x / mid</code>. Mentioning this is a strong signal even if you’re coding in Python.</li></ul><ul id="41c288c9-d8c0-8066-80ba-e4981a682c02" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Optional speedup: for <code>x &gt;= 2</code>, the root is at most <code>x // 2</code>, so you can start with <code>right = x // 2</code>. It’s a constant-factor gain and not required.</li></ul><h3 id="41c288c9-d8c0-80c7-9679-f2d608d57e55" class="" dir="auto">7. Complexity</h3><ul id="41c288c9-d8c0-8000-8d8c-c132383ded9a" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Time:</strong> O(log x), about 31 iterations at most.</li></ul><ul id="41c288c9-d8c0-807e-834e-e240ac1de24a" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Space:</strong> O(1).</li></ul><h3 id="41c288c9-d8c0-8003-a709-c7958f86d7ac" class="" dir="auto">8. Likely follow-up: Newton’s method</h3><p id="41c288c9-d8c0-80f8-b14f-c7906d7ca0f2" class="" dir="auto">If asked “can you do it faster or without binary search?”:</p><pre id="41c288c9-d8c0-80e0-9ac2-d4985a80d213" class="code code-wrap" data-notion-code-syntax="python"><code class="language-python" style="white-space:pre-wrap;word-break:break-all">def mySqrt(x):
+    r = x
+    while r * r &gt; x:
+        r = (r + x // r) // 2
+    return r</code></pre><p id="41c288c9-d8c0-801b-9139-d8fb8dda99e7" class="" dir="auto">It converges quadratically (the number of correct digits roughly doubles each step), so it takes very few iterations. Trace for x = 8: r goes 8, 4, 3, 2, then stops. When <code>x = 0</code>, the loop never runs, so there’s no division by zero. You don’t need to derive it, but being able to name it as “Newton-Raphson on f(r) = r² - x” is a plus.</p><h3 id="41c288c9-d8c0-8047-9199-ebd21fe864d0" class="" dir="auto">The idea</h3><p id="41c288c9-d8c0-8064-98e7-d8ebf8e7de35" class="" dir="auto">Say you have a guess <code>r</code> that is <strong>too big</strong> (<code>r * r &gt; x</code>). Then <code>x // r</code> is <strong>too small</strong>.</p><p id="41c288c9-d8c0-8035-9154-e828e93ad45d" class="" dir="auto">Why: <code>r * (x / r) = x</code>. If <code>r</code> is bigger than the true root, the other factor <code>x / r</code> has to be smaller than the true root. The two factors multiply to <code>x</code>, so one sits above the root and one sits below.</p><p id="41c288c9-d8c0-80ee-8b2d-fbf5932d7ffb" class="" dir="auto">So the real root is trapped between <code>x // r</code> and <code>r</code>. Averaging them gives a better guess:</p><pre id="41c288c9-d8c0-8056-93ce-f2bc68d740bf" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">new r = (r + x // r) // 2</code></pre><p id="41c288c9-d8c0-8092-8429-d25013dfc95f" class="" dir="auto">Repeat until the guess is no longer too big (<code>r * r &lt;= x</code>).</p><h3 id="41c288c9-d8c0-80d2-9fa0-da7b8c7f5235" class="" dir="auto">Trace: x = 8</h3><p id="41c288c9-d8c0-8075-b26f-fd9ae6f4f171" class="" dir="auto">The real root is 2.828..., so the answer should be 2.</p><table id="41c288c9-d8c0-8044-b4a3-c46140385769" class="simple-table" dir="ltr"><thead class="simple-table-header"><tr id="41c288c9-d8c0-8080-9dfa-eb8ba5bebcee" dir="ltr"><th id="~Dnb" class="simple-table-header-color simple-table-header">r</th><th id="Fj@g" class="simple-table-header-color simple-table-header">r*r</th><th id="Q&gt;Si" class="simple-table-header-color simple-table-header">too big?</th><th id="{x\E" class="simple-table-header-color simple-table-header">x // r</th><th id="WBc;" class="simple-table-header-color simple-table-header">new r = (r + x//r) // 2</th></tr></thead><tbody><tr id="41c288c9-d8c0-8091-b199-d4d231067985" dir="ltr"><td id="~Dnb" class="">8</td><td id="Fj@g" class="">64</td><td id="Q&gt;Si" class="">yes</td><td id="{x\E" class="">1</td><td id="WBc;" class="">(8 + 1) // 2 = 4</td></tr><tr id="41c288c9-d8c0-8045-99e0-e93fe4daa2c5" dir="ltr"><td id="~Dnb" class="">4</td><td id="Fj@g" class="">16</td><td id="Q&gt;Si" class="">yes</td><td id="{x\E" class="">2</td><td id="WBc;" class="">(4 + 2) // 2 = 3</td></tr><tr id="41c288c9-d8c0-805f-a05e-fcabe81044a7" dir="ltr"><td id="~Dnb" class="">3</td><td id="Fj@g" class="">9</td><td id="Q&gt;Si" class="">yes</td><td id="{x\E" class="">2</td><td id="WBc;" class="">(3 + 2) // 2 = 2</td></tr><tr id="41c288c9-d8c0-8034-8cc5-ee5d96702f51" dir="ltr"><td id="~Dnb" class="">2</td><td id="Fj@g" class="">4</td><td id="Q&gt;Si" class="">no, stop</td><td id="{x\E" class=""></td><td id="WBc;" class="">return 2</td></tr></tbody></table><p id="41c288c9-d8c0-8070-b02e-f193f482de84" class="" dir="auto">Look at the first row. The root is trapped between 1 and 8, and the average is 4.5, which we floor to 4. The guess dropped from 8 to 4 immediately.</p><h3 id="41c288c9-d8c0-8008-b3f7-e60e4e02f007" class="" dir="auto">Trace: x = 100</h3><p id="41c288c9-d8c0-804c-bc12-ed0c9a685cab" class="" dir="auto">The answer should be 10.</p><table id="41c288c9-d8c0-8001-a019-e8b00d8bce3d" class="simple-table" dir="ltr"><thead class="simple-table-header"><tr id="41c288c9-d8c0-808e-975b-dcef0bdb18cf" dir="ltr"><th id="vRL]" class="simple-table-header-color simple-table-header">r</th><th id="}b&gt;^" class="simple-table-header-color simple-table-header">r*r</th><th id="&lt;Vtn" class="simple-table-header-color simple-table-header">too big?</th><th id="L`Lw" class="simple-table-header-color simple-table-header">x // r</th><th id="I?UM" class="simple-table-header-color simple-table-header">new r</th></tr></thead><tbody><tr id="41c288c9-d8c0-8098-abbf-ee4c529faf61" dir="ltr"><td id="vRL]" class="">100</td><td id="}b&gt;^" class="">10000</td><td id="&lt;Vtn" class="">yes</td><td id="L`Lw" class="">1</td><td id="I?UM" class="">(100 + 1) // 2 = 50</td></tr><tr id="41c288c9-d8c0-807f-8619-f97f7c65ce16" dir="ltr"><td id="vRL]" class="">50</td><td id="}b&gt;^" class="">2500</td><td id="&lt;Vtn" class="">yes</td><td id="L`Lw" class="">2</td><td id="I?UM" class="">(50 + 2) // 2 = 26</td></tr><tr id="41c288c9-d8c0-80b1-8e1b-dd6f55f98579" dir="ltr"><td id="vRL]" class="">26</td><td id="}b&gt;^" class="">676</td><td id="&lt;Vtn" class="">yes</td><td id="L`Lw" class="">3</td><td id="I?UM" class="">(26 + 3) // 2 = 14</td></tr><tr id="41c288c9-d8c0-8042-b41b-e6d260b3fbd6" dir="ltr"><td id="vRL]" class="">14</td><td id="}b&gt;^" class="">196</td><td id="&lt;Vtn" class="">yes</td><td id="L`Lw" class="">7</td><td id="I?UM" class="">(14 + 7) // 2 = 10</td></tr><tr id="41c288c9-d8c0-80be-bb2f-fada7d624c87" dir="ltr"><td id="vRL]" class="">10</td><td id="}b&gt;^" class="">100</td><td id="&lt;Vtn" class="">no, stop</td><td id="L`Lw" class=""></td><td id="I?UM" class="">return 10</td></tr></tbody></table><p id="41c288c9-d8c0-801f-ad69-c17b254933c8" class="" dir="auto">The guess roughly halves while it is far away (100, 50, 26, 14), then locks on quickly once it is close. That fast finish is why it needs so few steps.</p><h3 id="41c288c9-d8c0-800c-9d1b-ccbd1344504f" class="" dir="auto">Questions you might have</h3><p id="41c288c9-d8c0-80cd-b485-d973d6e791f1" class="" dir="auto"><strong>Why start with </strong><code><strong>r = x</strong></code><strong>?</strong> </p><ul id="41c288c9-d8c0-80af-98b2-f20302f2d103" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Any starting guess that is at least the true root works, and <code>x</code> always is (for <code>x &gt;= 1</code>). It’s the simplest choice.</li></ul><p id="41c288c9-d8c0-8088-9f74-d49b36cb4430" class="" dir="auto"><strong>Why does it stop at exactly the floor?</strong> </p><ul id="41c288c9-d8c0-8083-8c27-fe483bd6bc3c" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Starting from above, each new guess is never smaller than the true floor root, and the guesses keep going down. So the first time <code>r * r &lt;= x</code> becomes true, <code>r</code> is the largest whole number that fits, which is the floor.</li></ul><p id="41c288c9-d8c0-80b1-99d9-ea2b199d2e6b" class="" dir="auto"><strong>What about </strong><code><strong>x = 0</strong></code><strong>?</strong> </p><ul id="41c288c9-d8c0-80ba-b853-c11aebad6882" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><code>r = 0</code>, and <code>0 * 0 &gt; 0</code> is false, so the loop never runs and we return 0. This also means <code>x // r</code> is never evaluated with <code>r = 0</code>, so there’s no division by zero. For <code>x = 1</code>, the same thing happens and it returns 1.</li></ul><h3 id="41c288c9-d8c0-8081-96be-ec2323c6f827" class="" dir="auto">In an interview</h3><p id="41c288c9-d8c0-80f9-bdd1-c821f127b380" class="" dir="auto">Binary search is the expected main answer. Mention Newton’s method only as a follow-up when asked for something faster. Binary search takes about 31 steps at most, while Newton’s method takes roughly 6 to 8 for the largest inputs. You don’t need to prove convergence, but you should be able to say “if <code>r</code> is too big, <code>x // r</code> is too small, so I average them.”</p><hr id="41d288c9-d8c0-80f2-a050-e1919646cc76" dir="auto"/><h3 id="41d288c9-d8c0-8074-a169-dae612e9c127" class="" dir="auto">The core idea</h3><p id="41d288c9-d8c0-80de-96fd-c21215039506" class="" dir="auto">Newton’s method finds where a function equals zero. To get a square root, we turn the problem into a zero-finding problem:</p><pre id="41d288c9-d8c0-8047-b4a0-ed5eb2ce13d8" class="code code-wrap" data-notion-code-syntax="python"><code class="language-python" style="white-space:pre-wrap;word-break:break-all">sqrt(x) is the r where r² - x = 0</code></pre><p id="41d288c9-d8c0-80d8-959b-f18df39b2f4a" class="" dir="auto">So define <code>f(r) = r² - x</code>. The root of <code>f</code> is <code>sqrt(x)</code>, which is the green dot in the drawing.</p><p id="41d288c9-d8c0-8098-8f16-c7b19e176ffe" class="" dir="auto"><strong>The trick:</strong> you can’t solve a curve directly, but you can solve a straight line. So at your current guess, draw the tangent line (a straight line that matches the curve’s slope there), and see where that line hits zero. Use that point as your next guess. A tangent is a good stand-in for the curve nearby, so the next guess is much closer.</p><h3 id="41d288c9-d8c0-80e8-b354-f0a1b00a2cd2" class="" dir="auto">Where the formula comes from</h3><p id="41d288c9-d8c0-8046-b00e-c89775e5ca09" class="" dir="auto">The slope of <code>f(r) = r² - x</code> at <code>r</code> is <code>2r</code>. The tangent line at the current guess <code>r</code> goes down by <code>f(r)</code> over a horizontal distance of <code>f(r) / slope</code>, so:</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-ruby.min.js" integrity="sha512-/Dti0iV9cxgJe8r0U/89YJIv9ZBQu1ExEWffVyBj4juMQ4GNglQ3TQ0Up4gcbiHvg0g87arcUFbKBtw2PxH1Dw==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><pre id="41d288c9-d8c0-80e8-899e-f92640228d81" class="code code-wrap" data-notion-code-syntax="ruby"><code class="language-ruby" style="white-space:pre-wrap;word-break:break-all">new r = r - f(r) / slope
+      = r - (r² - x) / (2r)
+      = (2r² - r² + x) / (2r)
+      = (r² + x) / (2r)
+      = (r + x/r) / 2</code></pre><p id="41d288c9-d8c0-8000-88df-d9e6fe719bf3" class="" dir="auto">That is exactly the averaging formula from the code. The average of <code>r</code> and <code>x/r</code> isn’t a coincidence: it is the tangent line’s landing spot.</p><h3 id="41d288c9-d8c0-80d4-b417-c5961f2bce1c" class="" dir="auto">Why it never overshoots below the root</h3><p id="41d288c9-d8c0-8089-b777-f3cade1c65a3" class="" dir="auto">For any positive <code>r</code>, the average of two numbers is at least as large as their geometric mean:</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-rust.min.js" integrity="sha512-R/HpMlNfZZV6DxMhNz1dYJbBaPBVSOCqX8imo3uGUurhPDHRcXrBxkEVOjawwUwTMfOqT6t1eLYYQXIjFWCX/A==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><pre id="41d288c9-d8c0-80de-bb0d-ff0ea30dd667" class="code code-wrap" data-notion-code-syntax="rust"><code class="language-rust" style="white-space:pre-wrap;word-break:break-all">(r + x/r) / 2  &gt;=  sqrt(r * x/r)  =  sqrt(x)</code></pre><p id="41d288c9-d8c0-8059-a706-dd0cac200ee9" class="" dir="auto">So after the very first step, every guess is at or above the true root. The guesses only come down from above, which is why the integer version can stop at the first <code>r * r &lt;= x</code>.</p><h3 id="41d288c9-d8c0-8028-81f8-cdcef6aa083b" class="" dir="auto">The integer version</h3><p id="41d288c9-d8c0-80a9-80f7-e5369efcbbd0" class="" dir="auto">Real-number Newton on <code>x = 8</code> gives 8, 4.5, 3.14, 2.84, 2.83, and so on. In the code we use <code>//</code>, which floors each step, so the guesses become whole numbers: 8, 4, 3, 2. The loop stops the first time <code>r * r &lt;= x</code>. Since the guesses decrease from above, that first <code>r</code> is the largest whole number whose square fits, which is the floor of the root.</p><pre id="41d288c9-d8c0-809c-9e97-cca60faef07d" class="code code-wrap" data-notion-code-syntax="python"><code class="language-python" style="white-space:pre-wrap;word-break:break-all">def mySqrt(x):
+    r = x
+    while r * r &gt; x:
+        r = (r + x // r) // 2
+    return r</code></pre><h3 id="41d288c9-d8c0-80c6-9a81-d4399e5a5055" class="" dir="auto">Speed</h3><p id="41d288c9-d8c0-80f5-a27e-fb91a6d21ac6" class="" dir="auto">Near the root, the number of correct digits roughly doubles each step (quadratic convergence). I need to correct something I said earlier, though. Starting from <code>r = x</code> is a poor guess for big inputs, because while the guess is far above the root it only about halves each step. For <code>x = 2³¹ - 1</code>, that takes around 20 steps in total, and that’s still fewer than the ~31 for binary search, but not dramatically so. A good starting guess, such as a power of two near <code>sqrt(x)</code>, brings it down to about 5 steps.</p><h3 id="41d288c9-d8c0-808c-ac41-d4dd54747725" class="" dir="auto">Interview framing</h3><ul id="41d288c9-d8c0-800d-a69c-ccd3aecf45c4" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Binary search on the answer is your main solution. It’s easy to get right and easy to explain.</li></ul><ul id="41d288c9-d8c0-804e-a797-d6fa5ecbb42c" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Mention Newton’s method as a follow-up, in one sentence: “If <code>r</code> is too big, <code>x // r</code> is too small, so I average them, and that’s Newton-Raphson on <code>r² - x</code>.”</li></ul><ul id="41d288c9-d8c0-8049-92f4-f06862abfb6c" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Don’t lead with it unless asked. A small off-by-one in the loop condition or the starting value is much easier to make here than in binary search.</li></ul></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
