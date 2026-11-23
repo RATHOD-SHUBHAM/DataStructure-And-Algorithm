@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Search in a rotated sorted array</title>
+<style>
+:root{
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  color-scheme:light;
+  --bg:#f6f7f9;--surface:#ffffff;--ink:#1b1f24;--muted:#5b6571;--line:#d3d9e0;
+  --sorted-bg:#dbeafe;--sorted-ink:#1e40af;--mid:#b45309;
+  --ok-bg:#dcfce7;--ok-ink:#166534;--code-bg:#eef1f5;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#12151a;--surface:#1b2027;--ink:#e8ebef;--muted:#9aa4b1;--line:#343c47;
+    --sorted-bg:#1e3354;--sorted-ink:#9cc4fb;--mid:#fbbf24;
+    --ok-bg:#14391f;--ok-ink:#86efac;--code-bg:#232a33;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#12151a;--surface:#1b2027;--ink:#e8ebef;--muted:#9aa4b1;--line:#343c47;
+  --sorted-bg:#1e3354;--sorted-ink:#9cc4fb;--mid:#fbbf24;
+  --ok-bg:#14391f;--ok-ink:#86efac;--code-bg:#232a33;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:720px;margin:0 auto;padding:28px 18px 56px}
+h1{font-size:28px;line-height:1.2;margin:0 0 8px;letter-spacing:-0.01em}
+h2{font-size:19px;margin:36px 0 10px}
+p{margin:0 0 12px;max-width:68ch}
+.lead{color:var(--muted)}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px}
+.targets{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:14px;font-size:14px;color:var(--muted)}
+button{font:inherit;font-size:14px;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:6px 14px;cursor:pointer}
+button:focus-visible{outline:2px solid var(--sorted-ink);outline-offset:2px}
+button[aria-pressed="true"]{border:2px solid var(--sorted-ink);font-weight:600}
+button:disabled{opacity:.45;cursor:default}
+.grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;margin-bottom:14px}
+.col{display:flex;flex-direction:column;align-items:center;gap:4px;min-width:0}
+.mk{height:20px;font-size:13px;font-weight:700;color:var(--mid)}
+.cell{width:100%;max-width:64px;aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;font-size:clamp(17px,5vw,22px);font-weight:600;border:1px solid var(--line);border-radius:8px;background:var(--bg)}
+.cell.sorted{background:var(--sorted-bg);color:var(--sorted-ink);border-color:var(--sorted-ink)}
+.cell.mid{border:2px solid var(--mid)}
+.cell.found{background:var(--ok-bg);color:var(--ok-ink);border-color:var(--ok-ink)}
+.cell.out{opacity:.3}
+.idx{font-size:11px;color:var(--muted)}
+.state{font-size:13px;color:var(--muted);margin-bottom:6px}
+.msg{min-height:96px;font-size:15px}
+.controls{display:flex;align-items:center;gap:10px;margin-top:12px}
+.ctr{font-size:13px;color:var(--muted)}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-top:12px}
+.legend i{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:5px;vertical-align:-1px;border:1px solid var(--line)}
+ol{padding-left:22px;max-width:68ch}
+li{margin-bottom:8px}
+pre{background:var(--code-bg);border-radius:10px;padding:14px 16px;overflow-x:auto;font:13.5px/1.55 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;margin:0}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.92em;background:var(--code-bg);padding:1px 5px;border-radius:5px}
+</style>
+</head>
+<body>
+<main>
+  <h1>Search in a rotated sorted array</h1>
+  <p class="lead">LeetCode 33. At every step, one side of <code>mid</code> is a clean sorted run. Find it, check whether the target is inside it, then pick a side.</p>
+
+  <h2>Step through it</h2>
+  <div class="panel">
+    <div class="targets" id="targets">
+      <span>Array [4, 5, 6, 7, 0, 1, 2], target:</span>
+      <button data-t="5" aria-pressed="true">5</button>
+      <button data-t="0" aria-pressed="false">0</button>
+      <button data-t="3" aria-pressed="false">3 (not in array)</button>
+    </div>
+    <div class="grid" id="grid" aria-live="polite"></div>
+    <div class="state" id="state"></div>
+    <div class="msg" id="msg"></div>
+    <div class="controls">
+      <button id="prev">Back</button>
+      <button id="next">Next step</button>
+      <span class="ctr" id="ctr"></span>
+    </div>
+    <div class="legend">
+      <span><i style="background:var(--sorted-bg)"></i>sorted part at this step</span>
+      <span><i style="border:2px solid var(--mid)"></i>mid</span>
+      <span><i style="background:var(--bg);opacity:.4"></i>already ruled out</span>
+    </div>
+  </div>
+
+  <h2>The three decisions per loop</h2>
+  <ol>
+    <li>Find the sorted side. If <code>nums[mid] &gt; nums[right]</code>, the left part is sorted. Otherwise the right part is sorted.</li>
+    <li>Check whether the target is inside that sorted side’s range.</li>
+    <li>If it is, search that side. If not, search the other side.</li>
+  </ol>
+
+  <h2>The code</h2>
+  <pre>class Solution:
+    def search(self, nums: list[int], target: int) -&gt; int:
+        left, right = 0, len(nums) - 1
+
+        while left &lt;= right:
+            mid = left + (right - left) // 2
+
+            if nums[mid] == target:
+                return mid
+            elif nums[mid] &gt; nums[right]:
+                # left part is sorted
+                if nums[left] &lt;= target &lt; nums[mid]:
+                    right = mid - 1
+                else:
+                    left = mid + 1
+            else:
+                # right part is sorted (includes mid == right)
+                if nums[mid] &lt; target &lt;= nums[right]:
+                    left = mid + 1
+                else:
+                    right = mid - 1
+
+        return -1</pre>
+
+  <h2>Why the last branch is <code>else</code>, not <code>elif</code></h2>
+  <p>With <code>while left &lt;= right</code>, there is a moment when <code>left</code>, <code>mid</code> and <code>right</code> are the same index, so <code>nums[mid] == nums[right]</code>. An <code>elif nums[mid] &lt; nums[right]</code> is false then, no branch runs, nothing changes, and the loop never ends. Try target 3 above: the last step lands on exactly this case.</p>
+  <p>Rule for debugging: every path through a binary search loop must change <code>left</code> or <code>right</code>.</p>
+</main>
+
+<script>
+const nums=[4,5,6,7,0,1,2];
+function run(t){
+  const S=[];let l=0,r=nums.length-1;
+  while(l<=r){
+    const L=l,R=r,m=Math.floor((l+r)/2),v=nums[m];
+    if(v===t){S.push({l:L,r:R,m,sorted:null,found:true,text:`nums[mid] = ${v} equals the target ${t}. Found it at index ${m}, return ${m}.`});return S;}
+    let sorted,inside,text;
+    if(v>nums[R]){
+      sorted=[L,m];inside=nums[L]<=t&&t<v;
+      text=`nums[mid] = ${v} is bigger than nums[right] = ${nums[R]}, so the left part (index ${L} to ${m}) is the sorted one. Is ${nums[L]} <= ${t} < ${v}? ${inside?'Yes, so the target would have to be in this part: right = mid - 1 = '+(m-1)+'.':'No, so the target can only be in the other part: left = mid + 1 = '+(m+1)+'.'}`;
+      if(inside)r=m-1;else l=m+1;
+    }else{
+      sorted=[m,R];inside=v<t&&t<=nums[R];
+      text=`nums[mid] = ${v} is not bigger than nums[right] = ${nums[R]}, so the right part (index ${m} to ${R}) is the sorted one.${m===R?' Here mid and right are the same element. This is the case that makes a plain else necessary.':''} Is ${v} < ${t} <= ${nums[R]}? ${inside?'Yes, so look there: left = mid + 1 = '+(m+1)+'.':'No, so look at the other part: right = mid - 1 = '+(m-1)+'.'}`;
+      if(inside)l=m+1;else r=m-1;
+    }
+    S.push({l:L,r:R,m,sorted,found:false,text});
+  }
+  S.push({l,r,m:null,sorted:null,end:true,text:`left (${l}) is now bigger than right (${r}), so nothing is left to search. Return -1.`});
+  return S;
+}
+let target=5,S=run(target),i=0;
+const $=id=>document.getElementById(id);
+function render(){
+  const s=S[i];
+  $('grid').innerHTML=nums.map((v,k)=>{
+    let c='cell';
+    const outside=s.end||k<s.l||k>s.r;
+    if(outside)c+=' out';
+    else if(s.sorted&&k>=s.sorted[0]&&k<=s.sorted[1])c+=' sorted';
+    if(s.found&&k===s.m)c+=' found';
+    else if(k===s.m)c+=' mid';
+    const mk=[];
+    if(k===s.l)mk.push('L');
+    if(k===s.m)mk.push('M');
+    if(k===s.r)mk.push('R');
+    return `<div class="col"><div class="mk">${mk.join(' ')}</div><div class="${c}">${v}</div><div class="idx">index ${k}</div></div>`;
+  }).join('');
+  $('state').textContent=`left = ${s.l}, right = ${s.r}`+(s.m!==null&&s.m!==undefined?`, mid = ${s.m}`:'')+`, target = ${target}`;
+  $('msg').textContent=s.text;
+  $('ctr').textContent=`Step ${i+1} of ${S.length}`;
+  $('prev').disabled=i===0;
+  $('next').disabled=i===S.length-1;
+  document.querySelectorAll('#targets button').forEach(b=>b.setAttribute('aria-pressed',String(+b.dataset.t===target)));
+}
+document.querySelectorAll('#targets button').forEach(b=>b.onclick=()=>{target=+b.dataset.t;S=run(target);i=0;render()});
+$('next').onclick=()=>{if(i<S.length-1){i++;render()}};
+$('prev').onclick=()=>{if(i>0){i--;render()}};
+render();
+</script>
+</body>
+</html>
