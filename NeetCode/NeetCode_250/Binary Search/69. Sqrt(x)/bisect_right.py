@@ -16,3 +16,20 @@ class Solution:
         
         #  Bisect right returns the first index where the value is strictly greater than the target, and the last valid element is one position before that
         return left - 1
+
+# ========================== Bisect Right II ==========================
+
+class Solution:
+    def mySqrt(self, x: int) -> int:
+        left = 0
+        right = x + 1
+
+        while left <= right:
+            mid = left + (right - left) // 2
+
+            if mid * mid <= x:
+                left = mid + 1
+            else:
+                right = mid - 1
+        
+        return left - 1
